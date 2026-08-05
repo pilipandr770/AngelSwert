@@ -1,0 +1,68 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Blog Management{% endblock %}
+{% block content %}
+<h1>Blog and SEO</h1>
+
+<section class="admin-grid">
+  <form method="post" action="{{ url_for('admin.blog_create_manual') }}" class="admin-form">
+    <h2>Create article manually</h2>
+    <label>Title</label>
+    <input name="title" required>
+    <label>Excerpt</label>
+    <textarea name="excerpt"></textarea>
+    <label>Content (Markdown)</label>
+    <textarea name="content" rows="8" required></textarea>
+    <label>Status</label>
+    <select name="status"><option value="draft">draft</option><option value="published">published</option></select>
+    <button class="btn" type="submit">Save</button>
+  </form>
+
+  <form method="post" action="{{ url_for('admin.blog_generate_ai') }}" class="admin-form">
+    <h2>AI article generation</h2>
+    <label>Topic</label>
+    <input name="topic" required>
+    <label>Language</label>
+    <input name="language" value="de">
+    <label>Status</label>
+    <select name="status"><option value="draft">draft</option><option value="published">published</option></select>
+    <button class="btn" type="submit">Generate</button>
+  </form>
+
+  <form method="post" action="{{ url_for('admin.add_blog_topic') }}" class="admin-form">
+    <h2>Scheduled auto posting</h2>
+    <label>Topic</label>
+    <input name="topic" required>
+    <label>Language</label>
+    <input name="language" value="de">
+    <label>Frequency (hours)</label>
+    <input type="number" name="frequency_hours" value="72" min="1">
+    <button class="btn" type="submit">Add topic</button>
+  </form>
+</section>
+
+<h2>Active generation topics</h2>
+<table class="table">
+  <tr><th>Topic</th><th>Language</th><th>Period (h)</th><th>Next run</th></tr>
+  {% for topic in topics %}
+  <tr>
+    <td>{{ topic.topic }}</td>
+    <td>{{ topic.language }}</td>
+    <td>{{ topic.frequency_hours }}</td>
+    <td>{{ topic.next_run_at.strftime('%d.%m.%Y %H:%M') if topic.next_run_at else '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>All articles</h2>
+<table class="table">
+  <tr><th>Title</th><th>Status</th><th>Date</th><th>Slug</th></tr>
+  {% for post in posts %}
+  <tr>
+    <td>{{ post.title }}</td>
+    <td>{{ post.status }}</td>
+    <td>{{ post.created_at.strftime('%d.%m.%Y') }}</td>
+    <td>{{ post.slug }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('programs.page_title') }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ t('programs.meta_description') }}{% endblock %}
+{% block content %}
+<section class="page-block">
+  <h1>{{ t('programs.h1') }}</h1>
+  <p>{{ t('programs.intro') }}</p>
+  <ul>
+    <li>{{ t('programs.i1') }}</li>
+    <li>{{ t('programs.i2') }}</li>
+    <li>{{ t('programs.i3') }}</li>
+  </ul>
+</section>
+
+<section class="cards-section">
+  <h2>{{ t('programs.compare_title') }}</h2>
+  <div class="cards-grid">
+    <article class="card">
+      <h3>{{ t('programs.card1_title') }}</h3>
+      <p>{{ t('programs.card1_body') }}</p>
+      <ul class="feature-list">
+        <li>{{ t('programs.card1_feature_1') }}</li>
+        <li>{{ t('programs.card1_feature_2') }}</li>
+        <li>{{ t('programs.card1_feature_3') }}</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>{{ t('programs.card2_title') }}</h3>
+      <p>{{ t('programs.card2_body') }}</p>
+      <ul class="feature-list">
+        <li>{{ t('programs.card2_feature_1') }}</li>
+        <li>{{ t('programs.card2_feature_2') }}</li>
+        <li>{{ t('programs.card2_feature_3') }}</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>{{ t('programs.card3_title') }}</h3>
+      <p>{{ t('programs.card3_body') }}</p>
+      <ul class="feature-list">
+        <li>{{ t('programs.card3_feature_1') }}</li>
+        <li>{{ t('programs.card3_feature_2') }}</li>
+        <li>{{ t('programs.card3_feature_3') }}</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="page-block">
+  <h2>{{ t('programs.addon_title') }}</h2>
+  <p>{{ t('programs.addon_body') }}</p>
+</section>
+{% endblock %}

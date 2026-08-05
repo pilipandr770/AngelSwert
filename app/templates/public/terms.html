@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('legal.terms_title') }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ t('legal.terms_meta_description') }}{% endblock %}
+{% block content %}
+<section class="page-block legal-copy">
+  <h1>{{ t('legal.terms_title') }}</h1>
+  {% if lang == 'de' %}
+  <p>Diese Allgemeinen Geschäftsbedingungen gelten für Beratungsdienstleistungen im Bereich Videoproduktion sowie für ergänzende Leistungen wie Web-Content-Befüllung und Social-Media-Optimierung.</p>
+  <p>Vertragspartnerin ist Svitlana Lebedynska, Angel Swert, Waldstrasse 1, 63128 Dietzenbach.</p>
+  <h2>1. Vertragsgegenstand</h2>
+  <p>Maßgeblich sind ausschließlich die zwischen Angel Swert und der teilnehmenden oder beauftragenden Person vereinbarten Leistungen sowie diese AGB. Vereinbarungen mit Dritten entfalten keine Bindungswirkung.</p>
+  <h2>2. Vergütung und Fälligkeit</h2>
+  <p>Die Vergütung wird entsprechend der erbrachten Beratungs- oder Projektleistung fällig. Ein bestimmter wirtschaftlicher oder operativer Erfolg wird nicht geschuldet, sofern dies nicht ausdrücklich gesondert vereinbart wurde.</p>
+  <h2>3. Änderungen der Leistungen</h2>
+  <p>Änderungen des Leistungsumfangs bedürfen der Abstimmung zwischen den Vertragsparteien.</p>
+  <h2>4. Leistungserbringung</h2>
+  <p>Angel Swert ist berechtigt, für Vorbereitung, Umsetzung und technische Durchführung geeignete Erfüllungsgehilfen oder externe Dienstleister einzusetzen.</p>
+  <h2>5. Vertraulichkeit und Datenschutz</h2>
+  <p>Nicht offenkundige Informationen, die im Rahmen der Zusammenarbeit bekannt werden, werden vertraulich behandelt. Personenbezogene Daten werden nach Maßgabe der gesetzlichen Datenschutzvorschriften verarbeitet.</p>
+  <h2>6. Mitwirkungspflichten</h2>
+  <p>Die Auftraggeberin oder der Auftraggeber unterstützt die vertragsgemäße Durchführung durch rechtzeitige Bereitstellung notwendiger Informationen, Materialien und Freigaben.</p>
+  <h2>7. Haftung</h2>
+  <p>Angel Swert haftet für Schäden aus Vorsatz oder grober Fahrlässigkeit sowie für Schäden an Körper, Leben und Gesundheit. Eine Haftung für Ereignisse höherer Gewalt ist ausgeschlossen, soweit diese nicht zu vertreten sind.</p>
+  <h2>8. Schlussbestimmungen</h2>
+  <p>Es gilt das Recht der Bundesrepublik Deutschland. Sofern gesetzlich zulässig, ist Gerichtsstand der Geschäftssitz von Svitlana Lebedynska. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
+  <p class="meta">Hinweis: Diese lokale AGB-Seite basiert auf der Struktur der aktuellen Website und sollte vor Go-live gegen die final freigegebene Rechtstext-Version abgeglichen werden.</p>
+  {% else %}
+  <p>These Terms and Conditions apply to consulting services in the field of video production as well as related services such as web content population and social media optimization.</p>
+  <p>The contracting party is Svitlana Lebedynska, Angel Swert, Waldstrasse 1, 63128 Dietzenbach, Germany.</p>
+  <h2>1. Scope of contract</h2>
+  <p>Only the services agreed between Angel Swert and the participating or commissioning party, together with these terms, are binding. Agreements with third parties are not binding unless expressly accepted.</p>
+  <h2>2. Fees and due dates</h2>
+  <p>Fees become due according to the consulting or project services rendered. No specific commercial or operational success is owed unless expressly agreed otherwise in writing.</p>
+  <h2>3. Changes to services</h2>
+  <p>Any change in project scope requires coordination and agreement between the parties.</p>
+  <h2>4. Performance of services</h2>
+  <p>Angel Swert may use suitable assistants, subcontractors or external service providers for preparation, implementation and technical execution.</p>
+  <h2>5. Confidentiality and data protection</h2>
+  <p>Non-public information disclosed during the collaboration will be treated confidentially. Personal data is processed in accordance with applicable data protection laws.</p>
+  <h2>6. Client obligations to cooperate</h2>
+  <p>The client shall support proper delivery by providing the necessary information, materials and approvals in due time.</p>
+  <h2>7. Liability</h2>
+  <p>Angel Swert is liable for intentional misconduct or gross negligence and for damage to life, body or health. Liability for force majeure events is excluded where such events are beyond reasonable control.</p>
+  <h2>8. Final provisions</h2>
+  <p>The laws of the Federal Republic of Germany apply. Where legally permissible, the place of jurisdiction is the registered place of business of Svitlana Lebedynska. If individual provisions are invalid, the remaining provisions remain unaffected.</p>
+  <p class="meta">Note: This local terms page is based on the structure of the current website and should be aligned with the final approved legal text before production launch.</p>
+  {% endif %}
+</section>
+{% endblock %}

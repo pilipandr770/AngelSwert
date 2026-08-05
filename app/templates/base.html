@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ brand_name }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ brand_name }}{% endblock %}">
+  <link rel="alternate" hreflang="de" href="{{ lang_url('de') }}">
+  <link rel="alternate" hreflang="en" href="{{ lang_url('en') }}">
+  <link rel="alternate" hreflang="x-default" href="{{ lang_url('de') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('public.home', lang=lang) }}">{{ brand_name }}</a>
+    <nav>
+      <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
+      <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
+      <a href="{{ url_for('public.programs', lang=lang) }}">{{ t('nav.programs') }}</a>
+      <a href="{{ url_for('public.contact', lang=lang) }}">{{ t('nav.contact') }}</a>
+      <a href="{{ url_for('public.blog_list', lang=lang) }}">{{ t('nav.blog') }}</a>
+      <span class="lang-switch">
+        <a href="{{ lang_url('de') }}">{{ t('lang.de') }}</a>
+        <span>/</span>
+        <a href="{{ lang_url('en') }}">{{ t('lang.en') }}</a>
+      </span>
+    </nav>
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <div class="public-flash flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>{{ t('footer.cta') }}</p>
+    <p><a href="{{ url_for('public.contact', lang=lang) }}">{{ t('footer.talk') }}</a></p>
+    <p>
+      <a href="https://www.instagram.com/angelswertvideoproduction/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.youtube.com/channel/UC9WswDPHVTri34E1HIieIbQ" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.tiktok.com/@angelswert" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.linkedin.com/in/angel-swert-videoproduction-379690168/" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+    <p>
+      <a href="{{ url_for('public.terms', lang=lang) }}">{{ t('footer.terms') }}</a>
+      <a href="{{ url_for('public.impressum', lang=lang) }}">{{ t('footer.impressum') }}</a>
+      <a href="{{ url_for('public.privacy', lang=lang) }}">{{ t('footer.privacy') }}</a>
+    </p>
+    <p class="meta">© {{ brand_name }}. {{ t('footer.rights') }}</p>
+  </footer>
+
+  <div id="chatbot" class="chatbot">
+    <button id="chatToggle" class="chatbot-toggle">{{ t('chat.toggle') }}</button>
+    <div id="chatPanel" class="chatbot-panel hidden">
+      <div class="chatbot-title">{{ t('chat.title') }}</div>
+      <div id="chatMessages" class="chatbot-messages"></div>
+      <form id="chatForm" class="chatbot-form">
+        <input id="chatInput" type="text" placeholder="{{ t('chat.placeholder') }}" required>
+        <button type="submit">{{ t('chat.send') }}</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>

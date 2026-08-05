@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('legal.impressum_title') }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ t('legal.impressum_meta_description') }}{% endblock %}
+{% block content %}
+<section class="page-block legal-copy">
+  <h1>{{ t('legal.impressum_title') }}</h1>
+  {% if lang == 'de' %}
+  <p>Svitlana Lebedynska</p>
+  <p>Angel Swert Videoproduktion</p>
+  <p>Waldstrasse 1, 63128 Dietzenbach, Deutschland</p>
+  <p>Telefon: +49 (0) 173 294 21 23</p>
+  <p>E-Mail: info@angelswert.de</p>
+  <p>Web: angelswert.de</p>
+  <p>Umsatzsteuer-Identifikationsnummer: DE362379177</p>
+  <p>Redaktionell verantwortlich: Svitlana Lebedynska</p>
+  <h2>Alternative Streitbeilegung</h2>
+  <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: http://ec.europa.eu/consumers/odr/</p>
+  <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+  {% else %}
+  <p>Svitlana Lebedynska</p>
+  <p>Angel Swert Videoproduction</p>
+  <p>Waldstrasse 1, 63128 Dietzenbach, Germany</p>
+  <p>Phone: +49 (0) 173 294 21 23</p>
+  <p>Email: info@angelswert.de</p>
+  <p>Web: angelswert.de</p>
+  <p>VAT ID: DE362379177</p>
+  <p>Editorially responsible: Svitlana Lebedynska</p>
+  <h2>Alternative dispute resolution</h2>
+  <p>The European Commission provides a platform for online dispute resolution: http://ec.europa.eu/consumers/odr/</p>
+  <p>We are neither willing nor obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="admin-stats">
+  <article><h3>Leads</h3><p>{{ stats.leads }}</p></article>
+  <article><h3>Published posts</h3><p>{{ stats.published_posts }}</p></article>
+  <article><h3>Draft posts</h3><p>{{ stats.draft_posts }}</p></article>
+  <article><h3>Auto topics</h3><p>{{ stats.topics }}</p></article>
+</div>
+
+<h2>Latest leads</h2>
+<table class="table">
+  <tr><th>Name</th><th>Email</th><th>Stage</th><th>Action</th></tr>
+  {% for lead in latest_leads %}
+  <tr>
+    <td>{{ lead.name }}</td>
+    <td>{{ lead.email }}</td>
+    <td>{{ lead.stage }}</td>
+    <td><a href="{{ url_for('admin.crm_detail', lead_id=lead.id) }}">Open</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ post.excerpt }}{% endblock %}
+{% block content %}
+<article class="page-block">
+  <h1>{{ post.title }}</h1>
+  <p class="meta">{{ post.published_at.strftime('%d.%m.%Y') if post.published_at else post.created_at.strftime('%d.%m.%Y') }}</p>
+  {% if post.seo_keywords %}
+  <p class="meta">{{ t('blog.seo') }}: {{ post.seo_keywords }}</p>
+  {% endif %}
+  <div class="markdown-body">{{ post.content | markdown | safe }}</div>
+</article>
+{% endblock %}

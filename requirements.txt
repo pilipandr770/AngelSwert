@@ -1,0 +1,10 @@
+Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+psycopg2-binary==2.9.9
+python-slugify==8.0.4
+python-dotenv==1.0.1
+APScheduler==3.10.4
+gunicorn==22.0.0
+openai==1.40.8
+Markdown==3.6

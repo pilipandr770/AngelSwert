@@ -1,0 +1,240 @@
+﻿ASAI CLIENT DISCOVERY & PACKAGE QUALIFICATION
+STRATEGIC CLIENT DIAGNOSTIC: CONTENT, FUNNEL, AUTOMATION & AI AGENTS
+ONE SESSION в†’ COMPLETE PICTURE в†’ RIGHT PILOT AND RIGHT PACKAGE
+PURPOSE
+This questionnaire determines in one session what the client actually needs: content production only, recurring publishing, multilingual production, a defined traffic and conversion path, or a controlled system with AI agents and automation. Critical open points are resolved before the SOW is preparedвЂ”not during production.
+
+1. COMPANY, OFFER AND DECISION-MAKING
+в–Ў Company, brand, product and industry: _____________________________
+в–Ў What exactly does the client sell? ________________________________
+в–Ў Core offer and average contract value: ____________________________
+в–Ў Business model: B2B / B2C / B2G / internal communications / education / public sector
+в–Ў Who makes the commercial decision? ______________________________
+в–Ў Who approves the budget, legal review, brand and final publication?
+в–Ў What should be achieved within 3, 6 and 12 months?
+в–Ў What are the consequences of not building a system now? __________
+
+2. OBJECTIVES, KPIs AND PRIORITIES
+в–Ў Visibility / trust / explanation / leads / sales / onboarding / training?
+в–Ў Primary objective No. 1: _________________________________________
+в–Ў Secondary objectives: ____________________________________________
+в–Ў Which KPIs truly matter: output, reach, watch time, leads, calls, sales?
+в–Ў Which KPIs can already be measured today?
+в–Ў Which outcomes are expressly not guaranteed?
+в–Ў Who will evaluate the pilot, and after what period? ______________
+
+3. CURRENT CONTENT AND CHANNEL MATURITY
+в–Ў Active channels: YouTube / LinkedIn / Instagram / TikTok / website / newsletter / podcast
+в–Ў Monthly content volume per channel: ______________________________
+в–Ў What is already working? _________________________________________
+в–Ў Where do delays, errors or unnecessary costs arise?
+в–Ў Is content created ad hoc, or is there an editorial plan, templates and a fixed publishing rhythm?
+в–Ў Who creates scripts, visuals, videos, posts, thumbnails and captions?
+в–Ў Who publishes, and who analyses performance?
+в–Ў Maturity level: 0 = no system; 1 = ad hoc; 2 = recurring manual process; 3 = structured; 4 = automated
+
+4. TARGET AUDIENCES, MARKETS AND LANGUAGES
+в–Ў Primary target audience and role in the buying process: ___________
+в–Ў Problems, objections and buying motivations: _____________________
+в–Ў Countries of publication and paid advertising: ___________________
+в–Ў Required languages and level of localisation: ____________________
+в–Ў One version for all markets or market-specific adaptations?
+в–Ў Regulated industry or sensitive audience?
+в–Ў Who reviews local advertising, professional and industry requirements?
+
+5. TRAFFIC DESTINATION AND CONVERSION PATH
+в–Ў Where should the content direct users?
+вЂ” Social media profile / website / landing page / shop / appointment booking / WhatsApp / email / app / event
+в–Ў What is the primary call to action? _______________________________
+в–Ў Organic traffic / paid traffic / partners / influencers / SEO / email?
+в–Ў Who is responsible for media buying and the campaign budget?
+в–Ў Is there a ready landing page, or must it be created or optimised?
+в–Ў Is tracking in place: UTM, analytics, pixel, conversion events, CRM?
+в–Ў How does a viewer become a lead, and how does a lead become a client?
+в–Ў Who follows up with leads, and within what response time? _________
+
+IMPORTANT
+Content production without a defined conversion path creates visibility, but it does not automatically create measurable business value.
+
+6. WEBSITE, SALES AND FUNNEL READINESS
+в–Ў Is the website current, mobile-optimised, fast and easy to understand?
+в–Ў Is the offer clearly presented and directly purchasable or bookable?
+в–Ў Are there case studies, trust signals, FAQs and clearly identified contact people?
+в–Ў Is there a lead magnet, appointment booking, form or shop?
+в–Ў Is a CRM in place, and who maintains it?
+в–Ў Are follow-up emails or sales sequences in place?
+в–Ў Should ASAI provide content only, or also coordinate funnel and sales assets?
+в–Ў Website/funnel work: included / add-on / external partner / not required
+
+7. AUTOMATION: WHAT SHOULD ACTUALLY BE AUTOMATED?
+в–Ў Research and topic monitoring
+в–Ў Content calendar and prioritisation
+в–Ў Draft briefs and scripts
+в–Ў Translation and localisation
+в–Ў Video and avatar production
+в–Ў Format adaptation and repurposing
+в–Ў Review, approval and status tracking
+в–Ў Scheduling and publishing
+в–Ў Analytics and reporting
+в–Ў Lead capture and routing to the CRM
+в–Ў Documentation, logs, and cost and credit control
+в–Ў What must never happen without human approval? __________________
+
+8. AI AGENTS FOR YOUTUBE, LINKEDIN AND BUSINESS WORKFLOWS
+в–Ў Research Agent: topics, trends, sources and competitors
+в–Ў Editorial Agent: content plan, priorities and repurposing
+в–Ў Script Agent: first drafts based on brand and source rules
+в–Ў Localisation Agent: language, market and format
+в–Ў Production Agent: hand-off to the video/avatar workflow
+в–Ў Publishing Agent: drafts, scheduling, metadata and upload
+в–Ў Analytics Agent: performance, patterns and recommendations
+в–Ў Community Assistant: response drafts subject to human approval
+в–Ў Lead Agent: route leads from forms, direct messages and the website to the CRM or email
+в–Ў Knowledge Agent: answer internal questions from an approved knowledge base
+в–Ў Which agents are needed now, and which should be introduced later?
+
+NOTE ON AI AGENTS
+AI agents are not an end in themselves. They are implemented only when volume, repetition, data quality and clear responsibilities make them economically justified.
+
+9. SYSTEMS, DATA AND INTEGRATIONS
+в–Ў Existing systems: website / CMS / CRM / Notion / Drive / Slack / Teams / Make / Zapier / API
+в–Ў Which accounts belong to the client, and which belong to ASAI?
+в–Ў Which data sources should the agents use?
+в–Ў Is there an approved knowledge base?
+в–Ў Does the data include personal, confidential or regulated information?
+в–Ў Is an API, enterprise plan or additional seats required?
+в–Ў Who covers the costs of credits, hosting, tools and third-party services?
+в–Ў Does the client require roles, MFA, logs, backups, a kill switch and offboarding?
+в–Ў Who is the technical administrator? ______________________________
+
+10. TEAM CAPACITY AND APPROVAL SPEED
+в–Ў Who provides the content inputs? _________________________________
+в–Ў Who confirms facts and sources? __________________________________
+в–Ў Who approves the brand, legal review, data protection and final publication?
+в–Ў How many approval stages are required?
+в–Ў Maximum feedback period: 24 hours / 48 hours / 3 days / 5 days / other
+в–Ў What happens if approval is not provided?
+в–Ў Does the client have internal capacity for recurring coordination?
+в–Ў Does the team require training, SOPs or onboarding?
+в–Ў Has a responsible person with genuine decision-making authority been appointed?
+
+11. DIGITAL HUMAN, MATERIALS, RIGHTS AND RISKS
+в–Ў Will a real or fictional person be used? __________________________
+в–Ў Which elements will be used: face / voice / photo / video / avatar / voice clone / lip sync / translation?
+в–Ў Is there separate consent, and for which countries, channels and forms of advertising is it valid?
+в–Ў Who provides the texts, facts, logos, photos, videos, music and screenshots?
+в–Ў May all materials be uploaded to the selected AI systems?
+в–Ў Must ASAI research, acquire or create assets?
+в–Ў Who owns the rights, and for what period and in which territories may the outputs be used?
+в–Ў Is the industry sensitive, or are minors, medical/financial claims or public authorities involved?
+в–Ў Project status: GREEN / YELLOW / RED
+в–Ў Stop criteria before project launch: _____________________________
+
+12. BUDGET, TIMELINE AND ECONOMIC FIT
+в–Ў Available monthly production budget: _____________________________
+в–Ў Separate budget for tools, credits, stock assets, ads and the website?
+в–Ў Pilot budget and decision date: _________________________________
+в–Ў Expected monthly content volume: ________________________________
+в–Ў Preferred start: immediately / within 30 days / next quarter / later
+в–Ў Is the client prepared to allow 1вЂ“2 months to stabilise the system and workflow?
+в–Ў Is there a validated offer, sufficient data and enough sales capacity for the Growth Layer?
+в–Ў What is economically more appropriate: manual production, partial automation or a PRO system?
+
+13. PILOT STRUCTURE AND POST-PILOT DECISION
+в–Ў Which hypothesis should the pilot test? __________________________
+в–Ў Which channels, formats, languages and Digital Humans will be tested?
+в–Ў Will the pilot test content only, or also publishing, automation and the funnel?
+в–Ў Specific deliverables: __________________________________________
+в–Ў Measurement period and KPIs: ____________________________________
+в–Ў What must be analysed after the pilot: quality, time, cost, leads and workflow?
+в–Ў Decision options: end / second pilot / STARTER / GROWTH / PRO / add-on
+в–Ў Decision date and authorised decision-maker: ____________________
+
+PACKAGE SELECTION LOGIC
+STARTER
+GROWTH
+PRO
+вЂў Primary need: content foundation
+вЂў Volume: 10 videos/month
+вЂў Channels: 1 primary channel
+вЂў Digital Humans: 1
+вЂў Languages: 1
+вЂў Publishing: client
+вЂў Automation: no
+вЂў AI agents: no
+вЂў Approvals & logs: simple
+вЂў Analytics: basic
+вЂў Best suited for: consistent content foundation
+вЂў Primary need: recurring publishing
+вЂў Volume: 20 videos/month
+вЂў Channels: multiple formats/channels
+вЂў Digital Humans: up to 2
+вЂў Languages: up to 2
+вЂў Publishing: ASAI team
+вЂў Automation: light process structure
+вЂў AI agents: optional, limited
+вЂў Approvals & logs: structured
+вЂў Analytics: monthly review
+вЂў Best suited for: multichannel & multilingual
+вЂў Primary need: controlled system
+вЂў Volume: custom
+вЂў Channels: integrated channels
+вЂў Digital Humans: multiple
+вЂў Languages: multiple
+вЂў Publishing: workflow/integration
+вЂў Automation: yes, from month 1
+вЂў AI agents: yes, role-based
+вЂў Approvals & logs: approval gates, roles, logs
+вЂў Analytics: analytics & optimisation
+вЂў Best suited for: scalable infrastructure
+
+ADDITIONAL GROWTH LAYER
+Reach optimisation, audience growth, lead-generating content, campaign creatives, paid traffic, website or landing-page funnels, tracking and CRM integration are not automatically included in the core packages. They are planned after the content system has been stabilised or under a separate SOW/add-on.
+
+INTERNAL ASAI ASSESSMENT
+в–Ў STARTER: content foundation, one channel, manual publishing, no integrations.
+в–Ў GROWTH: recurring multichannel/multilingual production, publishing by ASAI, monthly review.
+в–Ў PRO: AI agents, automation, roles, approval gates, integrations, logs, analytics and training.
+в–Ў Growth Layer/Add-on: traffic, ads, website/landing page, CRM and conversion tracking.
+в–Ў Enterprise/Custom: complex data, regulated industry, multiple teams/regions, custom backend.
+Recommended package: _______________________________
+Pilot required: в–Ў Yes  в–Ў No
+Critical prerequisites before launch:
+____________________________________________
+Open points must be resolved by: ______________________
+Decision-maker: _____________________________________
+Next step: __________________________________________
+
+DECISION RULE
+No SOW is prepared and production does not begin while critical questions concerning rights, consent, budget, approvals, data or infrastructure remain unresolved.
+
+PRE-SOW COMPLETENESS GATE
+All critical decisions are clarified before the proposal is prepared and production begins.
+
+CHECK BEFORE PROPOSAL AND SOW
+в–Ў Business objective and primary KPI defined
+в–Ў Target audience, markets, languages and channels defined
+в–Ў Traffic destination, CTA and conversion path defined
+в–Ў Website, landing-page and CRM maturity assessed
+в–Ў Content volume, formats and publishing responsibility defined
+в–Ў Decision made on automation and required AI agents
+в–Ў Platforms, plans, accounts and third-party budget defined
+в–Ў Materials, primary sources and rights confirmed
+в–Ў Digital Human consent is available or not required
+в–Ў Data protection, confidentiality and cybersecurity clarified
+в–Ў Decision-maker, approvers and feedback deadlines identified
+в–Ў Pilot, measurement period, budget range and decision date defined
+в–Ў Measures defined for all red and yellow risks
+Open points are documented in the SOW as prerequisites or exclusionsвЂ”they are not deferred into live production.
+
+CLIENT CONFIRMATION
+The client confirms that the information provided is complete and accurate to the best of its knowledge. ASAI may use this information to prepare the pilot, package recommendation, pricing, SOW, risk assessment and required appendices. Later changes may result in additional costs, revised timelines or a new SOW.
+Name/title: ______________________________
+Date/signature: ___________________________
+
+STRATEGY SESSION NOTES
+________________________________________________________________________________
+________________________________________________________________________________
+________________________________________________________________________________
+________________________________________________________________________________
+________________________________________________________________________________

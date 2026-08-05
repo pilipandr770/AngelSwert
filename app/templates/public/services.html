@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('services.page_title') }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ t('services.meta_description') }}{% endblock %}
+{% block content %}
+<section class="page-block">
+  <h1>{{ t('services.h1') }}</h1>
+  <div class="cards-grid">
+    <article class="card"><h3>{{ t('services.s1_title') }}</h3><p>{{ t('services.s1_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.s2_title') }}</h3><p>{{ t('services.s2_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.s3_title') }}</h3><p>{{ t('services.s3_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.s4_title') }}</h3><p>{{ t('services.s4_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.s5_title') }}</h3><p>{{ t('services.s5_body') }}</p></article>
+  </div>
+</section>
+
+<section class="page-block">
+  <h2>{{ t('services.process_title') }}</h2>
+  <div class="cards-grid">
+    <article class="card"><p>{{ t('services.process_1') }}</p></article>
+    <article class="card"><p>{{ t('services.process_2') }}</p></article>
+    <article class="card"><p>{{ t('services.process_3') }}</p></article>
+    <article class="card"><p>{{ t('services.process_4') }}</p></article>
+  </div>
+</section>
+
+<section class="cards-section">
+  <h2>{{ t('services.catalog_title') }}</h2>
+  <div class="cards-grid">
+    <article class="card"><h3>{{ t('services.c1_title') }}</h3><p>{{ t('services.c1_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.c2_title') }}</h3><p>{{ t('services.c2_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.c3_title') }}</h3><p>{{ t('services.c3_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.c4_title') }}</h3><p>{{ t('services.c4_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.c5_title') }}</h3><p>{{ t('services.c5_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.c6_title') }}</h3><p>{{ t('services.c6_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.c7_title') }}</h3><p>{{ t('services.c7_body') }}</p></article>
+    <article class="card"><h3>{{ t('services.c8_title') }}</h3><p>{{ t('services.c8_body') }}</p></article>
+  </div>
+</section>
+{% endblock %}

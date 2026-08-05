@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="auth-body">
+  <form class="auth-card" method="post" action="{{ url_for('auth.login_post') }}">
+    <h1>Admin</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    <label>Email</label>
+    <input name="email" type="email" required>
+    <label>Password</label>
+    <input name="password" type="password" required>
+    <button class="btn" type="submit">Sign in</button>
+  </form>
+</body>
+</html>

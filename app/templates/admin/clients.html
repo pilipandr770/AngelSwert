@@ -1,0 +1,35 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}CRM{% endblock %}
+{% block content %}
+<h1>CRM - Clients and Leads</h1>
+
+<form method="post" action="{{ url_for('admin.crm_create') }}" class="admin-form">
+  <h2>Add lead</h2>
+  <label>Name</label>
+  <input name="name" required>
+  <label>Email</label>
+  <input type="email" name="email" required>
+  <label>Phone</label>
+  <input name="phone">
+  <label>Source</label>
+  <input name="source" value="website">
+  <label>Stage</label>
+  <input name="stage" value="new">
+  <label>Notes</label>
+  <textarea name="notes"></textarea>
+  <button class="btn" type="submit">Create</button>
+</form>
+
+<table class="table">
+  <tr><th>Name</th><th>Email</th><th>Stage</th><th>Source</th><th>Action</th></tr>
+  {% for lead in leads %}
+  <tr>
+    <td>{{ lead.name }}</td>
+    <td>{{ lead.email }}</td>
+    <td>{{ lead.stage }}</td>
+    <td>{{ lead.source }}</td>
+    <td><a href="{{ url_for('admin.crm_detail', lead_id=lead.id) }}">Details</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
