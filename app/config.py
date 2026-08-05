@@ -39,12 +39,10 @@ def _database_uri() -> str:
     if uri:
         return uri
 
-    # On Render we should fail fast to avoid accidentally using local Docker host names.
+    # On Render, keep the app bootable even if DB variables are not configured yet.
+    # This allows deploying static/public pages while DB wiring is fixed in dashboard.
     if os.getenv("RENDER") == "true" or os.getenv("RENDER_EXTERNAL_HOSTNAME"):
-        raise RuntimeError(
-            "Database URL is not configured for Render. "
-            "Link a managed PostgreSQL database and set DATABASE_URL."
-        )
+        return "sqlite:////tmp/angelswert_render_fallback.db"
 
     if not uri:
         uri = "postgresql+psycopg2://angel:angelpass@db:5432/angelswert"
