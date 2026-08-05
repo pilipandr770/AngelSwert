@@ -104,14 +104,45 @@ def home():
 
         return ""
 
+    def youtube_thumbnail_candidates(url: str) -> list[str]:
+        candidates: list[str] = []
+        video_id = youtube_video_id(url)
+        if video_id:
+            candidates.extend(
+                [
+                    f"https://i.ytimg.com/vi/{video_id}/maxresdefault.jpg",
+                    f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg",
+                    f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg",
+                    f"https://i.ytimg.com/vi/{video_id}/sddefault.jpg",
+                    f"https://i.ytimg.com/vi_webp/{video_id}/maxresdefault.webp",
+                    f"https://i.ytimg.com/vi_webp/{video_id}/hqdefault.webp",
+                ]
+            )
+
+        oembed_thumb = youtube_thumbnail(url)
+        if oembed_thumb:
+            candidates.append(oembed_thumb)
+
+        # Keep order but remove duplicates.
+        unique_candidates: list[str] = []
+        seen: set[str] = set()
+        for item in candidates:
+            if item and item not in seen:
+                unique_candidates.append(item)
+                seen.add(item)
+
+        return unique_candidates
+
     featured_videos = []
     for link in links[:4]:
+        thumbnail_candidates = youtube_thumbnail_candidates(link.url)
         featured_videos.append(
             {
                 "title": link.title,
                 "url": link.url,
                 "slot": link.slot,
-                "thumbnail": youtube_thumbnail(link.url),
+                "thumbnail": thumbnail_candidates[0] if thumbnail_candidates else "",
+                "thumbnail_candidates": thumbnail_candidates,
             }
         )
 

@@ -79,7 +79,13 @@
     <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener">
       <div class="video-card-media">
         {% if video.thumbnail %}
-        <img src="{{ video.thumbnail }}" alt="{{ video.title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/client-consultation.jpg') }}';">
+        <img
+          src="{{ video.thumbnail }}"
+          alt="{{ video.title }}"
+          loading="lazy"
+          data-thumb-candidates="{{ video.thumbnail_candidates|join(',') }}"
+          data-fallback-src="{{ url_for('static', filename='img/client-consultation.jpg') }}"
+        >
         {% else %}
         <div class="video-card-placeholder">{{ t('home.video_placeholder') }}</div>
         {% endif %}
@@ -95,6 +101,32 @@
     {% endfor %}
   </div>
 </section>
+
+<script>
+  (function () {
+    const images = document.querySelectorAll('.video-card-media img[data-thumb-candidates]');
+    images.forEach((img) => {
+      const candidates = (img.dataset.thumbCandidates || '')
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean);
+
+      if (!candidates.length) return;
+
+      let index = 0;
+      img.src = candidates[index];
+
+      img.addEventListener('error', () => {
+        index += 1;
+        if (index < candidates.length) {
+          img.src = candidates[index];
+          return;
+        }
+        img.src = img.dataset.fallbackSrc || img.src;
+      });
+    });
+  })();
+</script>
 
 <section class="split">
   <div>
