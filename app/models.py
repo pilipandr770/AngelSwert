@@ -33,6 +33,12 @@ class YouTubeLink(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
+class AssistantInstructionSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    custom_instructions = db.Column(db.Text, default="", nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
@@ -58,6 +64,24 @@ class BlogTopic(db.Model):
     def schedule_next(self) -> None:
         self.last_run_at = datetime.utcnow()
         self.next_run_at = self.last_run_at + timedelta(hours=max(1, self.frequency_hours))
+
+
+class BlogAutomationSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    blog_custom_instructions = db.Column(db.Text, default="", nullable=False)
+    rss_sources = db.Column(db.Text, default="", nullable=False)
+    auto_from_rss_enabled = db.Column(db.Boolean, default=False, nullable=False)
+    max_rss_items_per_run = db.Column(db.Integer, default=2, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class BlogFeedEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    entry_key = db.Column(db.String(500), unique=True, nullable=False)
+    source_url = db.Column(db.String(1024), nullable=False)
+    entry_title = db.Column(db.String(500), nullable=False)
+    entry_link = db.Column(db.String(1024), default="")
+    processed_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
 class Lead(db.Model):

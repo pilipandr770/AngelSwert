@@ -19,10 +19,14 @@
 
   <form method="post" action="{{ url_for('admin.blog_generate_ai') }}" class="admin-form">
     <h2>AI-генерація статті</h2>
+    <p>Модель для блогу береться з змінної середовища BLOG_AI_MODEL (якщо не задано, використовується OPENAI_MODEL).</p>
     <label>Тема</label>
     <input name="topic" required>
     <label>Мова</label>
-    <input name="language" value="de">
+    <select name="language">
+      <option value="de">Deutsch (DE)</option>
+      <option value="en">English (EN)</option>
+    </select>
     <label>Статус</label>
     <select name="status"><option value="draft">чернетка</option><option value="published">опубліковано</option></select>
     <button class="btn" type="submit">Згенерувати</button>
@@ -33,11 +37,43 @@
     <label>Тема</label>
     <input name="topic" required>
     <label>Мова</label>
-    <input name="language" value="de">
+    <select name="language">
+      <option value="de">Deutsch (DE)</option>
+      <option value="en">English (EN)</option>
+    </select>
     <label>Періодичність (години)</label>
     <input type="number" name="frequency_hours" value="72" min="1">
     <button class="btn" type="submit">Додати тему</button>
   </form>
+
+  <section class="admin-form">
+    <h2>Інструкції для AI-блогу та RSS-автоматизація</h2>
+    <p>Тема може бути будь-якою мовою, але стаття завжди генерується лише DE/EN відповідно до вибору вище. Політика безпеки та AI Act є пріоритетною.</p>
+    <p>RSS-пайплайн: джерело новини -> коротке Python summary -> генерація оригінального SEO-тексту з м'яким CTA.</p>
+    <label>Базова політика (тільки перегляд)</label>
+    <textarea rows="10" readonly>{{ blog_policy_text }}</textarea>
+
+    <form method="post" action="{{ url_for('admin.blog_settings_save') }}">
+      <label>Додаткові інструкції для генерації статей</label>
+      <textarea name="blog_custom_instructions" rows="8" placeholder="Наприклад: Тримай тон експертним, додавай 1-2 короткі приклади застосування, CTA роби м'яким.">{{ blog_settings.blog_custom_instructions }}</textarea>
+
+      <label>RSS-джерела (по одному URL на рядок)</label>
+      <textarea name="rss_sources" rows="6" placeholder="https://openai.com/news/rss.xml&#10;https://blog.google/technology/ai/rss/">{{ blog_settings.rss_sources }}</textarea>
+
+      <label>Макс. новин за один запуск</label>
+      <input type="number" name="max_rss_items_per_run" value="{{ blog_settings.max_rss_items_per_run }}" min="1" max="10">
+
+      <label>
+        <input type="checkbox" name="auto_from_rss_enabled" {% if blog_settings.auto_from_rss_enabled %}checked{% endif %}>
+        Увімкнути автогенерацію статей із RSS за розкладом
+      </label>
+      <p><button class="btn" type="submit">Зберегти налаштування блогу</button></p>
+    </form>
+
+    <form method="post" action="{{ url_for('admin.blog_rss_import_now') }}">
+      <button class="btn" type="submit">Імпортувати новини з RSS зараз</button>
+    </form>
+  </section>
 </section>
 
 <h2>Активні теми генерації</h2>
@@ -55,13 +91,19 @@
 
 <h2>Усі статті</h2>
 <table class="table">
-  <tr><th>Заголовок</th><th>Статус</th><th>Дата</th><th>Slug</th></tr>
+  <tr><th>Заголовок</th><th>Статус</th><th>Дата</th><th>Slug</th><th>Дії</th></tr>
   {% for post in posts %}
   <tr>
     <td>{{ post.title }}</td>
     <td>{{ post.status }}</td>
     <td>{{ post.created_at.strftime('%d.%m.%Y') }}</td>
     <td>{{ post.slug }}</td>
+    <td>
+      <a class="btn" href="{{ url_for('admin.blog_edit', post_id=post.id) }}">Редагувати</a>
+      <form method="post" action="{{ url_for('admin.blog_delete', post_id=post.id) }}" style="display:inline-block; margin-left:0.4rem;" onsubmit="return confirm('Видалити статтю?');">
+        <button class="btn" type="submit">Видалити</button>
+      </form>
+    </td>
   </tr>
   {% endfor %}
 </table>

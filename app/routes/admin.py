@@ -5,8 +5,23 @@ from flask_login import current_user, login_required
 from slugify import slugify
 
 from ..extensions import db
-from ..models import BlogPost, BlogTopic, Lead, LeadMessage, YouTubeLink
-from ..services.ai_service import generate_blog_post, generate_crm_hint
+from ..models import (
+    AssistantInstructionSettings,
+    BlogAutomationSettings,
+    BlogPost,
+    BlogTopic,
+    Lead,
+    LeadMessage,
+    YouTubeLink,
+)
+from ..services.ai_service import (
+    BLOG_AI_ACT_POLICY,
+    EU_AI_ACT_PRIORITY_POLICY,
+    generate_blog_post,
+    generate_crm_hint,
+    normalize_blog_language,
+)
+from ..services.blog_scheduler import import_from_rss_sources
 
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -68,7 +83,24 @@ def youtube_settings_save():
 def blog_admin_list():
     posts = BlogPost.query.order_by(BlogPost.created_at.desc()).all()
     topics = BlogTopic.query.order_by(BlogTopic.created_at.desc()).all()
-    return render_template("admin/blog_posts.html", posts=posts, topics=topics)
+    settings = BlogAutomationSettings.query.first()
+    if not settings:
+        settings = BlogAutomationSettings(
+            blog_custom_instructions="",
+            rss_sources="",
+            auto_from_rss_enabled=False,
+            max_rss_items_per_run=2,
+        )
+        db.session.add(settings)
+        db.session.commit()
+
+    return render_template(
+        "admin/blog_posts.html",
+        posts=posts,
+        topics=topics,
+        blog_settings=settings,
+        blog_policy_text=BLOG_AI_ACT_POLICY,
+    )
 
 
 @admin_bp.post("/blog/create")
@@ -104,22 +136,83 @@ def blog_create_manual():
     return redirect(url_for("admin.blog_admin_list"))
 
 
+@admin_bp.get("/blog/<int:post_id>/edit")
+@login_required
+def blog_edit(post_id):
+    post = BlogPost.query.get_or_404(post_id)
+    return render_template("admin/blog_edit.html", post=post)
+
+
+@admin_bp.post("/blog/<int:post_id>/edit")
+@login_required
+def blog_edit_save(post_id):
+    post = BlogPost.query.get_or_404(post_id)
+
+    title = (request.form.get("title") or "").strip()
+    excerpt = (request.form.get("excerpt") or "").strip()
+    content = (request.form.get("content") or "").strip()
+    seo_keywords = (request.form.get("seo_keywords") or "").strip()
+    status = (request.form.get("status") or "draft").strip()
+    slug_input = (request.form.get("slug") or "").strip()
+
+    if not title or not content:
+        flash("Потрібно заповнити заголовок і контент.", "error")
+        return redirect(url_for("admin.blog_edit", post_id=post.id))
+
+    base_slug = slugify(slug_input or title)
+    slug = base_slug
+    idx = 1
+    while BlogPost.query.filter(BlogPost.slug == slug, BlogPost.id != post.id).first():
+        idx += 1
+        slug = f"{base_slug}-{idx}"
+
+    post.title = title
+    post.slug = slug
+    post.excerpt = excerpt or content[:180]
+    post.content = content
+    post.seo_keywords = seo_keywords[:500]
+    post.status = status
+
+    if status == "published":
+        post.published_at = post.published_at or datetime.utcnow()
+    else:
+        post.published_at = None
+
+    db.session.commit()
+    flash("Статтю оновлено.", "success")
+    return redirect(url_for("admin.blog_admin_list"))
+
+
+@admin_bp.post("/blog/<int:post_id>/delete")
+@login_required
+def blog_delete(post_id):
+    post = BlogPost.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    flash("Статтю видалено.", "success")
+    return redirect(url_for("admin.blog_admin_list"))
+
+
 @admin_bp.post("/blog/generate")
 @login_required
 def blog_generate_ai():
     topic = (request.form.get("topic") or "").strip()
-    language = (request.form.get("language") or "de").strip()
+    language = normalize_blog_language(request.form.get("language") or "de")
     status = (request.form.get("status") or "draft").strip()
 
     if not topic:
         flash("Для AI-генерації потрібно вказати тему.", "error")
         return redirect(url_for("admin.blog_admin_list"))
 
+    settings = BlogAutomationSettings.query.first()
+    custom_instructions = settings.blog_custom_instructions if settings else ""
+
     post_data = generate_blog_post(
         api_key=current_app.config["OPENAI_API_KEY"],
-        model=current_app.config["OPENAI_MODEL"],
+        model=current_app.config.get("BLOG_AI_MODEL") or current_app.config["OPENAI_MODEL"],
         topic=topic,
         language=language,
+        custom_instructions=custom_instructions,
     )
 
     base_slug = slugify(post_data["title"])
@@ -144,11 +237,60 @@ def blog_generate_ai():
     return redirect(url_for("admin.blog_admin_list"))
 
 
+@admin_bp.get("/assistant")
+@login_required
+def assistant_settings():
+    settings = AssistantInstructionSettings.query.first()
+    if not settings:
+        settings = AssistantInstructionSettings(custom_instructions="")
+        db.session.add(settings)
+        db.session.commit()
+
+    return render_template(
+        "admin/assistant_settings.html",
+        settings=settings,
+        policy_text=EU_AI_ACT_PRIORITY_POLICY,
+    )
+
+
+@admin_bp.post("/assistant")
+@login_required
+def assistant_settings_save():
+    raw_text = (request.form.get("custom_instructions") or "").strip()
+    lowered = raw_text.lower()
+    blocked_phrases = [
+        "ignore previous instructions",
+        "ignore all safety",
+        "bypass safety",
+        "disable safety",
+        "umgehe sicherheit",
+        "ignoriere die anweisungen",
+    ]
+    if any(phrase in lowered for phrase in blocked_phrases):
+        flash("Інструкції містять спробу обійти правила безпеки. Збереження заблоковано.", "error")
+        return redirect(url_for("admin.assistant_settings"))
+
+    if len(raw_text) > 4000:
+        flash("Інструкції занадто довгі. Максимум 4000 символів.", "error")
+        return redirect(url_for("admin.assistant_settings"))
+
+    settings = AssistantInstructionSettings.query.first()
+    if not settings:
+        settings = AssistantInstructionSettings(custom_instructions=raw_text)
+        db.session.add(settings)
+    else:
+        settings.custom_instructions = raw_text
+
+    db.session.commit()
+    flash("Налаштування AI-асистента збережено.", "success")
+    return redirect(url_for("admin.assistant_settings"))
+
+
 @admin_bp.post("/blog/topic")
 @login_required
 def add_blog_topic():
     topic = (request.form.get("topic") or "").strip()
-    language = (request.form.get("language") or "de").strip()
+    language = normalize_blog_language(request.form.get("language") or "de")
     frequency_hours = int(request.form.get("frequency_hours") or 72)
 
     if not topic:
@@ -165,6 +307,50 @@ def add_blog_topic():
     db.session.add(schedule)
     db.session.commit()
     flash("Тему та розклад додано.", "success")
+    return redirect(url_for("admin.blog_admin_list"))
+
+
+@admin_bp.post("/blog/settings")
+@login_required
+def blog_settings_save():
+    settings = BlogAutomationSettings.query.first()
+    if not settings:
+        settings = BlogAutomationSettings()
+        db.session.add(settings)
+
+    instructions = (request.form.get("blog_custom_instructions") or "").strip()
+    rss_sources = (request.form.get("rss_sources") or "").strip()
+    auto_from_rss_enabled = (request.form.get("auto_from_rss_enabled") or "") == "on"
+    max_items = int(request.form.get("max_rss_items_per_run") or 2)
+
+    blocked_phrases = [
+        "ignore previous instructions",
+        "ignore all safety",
+        "bypass safety",
+        "disable safety",
+        "umgehe sicherheit",
+        "ignoriere die anweisungen",
+    ]
+    lowered = instructions.lower()
+    if any(phrase in lowered for phrase in blocked_phrases):
+        flash("Інструкції блогу містять спробу обійти правила безпеки.", "error")
+        return redirect(url_for("admin.blog_admin_list"))
+
+    settings.blog_custom_instructions = instructions[:4000]
+    settings.rss_sources = rss_sources
+    settings.auto_from_rss_enabled = auto_from_rss_enabled
+    settings.max_rss_items_per_run = max(1, min(10, max_items))
+    db.session.commit()
+
+    flash("Налаштування блогу збережено.", "success")
+    return redirect(url_for("admin.blog_admin_list"))
+
+
+@admin_bp.post("/blog/rss/import")
+@login_required
+def blog_rss_import_now():
+    created_count = import_from_rss_sources(current_app)
+    flash(f"Імпорт з RSS завершено. Нових статей: {created_count}.", "success")
     return redirect(url_for("admin.blog_admin_list"))
 
 

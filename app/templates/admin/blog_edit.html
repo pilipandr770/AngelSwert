@@ -1,0 +1,33 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Редагування статті{% endblock %}
+{% block content %}
+<h1>Редагування статті</h1>
+
+<form method="post" action="{{ url_for('admin.blog_edit_save', post_id=post.id) }}" class="admin-form">
+  <label>Заголовок</label>
+  <input name="title" value="{{ post.title }}" required>
+
+  <label>Slug</label>
+  <input name="slug" value="{{ post.slug }}" required>
+
+  <label>Короткий опис</label>
+  <textarea name="excerpt" rows="4">{{ post.excerpt }}</textarea>
+
+  <label>SEO keywords</label>
+  <input name="seo_keywords" value="{{ post.seo_keywords or '' }}">
+
+  <label>Статус</label>
+  <select name="status">
+    <option value="draft" {% if post.status == 'draft' %}selected{% endif %}>чернетка</option>
+    <option value="published" {% if post.status == 'published' %}selected{% endif %}>опубліковано</option>
+  </select>
+
+  <label>Контент (Markdown)</label>
+  <textarea name="content" rows="16" required>{{ post.content }}</textarea>
+
+  <p>
+    <button class="btn" type="submit">Зберегти зміни</button>
+    <a class="btn" href="{{ url_for('admin.blog_admin_list') }}">Назад до блогу</a>
+  </p>
+</form>
+{% endblock %}

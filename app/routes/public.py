@@ -1,3 +1,5 @@
+from urllib.parse import parse_qs, urlparse
+
 from flask import Blueprint, current_app, flash, g, redirect, render_template, request, url_for
 from markdown import markdown
 from werkzeug.routing import BuildError
@@ -67,7 +69,33 @@ def inject_brand():
 @public_bp.get("/")
 def home():
     links = YouTubeLink.query.order_by(YouTubeLink.slot.asc()).all()
-    return render_template("public/home.html", links=links)
+
+    def youtube_video_id(url: str) -> str:
+        parsed = urlparse(url or "")
+        if "youtu.be" in parsed.netloc:
+            return parsed.path.strip("/").split("/")[0]
+        if "youtube.com" in parsed.netloc:
+            query = parse_qs(parsed.query)
+            if query.get("v"):
+                return query["v"][0]
+            path_parts = [part for part in parsed.path.split("/") if part]
+            if len(path_parts) >= 2 and path_parts[0] in {"shorts", "embed"}:
+                return path_parts[1]
+        return ""
+
+    featured_videos = []
+    for link in links[:4]:
+        video_id = youtube_video_id(link.url)
+        featured_videos.append(
+            {
+                "title": link.title,
+                "url": link.url,
+                "slot": link.slot,
+                "thumbnail": f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg" if video_id else "",
+            }
+        )
+
+    return render_template("public/home.html", links=links, featured_videos=featured_videos)
 
 
 @public_bp.get("/about")

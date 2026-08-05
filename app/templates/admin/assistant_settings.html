@@ -1,0 +1,21 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Налаштування AI-асистента{% endblock %}
+{% block content %}
+<h1>Налаштування AI-асистента</h1>
+<p>Пріоритетні правила (EU AI Act + безпека) зафіксовані в коді і не можуть бути перезаписані формою нижче.</p>
+
+<section class="admin-form">
+  <h2>Пріоритетні правила (тільки перегляд)</h2>
+  <textarea rows="16" readonly>{{ policy_text }}</textarea>
+</section>
+
+<section class="admin-form">
+  <h2>Додаткові інструкції для бізнесу</h2>
+  <p>Тут можна описати тон, стиль і бізнес-контекст відповіді для клієнтів. Ці інструкції застосовуються як другорядні.</p>
+  <form method="post" action="{{ url_for('admin.assistant_settings_save') }}">
+    <label>Кастомні інструкції (до 4000 символів)</label>
+    <textarea name="custom_instructions" rows="12" placeholder="Наприклад: Відповідай німецькою мовою за замовчуванням, будь лаконічним, завжди пропонуй наступний крок у вигляді консультації.">{{ settings.custom_instructions }}</textarea>
+    <button class="btn" type="submit">Зберегти</button>
+  </form>
+</section>
+{% endblock %}

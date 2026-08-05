@@ -2,7 +2,7 @@ from flask import Flask
 
 from .config import Config
 from .extensions import db, login_manager
-from .models import User, YouTubeLink
+from .models import AssistantInstructionSettings, BlogAutomationSettings, User, YouTubeLink
 from .routes.admin import admin_bp
 from .routes.api import api_bp
 from .routes.auth import auth_bp
@@ -28,6 +28,23 @@ def _seed_defaults(app: Flask) -> None:
     for slot, title, url in defaults:
         if not YouTubeLink.query.filter_by(slot=slot).first():
             db.session.add(YouTubeLink(slot=slot, title=title, url=url))
+
+    if not AssistantInstructionSettings.query.first():
+        db.session.add(AssistantInstructionSettings(custom_instructions=""))
+
+    if not BlogAutomationSettings.query.first():
+        db.session.add(
+            BlogAutomationSettings(
+                blog_custom_instructions="",
+                rss_sources=(
+                    "https://openai.com/news/rss.xml\n"
+                    "https://blog.google/technology/ai/rss/\n"
+                    "https://www.searchenginejournal.com/feed/"
+                ),
+                auto_from_rss_enabled=False,
+                max_rss_items_per_run=2,
+            )
+        )
 
     db.session.commit()
 

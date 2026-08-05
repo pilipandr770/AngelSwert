@@ -71,12 +71,25 @@
 </section>
 
 <section class="cards-section">
-  <h2>{{ t('home.youtube') }}</h2>
-  <div class="cards-grid">
-    {% for link in links %}
-    <a class="card" href="{{ link.url }}" target="_blank" rel="noopener">
-      <h3>{{ link.title }}</h3>
-      <p>{{ t('home.open_channel') }} #{{ link.slot }}</p>
+  <p class="eyebrow">{{ t('home.youtube_eyebrow') }}</p>
+  <h2>{{ t('home.youtube_title') }}</h2>
+  <p class="section-lead">{{ t('home.youtube_body') }}</p>
+  <div class="video-grid">
+    {% for video in featured_videos %}
+    <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener">
+      <div class="video-card-media">
+        {% if video.thumbnail %}
+        <img src="{{ video.thumbnail }}" alt="{{ video.title }}" loading="lazy">
+        {% else %}
+        <div class="video-card-placeholder">{{ t('home.video_placeholder') }}</div>
+        {% endif %}
+        <span class="video-card-play">▶</span>
+      </div>
+      <div class="video-card-body">
+        <p class="video-card-slot">{{ t('home.video_slot') }} {{ video.slot }}</p>
+        <h3>{{ video.title }}</h3>
+        <p>{{ t('home.open_channel') }}</p>
+      </div>
     </a>
     {% endfor %}
   </div>
