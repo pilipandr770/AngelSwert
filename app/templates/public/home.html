@@ -79,10 +79,11 @@
     <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener">
       <div class="video-card-media">
         {% if video.thumbnail %}
-        <img src="{{ video.thumbnail }}" alt="{{ video.title }}" loading="lazy">
+        <img src="{{ video.thumbnail }}" alt="{{ video.title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/client-consultation.jpg') }}';">
         {% else %}
         <div class="video-card-placeholder">{{ t('home.video_placeholder') }}</div>
         {% endif %}
+        <span class="video-card-glow" aria-hidden="true"></span>
         <span class="video-card-play">▶</span>
       </div>
       <div class="video-card-body">

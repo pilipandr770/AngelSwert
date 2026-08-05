@@ -1,4 +1,6 @@
 from urllib.parse import parse_qs, urlparse
+from urllib.request import urlopen
+import json
 
 from flask import Blueprint, current_app, flash, g, redirect, render_template, request, url_for
 from markdown import markdown
@@ -83,15 +85,33 @@ def home():
                 return path_parts[1]
         return ""
 
+    def youtube_thumbnail(url: str) -> str:
+        video_id = youtube_video_id(url)
+        if video_id:
+            return f"https://i.ytimg.com/vi/{video_id}/maxresdefault.jpg"
+
+        # Fallback for valid YouTube links where a direct video ID is not parsed.
+        # oEmbed returns a thumbnail URL for many watch/shorts links.
+        try:
+            endpoint = f"https://www.youtube.com/oembed?url={url}&format=json"
+            with urlopen(endpoint, timeout=2.5) as response:
+                data = json.loads(response.read().decode("utf-8"))
+                thumb = (data.get("thumbnail_url") or "").strip()
+                if thumb:
+                    return thumb
+        except Exception:
+            pass
+
+        return ""
+
     featured_videos = []
     for link in links[:4]:
-        video_id = youtube_video_id(link.url)
         featured_videos.append(
             {
                 "title": link.title,
                 "url": link.url,
                 "slot": link.slot,
-                "thumbnail": f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg" if video_id else "",
+                "thumbnail": youtube_thumbnail(link.url),
             }
         )
 

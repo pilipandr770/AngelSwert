@@ -268,6 +268,7 @@ select {
   position: relative;
   aspect-ratio: 16 / 9;
   background: #14181e;
+  overflow: hidden;
 }
 
 .video-card-media img,
@@ -276,6 +277,22 @@ select {
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.video-card-media img {
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+
+.video-card:hover .video-card-media img {
+  transform: scale(1.06);
+  filter: saturate(1.08);
+}
+
+.video-card-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 40%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
 }
 
 .video-card-play {
