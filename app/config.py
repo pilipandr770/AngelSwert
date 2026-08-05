@@ -2,9 +2,31 @@ import os
 
 
 def _database_uri() -> str:
-    uri = os.getenv("DATABASE_URL", "")
+    uri = ""
+    for key in (
+        "DATABASE_URL",
+        "RENDER_DATABASE_URL",
+        "POSTGRES_URL",
+        "POSTGRESQL_URL",
+    ):
+        value = os.getenv(key, "").strip()
+        if value:
+            uri = value
+            break
+
     if uri.startswith("postgres://"):
         uri = uri.replace("postgres://", "postgresql://", 1)
+
+    if uri:
+        return uri
+
+    # On Render we should fail fast to avoid accidentally using local Docker host names.
+    if os.getenv("RENDER") == "true" or os.getenv("RENDER_EXTERNAL_HOSTNAME"):
+        raise RuntimeError(
+            "Database URL is not configured for Render. "
+            "Link a managed PostgreSQL database and set DATABASE_URL."
+        )
+
     if not uri:
         uri = "postgresql+psycopg2://angel:angelpass@db:5432/angelswert"
     return uri
