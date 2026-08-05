@@ -1,12 +1,18 @@
 import os
 
 
+def _database_uri() -> str:
+    uri = os.getenv("DATABASE_URL", "")
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    if not uri:
+        uri = "postgresql+psycopg2://angel:angelpass@db:5432/angelswert"
+    return uri
+
+
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL",
-        "postgresql+psycopg2://angel:angelpass@db:5432/angelswert",
-    )
+    SQLALCHEMY_DATABASE_URI = _database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
     OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")

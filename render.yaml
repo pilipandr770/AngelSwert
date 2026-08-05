@@ -1,3 +1,8 @@
+databases:
+  - name: angelswert-db
+    databaseName: angelswert
+    user: angelswert
+
 services:
   - type: web
     name: angelswert-web
@@ -8,11 +13,15 @@ services:
       - key: SECRET_KEY
         sync: false
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: angelswert-db
+          property: connectionString
       - key: OPENAI_API_KEY
         sync: false
       - key: OPENAI_MODEL
         value: gpt-4o-mini
+      - key: BLOG_AI_MODEL
+        value: gpt-4.1-mini
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD
