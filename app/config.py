@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlparse
 
 
 def _database_uri_from_parts() -> str:
@@ -17,6 +18,8 @@ def _database_uri_from_parts() -> str:
 
 
 def _database_uri() -> str:
+    is_render = os.getenv("RENDER") == "true" or bool(os.getenv("RENDER_EXTERNAL_HOSTNAME"))
+
     uri = ""
     for key in (
         "DATABASE_URL",
@@ -32,6 +35,11 @@ def _database_uri() -> str:
     if uri.startswith("postgres://"):
         uri = uri.replace("postgres://", "postgresql://", 1)
 
+    if is_render and uri:
+        parsed = urlparse(uri)
+        if parsed.hostname == "db":
+            uri = ""
+
     if uri:
         return uri
 
@@ -41,7 +49,7 @@ def _database_uri() -> str:
 
     # On Render, keep the app bootable even if DB variables are not configured yet.
     # This allows deploying static/public pages while DB wiring is fixed in dashboard.
-    if os.getenv("RENDER") == "true" or os.getenv("RENDER_EXTERNAL_HOSTNAME"):
+    if is_render:
         return "sqlite:////tmp/angelswert_render_fallback.db"
 
     if not uri:
