@@ -23,6 +23,23 @@
   </div>
 </section>
 
+<section class="page-block split split--media">
+  <figure class="media-frame media-frame--portrait">
+    <img src="{{ url_for('static', filename='img/client-consultation.jpg') }}" alt="{{ t('services.consult_image_alt') }}" loading="lazy">
+  </figure>
+  <div>
+    <p class="eyebrow">{{ t('services.consult_eyebrow') }}</p>
+    <h2>{{ t('services.consult_title') }}</h2>
+    <p>{{ t('services.consult_body') }}</p>
+    <ul class="feature-list">
+      <li>{{ t('services.consult_point_1') }}</li>
+      <li>{{ t('services.consult_point_2') }}</li>
+      <li>{{ t('services.consult_point_3') }}</li>
+    </ul>
+    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ t('services.consult_cta') }}</a>
+  </div>
+</section>
+
 <section class="cards-section">
   <h2>{{ t('services.catalog_title') }}</h2>
   <div class="cards-grid">

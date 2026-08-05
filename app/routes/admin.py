@@ -59,7 +59,7 @@ def youtube_settings_save():
             link.title = title
             link.url = url
     db.session.commit()
-    flash("YouTube links updated", "success")
+    flash("YouTube-посилання оновлено.", "success")
     return redirect(url_for("admin.youtube_settings"))
 
 
@@ -80,7 +80,7 @@ def blog_create_manual():
     status = (request.form.get("status") or "draft").strip()
 
     if not title or not content:
-        flash("Title and content are required.", "error")
+        flash("Потрібно заповнити заголовок і контент.", "error")
         return redirect(url_for("admin.blog_admin_list"))
 
     base_slug = slugify(title)
@@ -100,7 +100,7 @@ def blog_create_manual():
     )
     db.session.add(post)
     db.session.commit()
-    flash("Blog post saved", "success")
+    flash("Статтю збережено.", "success")
     return redirect(url_for("admin.blog_admin_list"))
 
 
@@ -112,7 +112,7 @@ def blog_generate_ai():
     status = (request.form.get("status") or "draft").strip()
 
     if not topic:
-        flash("Topic is required for AI generation.", "error")
+        flash("Для AI-генерації потрібно вказати тему.", "error")
         return redirect(url_for("admin.blog_admin_list"))
 
     post_data = generate_blog_post(
@@ -140,7 +140,7 @@ def blog_generate_ai():
     )
     db.session.add(post)
     db.session.commit()
-    flash("AI blog post generated", "success")
+    flash("AI-статтю згенеровано.", "success")
     return redirect(url_for("admin.blog_admin_list"))
 
 
@@ -152,7 +152,7 @@ def add_blog_topic():
     frequency_hours = int(request.form.get("frequency_hours") or 72)
 
     if not topic:
-        flash("Topic is required.", "error")
+        flash("Потрібно вказати тему.", "error")
         return redirect(url_for("admin.blog_admin_list"))
 
     schedule = BlogTopic(
@@ -164,7 +164,7 @@ def add_blog_topic():
     )
     db.session.add(schedule)
     db.session.commit()
-    flash("Blog topic schedule added", "success")
+    flash("Тему та розклад додано.", "success")
     return redirect(url_for("admin.blog_admin_list"))
 
 
@@ -187,12 +187,12 @@ def crm_create():
         notes=(request.form.get("notes") or "").strip(),
     )
     if not lead.name or not lead.email:
-        flash("Name and email are required.", "error")
+        flash("Ім'я та email є обов'язковими.", "error")
         return redirect(url_for("admin.crm_list"))
 
     db.session.add(lead)
     db.session.commit()
-    flash("Lead created", "success")
+    flash("Ліда створено.", "success")
     return redirect(url_for("admin.crm_detail", lead_id=lead.id))
 
 
@@ -214,12 +214,12 @@ def crm_add_message(lead_id):
         body=(request.form.get("body") or "").strip(),
     )
     if not message.body:
-        flash("Message body is required.", "error")
+        flash("Потрібно заповнити текст повідомлення.", "error")
         return redirect(url_for("admin.crm_detail", lead_id=lead.id))
 
     db.session.add(message)
     db.session.commit()
-    flash("Message saved", "success")
+    flash("Повідомлення збережено.", "success")
     return redirect(url_for("admin.crm_detail", lead_id=lead.id))
 
 
@@ -229,7 +229,7 @@ def crm_ai_hint(lead_id):
     lead = Lead.query.get_or_404(lead_id)
     question = (request.form.get("question") or "").strip()
     if not question:
-        flash("Question is required.", "error")
+        flash("Потрібно вказати запитання.", "error")
         return redirect(url_for("admin.crm_detail", lead_id=lead.id))
 
     ai_hint = generate_crm_hint(

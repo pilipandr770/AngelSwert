@@ -5,4 +5,4 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
-login_manager.login_message = "Please log in to access admin panel."
+login_manager.login_message = "Будь ласка, увійдіть, щоб перейти до адмінпанелі."

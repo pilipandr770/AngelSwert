@@ -1,17 +1,17 @@
 {% extends 'admin/base_admin.html' %}
-{% block title %}YouTube Links{% endblock %}
+{% block title %}YouTube-посилання{% endblock %}
 {% block content %}
-<h1>Manage homepage YouTube blocks</h1>
+<h1>Керування YouTube-блоками на головній</h1>
 <form method="post" action="{{ url_for('admin.youtube_settings_save') }}" class="admin-form">
   {% for link in links %}
   <fieldset>
-    <legend>Slot {{ link.slot }}</legend>
-    <label>Title</label>
+    <legend>Слот {{ link.slot }}</legend>
+    <label>Заголовок</label>
     <input name="title_{{ link.slot }}" value="{{ link.title }}" required>
     <label>URL</label>
     <input name="url_{{ link.slot }}" value="{{ link.url }}" required>
   </fieldset>
   {% endfor %}
-  <button class="btn" type="submit">Save</button>
+  <button class="btn" type="submit">Зберегти</button>
 </form>
 {% endblock %}

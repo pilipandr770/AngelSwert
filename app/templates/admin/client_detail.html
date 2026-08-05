@@ -1,37 +1,37 @@
 {% extends 'admin/base_admin.html' %}
-{% block title %}Lead {{ lead.name }}{% endblock %}
+{% block title %}Лід {{ lead.name }}{% endblock %}
 {% block content %}
 <h1>{{ lead.name }}</h1>
-<p>Email: {{ lead.email }} | Phone: {{ lead.phone }} | Stage: {{ lead.stage }}</p>
-<p>Source: {{ lead.source }}</p>
-<p>Notes: {{ lead.notes or '-' }}</p>
+<p>Email: {{ lead.email }} | Телефон: {{ lead.phone }} | Етап: {{ lead.stage }}</p>
+<p>Джерело: {{ lead.source }}</p>
+<p>Нотатки: {{ lead.notes or '-' }}</p>
 
 <section class="admin-grid">
   <form method="post" action="{{ url_for('admin.crm_add_message', lead_id=lead.id) }}" class="admin-form">
-    <h2>Add communication</h2>
-    <label>Direction</label>
-    <select name="direction"><option value="incoming">incoming</option><option value="outgoing">outgoing</option></select>
-    <label>Channel</label>
-    <select name="channel"><option value="email">email</option><option value="whatsapp">whatsapp</option><option value="telegram">telegram</option><option value="call">call</option></select>
-    <label>Message</label>
+    <h2>Додати комунікацію</h2>
+    <label>Напрям</label>
+    <select name="direction"><option value="incoming">вхідне</option><option value="outgoing">вихідне</option></select>
+    <label>Канал</label>
+    <select name="channel"><option value="email">email</option><option value="whatsapp">whatsapp</option><option value="telegram">telegram</option><option value="call">дзвінок</option></select>
+    <label>Повідомлення</label>
     <textarea name="body" rows="6" required></textarea>
-    <button class="btn" type="submit">Save</button>
+    <button class="btn" type="submit">Зберегти</button>
   </form>
 
   <form method="post" action="{{ url_for('admin.crm_ai_hint', lead_id=lead.id) }}" class="admin-form">
-    <h2>AI Assistant</h2>
-    <label>Question</label>
-    <textarea name="question" rows="4" placeholder="How should we respond to this client message?" required></textarea>
-    <button class="btn" type="submit">Get suggestion</button>
+    <h2>AI-помічник</h2>
+    <label>Запитання</label>
+    <textarea name="question" rows="4" placeholder="Як краще відповісти клієнту на це повідомлення?" required></textarea>
+    <button class="btn" type="submit">Отримати підказку</button>
     {% if ai_hint %}
     <div class="ai-box">{{ ai_hint | replace('\n', '<br>') | safe }}</div>
     {% endif %}
   </form>
 </section>
 
-<h2>Communication history</h2>
+<h2>Історія комунікацій</h2>
 <table class="table">
-  <tr><th>Date</th><th>Direction</th><th>Channel</th><th>Text</th></tr>
+  <tr><th>Дата</th><th>Напрям</th><th>Канал</th><th>Текст</th></tr>
   {% for msg in lead.messages %}
   <tr>
     <td>{{ msg.created_at.strftime('%d.%m.%Y %H:%M') }}</td>

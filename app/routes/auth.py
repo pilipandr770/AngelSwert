@@ -21,7 +21,7 @@ def login_post():
 
     user = User.query.filter_by(email=email).first()
     if not user or not user.check_password(password):
-        flash("Invalid credentials", "error")
+        flash("Невірний email або пароль.", "error")
         return redirect(url_for("auth.login"))
 
     login_user(user)

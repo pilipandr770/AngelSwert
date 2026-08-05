@@ -1,19 +1,19 @@
 <!doctype html>
-<html lang="ru">
+<html lang="uk">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Admin{% endblock %}</title>
+  <title>{% block title %}Адмінпанель{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-<body>
+<body class="admin-body">
   <header class="admin-header">
-    <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin.dashboard') }}">Панель</a>
     <a href="{{ url_for('admin.youtube_settings') }}">YouTube</a>
-    <a href="{{ url_for('admin.blog_admin_list') }}">Blog</a>
+    <a href="{{ url_for('admin.blog_admin_list') }}">Блог</a>
     <a href="{{ url_for('admin.crm_list') }}">CRM</a>
     <form method="post" action="{{ url_for('auth.logout') }}">
-      <button type="submit">Sign out</button>
+      <button type="submit">Вийти</button>
     </form>
   </header>
   <main class="admin-main">

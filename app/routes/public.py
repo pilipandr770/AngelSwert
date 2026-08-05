@@ -93,8 +93,12 @@ def contact():
 @public_bp.post("/contact")
 def contact_submit():
     name = (request.form.get("name") or "").strip()
+    company = (request.form.get("company") or "").strip()
     email = (request.form.get("email") or "").strip()
     phone = (request.form.get("phone") or "").strip()
+    service_interest = (request.form.get("service_interest") or "").strip()
+    preferred_language = (request.form.get("preferred_language") or "").strip()
+    timeline = (request.form.get("timeline") or "").strip()
     message = (request.form.get("message") or "").strip()
     lang = getattr(g, "lang", "de")
 
@@ -102,13 +106,28 @@ def contact_submit():
         flash(translate(lang, "contact.form_error"), "error")
         return redirect(url_for("public.contact", lang=lang))
 
+    structured_lines = [
+        f"Website inquiry ({lang})",
+        f"Name: {name}",
+        f"Company: {company or '-'}",
+        f"Email: {email}",
+        f"Phone: {phone or '-'}",
+        f"Service interest: {service_interest or '-'}",
+        f"Preferred language: {preferred_language or '-'}",
+        f"Timeline: {timeline or '-'}",
+        "",
+        "Message:",
+        message,
+    ]
+    structured_message = "\n".join(structured_lines)
+
     lead = Lead(
         name=name,
         email=email,
         phone=phone,
-        source="website-contact-form",
+        source=f"website-contact-form-{lang}",
         stage="new",
-        notes=message,
+        notes=structured_message,
     )
     db.session.add(lead)
     db.session.flush()
@@ -118,7 +137,7 @@ def contact_submit():
             lead_id=lead.id,
             direction="incoming",
             channel="website_form",
-            body=message,
+            body=structured_message,
         )
     )
     db.session.commit()

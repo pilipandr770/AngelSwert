@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="ru">
+<html lang="uk">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Login</title>
+  <title>Вхід в адмінпанель</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body class="auth-body">
   <form class="auth-card" method="post" action="{{ url_for('auth.login_post') }}">
-    <h1>Admin</h1>
+    <h1>Адмінпанель</h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
         <div class="flash {{ category }}">{{ message }}</div>
@@ -16,9 +16,9 @@
     {% endwith %}
     <label>Email</label>
     <input name="email" type="email" required>
-    <label>Password</label>
+    <label>Пароль</label>
     <input name="password" type="password" required>
-    <button class="btn" type="submit">Sign in</button>
+    <button class="btn" type="submit">Увійти</button>
   </form>
 </body>
 </html>

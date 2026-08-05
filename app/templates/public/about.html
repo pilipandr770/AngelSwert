@@ -2,10 +2,33 @@
 {% block title %}{{ t('about.page_title') }} | {{ brand_name }}{% endblock %}
 {% block meta_description %}{{ t('about.meta_description') }}{% endblock %}
 {% block content %}
-<section class="page-block">
-  <h1>{{ t('about.h1') }}</h1>
-  <p>{{ t('about.p1') }}</p>
-  <p>{{ t('about.p2') }}</p>
-  <p>{{ t('about.p3') }}</p>
+<section class="page-block split split--media">
+  <div>
+    <p class="eyebrow">{{ t('about.eyebrow') }}</p>
+    <h1>{{ t('about.h1') }}</h1>
+    <p>{{ t('about.p1') }}</p>
+    <p>{{ t('about.p2') }}</p>
+    <p>{{ t('about.p3') }}</p>
+  </div>
+  <figure class="media-frame media-frame--portrait">
+    <img src="{{ url_for('static', filename='img/client-about.jpg') }}" alt="{{ t('about.image_alt') }}" loading="lazy">
+  </figure>
+</section>
+
+<section class="page-block split split--media">
+  <figure class="media-frame media-frame--square">
+    <img src="{{ url_for('static', filename='img/client-accent.jpg') }}" alt="{{ t('about.accent_image_alt') }}" loading="lazy">
+  </figure>
+  <div>
+    <p class="eyebrow">{{ t('about.consult_eyebrow') }}</p>
+    <h2>{{ t('about.consult_title') }}</h2>
+    <p>{{ t('about.consult_body') }}</p>
+    <ul class="feature-list">
+      <li>{{ t('about.consult_point_1') }}</li>
+      <li>{{ t('about.consult_point_2') }}</li>
+      <li>{{ t('about.consult_point_3') }}</li>
+    </ul>
+    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ t('about.consult_cta') }}</a>
+  </div>
 </section>
 {% endblock %}

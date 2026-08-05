@@ -16,10 +16,28 @@
   <form class="contact-form" method="post" action="{{ url_for('public.contact_submit', lang=lang) }}">
     <label>{{ t('contact.form_name') }}</label>
     <input type="text" name="name" required>
+    <label>{{ t('contact.form_company') }}</label>
+    <input type="text" name="company">
     <label>{{ t('contact.form_email') }}</label>
     <input type="email" name="email" required>
     <label>{{ t('contact.form_phone') }}</label>
     <input type="text" name="phone">
+    <label>{{ t('contact.form_interest') }}</label>
+    <select name="service_interest">
+      <option value="">{{ t('contact.form_interest_placeholder') }}</option>
+      <option value="{{ t('contact.form_interest_video') }}">{{ t('contact.form_interest_video') }}</option>
+      <option value="{{ t('contact.form_interest_content') }}">{{ t('contact.form_interest_content') }}</option>
+      <option value="{{ t('contact.form_interest_ai') }}">{{ t('contact.form_interest_ai') }}</option>
+      <option value="{{ t('contact.form_interest_marketing') }}">{{ t('contact.form_interest_marketing') }}</option>
+      <option value="{{ t('contact.form_interest_consulting') }}">{{ t('contact.form_interest_consulting') }}</option>
+    </select>
+    <label>{{ t('contact.form_language') }}</label>
+    <select name="preferred_language">
+      <option value="de">{{ t('contact.form_language_de') }}</option>
+      <option value="en">{{ t('contact.form_language_en') }}</option>
+    </select>
+    <label>{{ t('contact.form_timeline') }}</label>
+    <input type="text" name="timeline" placeholder="{{ t('contact.form_timeline_placeholder') }}">
     <label>{{ t('contact.form_message') }}</label>
     <textarea name="message" rows="7" placeholder="{{ t('contact.form_placeholder') }}" required></textarea>
     <button class="btn" type="submit">{{ t('contact.form_submit') }}</button>

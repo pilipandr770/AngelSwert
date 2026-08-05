@@ -8,6 +8,7 @@
   <link rel="alternate" hreflang="de" href="{{ lang_url('de') }}">
   <link rel="alternate" hreflang="en" href="{{ lang_url('en') }}">
   <link rel="alternate" hreflang="x-default" href="{{ lang_url('de') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
@@ -15,7 +16,10 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="{{ url_for('public.home', lang=lang) }}">{{ brand_name }}</a>
+    <a class="brand" href="{{ url_for('public.home', lang=lang) }}">
+      <img class="brand-mark" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
+      <span class="brand-name">{{ brand_name }}</span>
+    </a>
     <nav>
       <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
       <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
@@ -40,20 +44,33 @@
   </main>
 
   <footer class="site-footer">
-    <p>{{ t('footer.cta') }}</p>
-    <p><a href="{{ url_for('public.contact', lang=lang) }}">{{ t('footer.talk') }}</a></p>
-    <p>
-      <a href="https://www.instagram.com/angelswertvideoproduction/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.youtube.com/channel/UC9WswDPHVTri34E1HIieIbQ" target="_blank" rel="noopener">YouTube</a>
-      <a href="https://www.tiktok.com/@angelswert" target="_blank" rel="noopener">TikTok</a>
-      <a href="https://www.linkedin.com/in/angel-swert-videoproduction-379690168/" target="_blank" rel="noopener">LinkedIn</a>
-    </p>
-    <p>
-      <a href="{{ url_for('public.terms', lang=lang) }}">{{ t('footer.terms') }}</a>
-      <a href="{{ url_for('public.impressum', lang=lang) }}">{{ t('footer.impressum') }}</a>
-      <a href="{{ url_for('public.privacy', lang=lang) }}">{{ t('footer.privacy') }}</a>
-    </p>
-    <p class="meta">© {{ brand_name }}. {{ t('footer.rights') }}</p>
+    <div class="site-footer-inner">
+      <div class="site-footer-grid">
+        <div class="site-footer-brand">
+          <img class="site-footer-mark" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
+          <p class="site-footer-title">{{ brand_name }}</p>
+          <p>{{ t('footer.cta') }}</p>
+          <p><a class="footer-cta-link" href="{{ url_for('public.contact', lang=lang) }}">{{ t('footer.talk') }}</a></p>
+        </div>
+        <div class="site-footer-links">
+          <p class="site-footer-label">Social</p>
+          <div class="footer-link-cloud">
+            <a href="https://www.instagram.com/angelswertvideoproduction?utm_source=qr" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://youtube.com/@angelswertnews?si=IcmUG9BheuLOraaX" target="_blank" rel="noopener">YouTube</a>
+            <a href="https://www.linkedin.com/in/svitlana-lebedynska-379690168?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+        <div class="site-footer-links">
+          <p class="site-footer-label">Info</p>
+          <div class="footer-link-cloud">
+            <a href="{{ url_for('public.terms', lang=lang) }}">{{ t('footer.terms') }}</a>
+            <a href="{{ url_for('public.impressum', lang=lang) }}">{{ t('footer.impressum') }}</a>
+            <a href="{{ url_for('public.privacy', lang=lang) }}">{{ t('footer.privacy') }}</a>
+          </div>
+        </div>
+      </div>
+      <p class="meta site-footer-meta">© {{ brand_name }}. {{ t('footer.rights') }}</p>
+    </div>
   </footer>
 
   <div id="chatbot" class="chatbot">
