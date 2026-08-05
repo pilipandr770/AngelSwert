@@ -1,6 +1,7 @@
 from urllib.parse import parse_qs, urlparse
 from urllib.request import urlopen
 import json
+import re
 
 from flask import Blueprint, current_app, flash, g, redirect, render_template, request, url_for
 from markdown import markdown
@@ -85,6 +86,29 @@ def home():
                 return path_parts[1]
         return ""
 
+    def youtube_latest_video_id_from_channel(url: str) -> str:
+        parsed = urlparse(url or "")
+        if "youtube.com" not in parsed.netloc:
+            return ""
+
+        path = (parsed.path or "").strip("/")
+        if not path:
+            return ""
+
+        # For channel-like URLs, probe the videos page and grab the first videoId.
+        if path.startswith("@") or path.startswith("channel/") or path.startswith("c/") or path.startswith("user/"):
+            channel_videos_url = f"https://www.youtube.com/{path}/videos"
+            try:
+                with urlopen(channel_videos_url, timeout=3.5) as response:
+                    html = response.read().decode("utf-8", errors="ignore")
+                match = re.search(r'"videoId":"([A-Za-z0-9_-]{11})"', html)
+                if match:
+                    return match.group(1)
+            except Exception:
+                return ""
+
+        return ""
+
     def youtube_thumbnail(url: str) -> str:
         video_id = youtube_video_id(url)
         if video_id:
@@ -107,6 +131,8 @@ def home():
     def youtube_thumbnail_candidates(url: str) -> list[str]:
         candidates: list[str] = []
         video_id = youtube_video_id(url)
+        if not video_id:
+            video_id = youtube_latest_video_id_from_channel(url)
         if video_id:
             candidates.extend(
                 [
