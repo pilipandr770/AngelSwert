@@ -1,6 +1,21 @@
 import os
 
 
+def _database_uri_from_parts() -> str:
+    host = os.getenv("PGHOST", "").strip() or os.getenv("DB_HOST", "").strip()
+    port = os.getenv("PGPORT", "").strip() or os.getenv("DB_PORT", "").strip() or "5432"
+    name = os.getenv("PGDATABASE", "").strip() or os.getenv("DB_NAME", "").strip()
+    user = os.getenv("PGUSER", "").strip() or os.getenv("DB_USER", "").strip()
+    password = os.getenv("PGPASSWORD", "").strip() or os.getenv("DB_PASSWORD", "").strip()
+    ssl_mode = os.getenv("PGSSLMODE", "").strip()
+
+    if not (host and name and user and password):
+        return ""
+
+    query = f"?sslmode={ssl_mode}" if ssl_mode else ""
+    return f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{name}{query}"
+
+
 def _database_uri() -> str:
     uri = ""
     for key in (
@@ -17,6 +32,10 @@ def _database_uri() -> str:
     if uri.startswith("postgres://"):
         uri = uri.replace("postgres://", "postgresql://", 1)
 
+    if uri:
+        return uri
+
+    uri = _database_uri_from_parts()
     if uri:
         return uri
 
