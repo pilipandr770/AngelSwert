@@ -1,43 +1,43 @@
 {% extends 'admin/base_admin.html' %}
-{% block title %}Services CMS{% endblock %}
+{% block title %}CMS сторінки послуг{% endblock %}
 {% block content %}
-<h1>Services & Packages - CMS</h1>
+<h1>CMS: Services & Packages</h1>
 <p>Заповнюйте або локальні шляхи в static (наприклад, img/services_tz/image3.png), або повні URL.</p>
 
 <form method="post" action="{{ url_for('admin.services_content_settings_save') }}" class="admin-form">
-  <h2>Media</h2>
-  <label>Hero media</label>
+  <h2>Медіа</h2>
+  <label>Hero медіа</label>
   <input name="hero_media" value="{{ settings.hero_media }}" required>
 
-  <label>Digital Human media</label>
+  <label>Digital Human медіа</label>
   <input name="digital_human_media" value="{{ settings.digital_human_media }}" required>
 
-  <label>Story poster</label>
+  <label>Постер історії</label>
   <input name="story_poster" value="{{ settings.story_poster }}" required>
 
-  <label>Story video 01 (mp4/webm URL or static path)</label>
+  <label>Відео історії 01 (mp4/webm URL або шлях у static)</label>
   <input name="story_video_01" value="{{ settings.story_video_01 }}">
 
-  <label>Story subtitles 01 (.vtt URL or static path)</label>
+  <label>Субтитри історії 01 (.vtt URL або шлях у static)</label>
   <input name="story_subtitles_01" value="{{ settings.story_subtitles_01 }}">
 
-  <label>Story video 02</label>
+  <label>Відео історії 02</label>
   <input name="story_video_02" value="{{ settings.story_video_02 }}">
 
-  <label>Story subtitles 02</label>
+  <label>Субтитри історії 02</label>
   <input name="story_subtitles_02" value="{{ settings.story_subtitles_02 }}">
 
-  <label>Story video 03</label>
+  <label>Відео історії 03</label>
   <input name="story_video_03" value="{{ settings.story_video_03 }}">
 
-  <label>Story subtitles 03</label>
+  <label>Субтитри історії 03</label>
   <input name="story_subtitles_03" value="{{ settings.story_subtitles_03 }}">
 
-  <label>Strategy session photo</label>
+  <label>Фото Strategy Session</label>
   <input name="strategy_photo" value="{{ settings.strategy_photo }}" required>
 
-  <h2>Flow</h2>
-  <label>Discovery URL (all CTA go here for now)</label>
+  <h2>Флоу</h2>
+  <label>Discovery URL (зараз усі CTA ведуть сюди)</label>
   <input name="discovery_url" value="{{ settings.discovery_url }}" required>
 
   <button class="btn" type="submit">Зберегти</button>

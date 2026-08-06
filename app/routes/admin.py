@@ -450,7 +450,7 @@ def crm_terms_create():
     category = (request.form.get("category") or "general").strip()
 
     if not term or not definition:
-        flash("Term und Definition sind erforderlich.", "error")
+        flash("Термін і визначення є обов'язковими.", "error")
         return redirect(url_for("admin.crm_terms_list"))
 
     if language not in {"de", "en"}:
@@ -466,7 +466,7 @@ def crm_terms_create():
     )
     db.session.add(item)
     db.session.commit()
-    flash("CRM-Term hinzugefugt.", "success")
+    flash("Термін CRM додано.", "success")
     return redirect(url_for("admin.crm_terms_list"))
 
 
@@ -477,7 +477,7 @@ def crm_terms_toggle(term_id):
     item.is_active = not item.is_active
     item.updated_by = current_user.email
     db.session.commit()
-    flash("Status des Terms aktualisiert.", "success")
+    flash("Статус терміна оновлено.", "success")
     return redirect(url_for("admin.crm_terms_list"))
 
 
@@ -535,7 +535,7 @@ def crm_add_discovery(lead_id):
     )
     db.session.add(assessment)
     db.session.commit()
-    flash("Discovery assessment hinzugefugt.", "success")
+    flash("Оцінку дискавері додано.", "success")
     return redirect(url_for("admin.crm_detail", lead_id=lead.id))
 
 

@@ -1,18 +1,18 @@
 {% extends 'admin/base_admin.html' %}
-{% block title %}Discovery Queue{% endblock %}
+{% block title %}Черга Дискавері{% endblock %}
 {% block content %}
-<h1>AI Discovery Queue</h1>
-<p>Управление квалификацией Green/Yellow/Red и доступом к календарю.</p>
+<h1>Черга AI Дискавері</h1>
+<p>Керування кваліфікацією Green/Yellow/Red і доступом до календаря.</p>
 
 <table class="table">
   <tr>
-    <th>Lead</th>
-    <th>Status</th>
-    <th>Score</th>
-    <th>Package</th>
-    <th>Calendar</th>
-    <th>Updated</th>
-    <th>Action</th>
+    <th>Лід</th>
+    <th>Статус</th>
+    <th>Оцінка</th>
+    <th>Пакет</th>
+    <th>Календар</th>
+    <th>Оновлено</th>
+    <th>Дія</th>
   </tr>
   {% for item in assessments %}
   <tr>
@@ -20,7 +20,7 @@
     <td>{{ item.status|upper }}</td>
     <td>{{ item.score }}</td>
     <td>{{ item.recommended_package or '-' }}</td>
-    <td>{{ 'open' if item.calendar_unlocked else 'locked' }}</td>
+    <td>{{ 'відкрито' if item.calendar_unlocked else 'закрито' }}</td>
     <td>{{ item.updated_at.strftime('%d.%m.%Y %H:%M') if item.updated_at else '-' }}</td>
     <td>
       <form method="post" action="{{ url_for('admin.crm_discovery_update_status', assessment_id=item.id) }}">
@@ -29,7 +29,7 @@
           <option value="yellow" {% if item.status == 'yellow' %}selected{% endif %}>Yellow</option>
           <option value="red" {% if item.status == 'red' %}selected{% endif %}>Red</option>
         </select>
-        <button class="btn" type="submit">Save</button>
+        <button class="btn" type="submit">Зберегти</button>
       </form>
     </td>
   </tr>

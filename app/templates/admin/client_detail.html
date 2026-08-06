@@ -31,36 +31,36 @@
 
 <section class="admin-grid">
   <form method="post" action="{{ url_for('admin.crm_add_discovery', lead_id=lead.id) }}" class="admin-form">
-    <h2>AI Discovery Assessment</h2>
-    <label>Status</label>
+    <h2>Оцінка AI Дискавері</h2>
+    <label>Статус</label>
     <select name="status">
       <option value="green">Green</option>
       <option value="yellow" selected>Yellow</option>
       <option value="red">Red</option>
     </select>
-    <label>Score (0-100)</label>
+    <label>Оцінка (0-100)</label>
     <input type="number" min="0" max="100" name="score" value="0">
-    <label>Recommended package</label>
+    <label>Рекомендований пакет</label>
     <input name="recommended_package" placeholder="Starter / Growth / PRO">
-    <label>Summary</label>
-    <textarea name="summary" rows="4" placeholder="Preliminary ASAI assessment summary"></textarea>
-    <label>Answers JSON (optional)</label>
+    <label>Підсумок</label>
+    <textarea name="summary" rows="4" placeholder="Попередній підсумок оцінки ASAI"></textarea>
+    <label>Відповіді JSON (необов'язково)</label>
     <textarea name="answers_json" rows="4" placeholder='{"goal":"...","timeline":"..."}'></textarea>
-    <button class="btn" type="submit">Save assessment</button>
+    <button class="btn" type="submit">Зберегти оцінку</button>
   </form>
 
   <div class="admin-form">
-    <h2>Discovery History</h2>
+    <h2>Історія дискавері</h2>
     {% if lead.discoveries %}
       {% for item in lead.discoveries %}
       <article class="card">
-        <p><strong>{{ item.status|upper }}</strong> | score: {{ item.score }} | package: {{ item.recommended_package or '-' }}</p>
+        <p><strong>{{ item.status|upper }}</strong> | оцінка: {{ item.score }} | пакет: {{ item.recommended_package or '-' }}</p>
         <p>{{ item.summary or '-' }}</p>
-        <p class="meta">{{ item.created_at.strftime('%d.%m.%Y %H:%M') }} | calendar {{ 'open' if item.calendar_unlocked else 'locked' }}</p>
+        <p class="meta">{{ item.created_at.strftime('%d.%m.%Y %H:%M') }} | календар {{ 'відкрито' if item.calendar_unlocked else 'закрито' }}</p>
       </article>
       {% endfor %}
     {% else %}
-      <p>No discovery assessments yet.</p>
+      <p>Оцінок дискавері ще немає.</p>
     {% endif %}
   </div>
 </section>
