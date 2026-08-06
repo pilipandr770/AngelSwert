@@ -6,12 +6,16 @@ from slugify import slugify
 
 from ..extensions import db
 from ..models import (
+    AnalyticsEvent,
     AssistantInstructionSettings,
     BlogAutomationSettings,
     BlogPost,
     BlogTopic,
+    CrmGlossaryTerm,
+    DiscoveryAssessment,
     Lead,
     LeadMessage,
+    ServicePageSettings,
     YouTubeLink,
 )
 from ..services.ai_service import (
@@ -51,6 +55,8 @@ def dashboard():
         "published_posts": BlogPost.query.filter_by(status="published").count(),
         "draft_posts": BlogPost.query.filter_by(status="draft").count(),
         "topics": BlogTopic.query.filter_by(is_active=True).count(),
+        "events": AnalyticsEvent.query.count(),
+        "discoveries": DiscoveryAssessment.query.count(),
     }
     latest_leads = Lead.query.order_by(Lead.created_at.desc()).limit(5).all()
     return render_template("admin/dashboard.html", stats=stats, latest_leads=latest_leads)
@@ -76,6 +82,49 @@ def youtube_settings_save():
     db.session.commit()
     flash("YouTube-посилання оновлено.", "success")
     return redirect(url_for("admin.youtube_settings"))
+
+
+@admin_bp.get("/services-content")
+@login_required
+def services_content_settings():
+    settings = ServicePageSettings.query.first()
+    if not settings:
+        settings = ServicePageSettings()
+        db.session.add(settings)
+        db.session.commit()
+    return render_template("admin/services_content.html", settings=settings)
+
+
+@admin_bp.post("/services-content")
+@login_required
+def services_content_settings_save():
+    settings = ServicePageSettings.query.first()
+    if not settings:
+        settings = ServicePageSettings()
+        db.session.add(settings)
+
+    settings.hero_media = (request.form.get("hero_media") or "").strip() or settings.hero_media
+    settings.digital_human_media = (request.form.get("digital_human_media") or "").strip() or settings.digital_human_media
+    settings.story_poster = (request.form.get("story_poster") or "").strip() or settings.story_poster
+    settings.story_video_01 = (request.form.get("story_video_01") or "").strip()
+    settings.story_video_02 = (request.form.get("story_video_02") or "").strip()
+    settings.story_video_03 = (request.form.get("story_video_03") or "").strip()
+    settings.story_subtitles_01 = (request.form.get("story_subtitles_01") or "").strip()
+    settings.story_subtitles_02 = (request.form.get("story_subtitles_02") or "").strip()
+    settings.story_subtitles_03 = (request.form.get("story_subtitles_03") or "").strip()
+    settings.strategy_photo = (request.form.get("strategy_photo") or "").strip() or settings.strategy_photo
+    settings.discovery_url = (request.form.get("discovery_url") or "").strip() or "/contact"
+
+    db.session.commit()
+    flash("Налаштування сторінки Services збережено.", "success")
+    return redirect(url_for("admin.services_content_settings"))
+
+
+@admin_bp.get("/analytics")
+@login_required
+def analytics_events():
+    events = AnalyticsEvent.query.order_by(AnalyticsEvent.created_at.desc()).limit(200).all()
+    return render_template("admin/analytics.html", events=events)
 
 
 @admin_bp.get("/blog")
@@ -361,6 +410,77 @@ def crm_list():
     return render_template("admin/clients.html", leads=leads)
 
 
+@admin_bp.get("/crm/discovery")
+@login_required
+def crm_discovery_list():
+    assessments = DiscoveryAssessment.query.order_by(DiscoveryAssessment.created_at.desc()).all()
+    return render_template("admin/discovery_list.html", assessments=assessments)
+
+
+@admin_bp.post("/crm/discovery/<int:assessment_id>/status")
+@login_required
+def crm_discovery_update_status(assessment_id):
+    assessment = DiscoveryAssessment.query.get_or_404(assessment_id)
+    status = (request.form.get("status") or "yellow").strip().lower()
+    if status not in {"green", "yellow", "red"}:
+        flash("Невірний статус Discovery.", "error")
+        return redirect(url_for("admin.crm_discovery_list"))
+
+    assessment.status = status
+    assessment.calendar_unlocked = status == "green"
+    assessment.reviewed_by = current_user.email
+    db.session.commit()
+    flash("Статус Discovery оновлено.", "success")
+    return redirect(url_for("admin.crm_discovery_list"))
+
+
+@admin_bp.get("/crm/terms")
+@login_required
+def crm_terms_list():
+    terms = CrmGlossaryTerm.query.order_by(CrmGlossaryTerm.updated_at.desc()).all()
+    return render_template("admin/crm_terms.html", terms=terms)
+
+
+@admin_bp.post("/crm/terms")
+@login_required
+def crm_terms_create():
+    term = (request.form.get("term") or "").strip()
+    definition = (request.form.get("definition") or "").strip()
+    language = (request.form.get("language") or "de").strip().lower()
+    category = (request.form.get("category") or "general").strip()
+
+    if not term or not definition:
+        flash("Term und Definition sind erforderlich.", "error")
+        return redirect(url_for("admin.crm_terms_list"))
+
+    if language not in {"de", "en"}:
+        language = "de"
+
+    item = CrmGlossaryTerm(
+        language=language,
+        term=term,
+        definition=definition,
+        category=category,
+        is_active=True,
+        updated_by=current_user.email,
+    )
+    db.session.add(item)
+    db.session.commit()
+    flash("CRM-Term hinzugefugt.", "success")
+    return redirect(url_for("admin.crm_terms_list"))
+
+
+@admin_bp.post("/crm/terms/<int:term_id>/toggle")
+@login_required
+def crm_terms_toggle(term_id):
+    item = CrmGlossaryTerm.query.get_or_404(term_id)
+    item.is_active = not item.is_active
+    item.updated_by = current_user.email
+    db.session.commit()
+    flash("Status des Terms aktualisiert.", "success")
+    return redirect(url_for("admin.crm_terms_list"))
+
+
 @admin_bp.post("/crm/create")
 @login_required
 def crm_create():
@@ -387,6 +507,36 @@ def crm_create():
 def crm_detail(lead_id):
     lead = Lead.query.get_or_404(lead_id)
     return render_template("admin/client_detail.html", lead=lead, ai_hint=None)
+
+
+@admin_bp.post("/crm/<int:lead_id>/discovery")
+@login_required
+def crm_add_discovery(lead_id):
+    lead = Lead.query.get_or_404(lead_id)
+    status = (request.form.get("status") or "yellow").strip().lower()
+    if status not in {"green", "yellow", "red"}:
+        status = "yellow"
+
+    score_raw = (request.form.get("score") or "0").strip()
+    try:
+        score = max(0, min(100, int(score_raw)))
+    except ValueError:
+        score = 0
+
+    assessment = DiscoveryAssessment(
+        lead_id=lead.id,
+        status=status,
+        score=score,
+        recommended_package=(request.form.get("recommended_package") or "").strip(),
+        summary=(request.form.get("summary") or "").strip(),
+        answers_json=(request.form.get("answers_json") or "").strip(),
+        calendar_unlocked=status == "green",
+        reviewed_by=current_user.email,
+    )
+    db.session.add(assessment)
+    db.session.commit()
+    flash("Discovery assessment hinzugefugt.", "success")
+    return redirect(url_for("admin.crm_detail", lead_id=lead.id))
 
 
 @admin_bp.post("/crm/<int:lead_id>/message")

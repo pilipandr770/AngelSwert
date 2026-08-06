@@ -9,7 +9,7 @@ from werkzeug.routing import BuildError
 
 from ..extensions import db
 from ..i18n import translate
-from ..models import BlogPost, Lead, LeadMessage, YouTubeLink
+from ..models import BlogPost, Lead, LeadMessage, ServicePageSettings, YouTubeLink
 
 
 public_bp = Blueprint("public", __name__)
@@ -182,7 +182,113 @@ def about():
 
 @public_bp.get("/services")
 def services():
-    return render_template("public/services.html")
+    settings = ServicePageSettings.query.first()
+    if not settings:
+        settings = ServicePageSettings()
+        db.session.add(settings)
+        db.session.commit()
+
+    links = YouTubeLink.query.order_by(YouTubeLink.slot.asc()).all()
+
+    def youtube_video_id(url: str) -> str:
+        parsed = urlparse(url or "")
+        if "youtu.be" in parsed.netloc:
+            return parsed.path.strip("/").split("/")[0]
+        if "youtube.com" in parsed.netloc:
+            query = parse_qs(parsed.query)
+            if query.get("v"):
+                return query["v"][0]
+            path_parts = [part for part in parsed.path.split("/") if part]
+            if len(path_parts) >= 2 and path_parts[0] in {"shorts", "embed"}:
+                return path_parts[1]
+        return ""
+
+    featured_channels = []
+
+    def youtube_latest_video_id_from_channel(url: str) -> str:
+        parsed = urlparse(url or "")
+        if "youtube.com" not in parsed.netloc:
+            return ""
+
+        path = (parsed.path or "").strip("/")
+        if not path:
+            return ""
+
+        if path.startswith("@") or path.startswith("channel/") or path.startswith("c/") or path.startswith("user/"):
+            channel_videos_url = f"https://www.youtube.com/{path}/videos"
+            try:
+                with urlopen(channel_videos_url, timeout=3.5) as response:
+                    html = response.read().decode("utf-8", errors="ignore")
+                match = re.search(r'"videoId":"([A-Za-z0-9_-]{11})"', html)
+                if match:
+                    return match.group(1)
+            except Exception:
+                return ""
+
+        return ""
+
+    def youtube_thumbnail_candidates(url: str) -> list[str]:
+        candidates: list[str] = []
+        video_id = youtube_video_id(url)
+        if not video_id:
+            video_id = youtube_latest_video_id_from_channel(url)
+        if video_id:
+            candidates.extend(
+                [
+                    f"https://i.ytimg.com/vi/{video_id}/maxresdefault.jpg",
+                    f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg",
+                    f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg",
+                    f"https://i.ytimg.com/vi/{video_id}/sddefault.jpg",
+                ]
+            )
+        return candidates
+
+    for link in links[:4]:
+        video_id = youtube_video_id(link.url)
+        candidates = youtube_thumbnail_candidates(link.url)
+        featured_channels.append(
+            {
+                "title": link.title,
+                "url": link.url,
+                "slot": link.slot,
+                "thumbnail": f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg" if video_id else "",
+                "thumbnail_candidates": candidates,
+            }
+        )
+
+    def media_url(value: str) -> str:
+        clean = (value or "").strip()
+        if not clean:
+            return ""
+        if clean.startswith("http://") or clean.startswith("https://"):
+            return clean
+        return url_for("static", filename=clean.lstrip("/"))
+
+    discovery_url = (settings.discovery_url or "").strip() or "/contact"
+    if discovery_url.startswith("http://") or discovery_url.startswith("https://"):
+        discovery_href = discovery_url
+    elif discovery_url == "/contact":
+        discovery_href = url_for("public.contact", lang=getattr(g, "lang", "de"))
+    else:
+        separator = "&" if "?" in discovery_url else "?"
+        discovery_href = f"{discovery_url}{separator}lang={getattr(g, 'lang', 'de')}"
+
+    return render_template(
+        "public/services.html",
+        services_settings=settings,
+        featured_channels=featured_channels,
+        discovery_href=discovery_href,
+        hero_media_url=media_url(settings.hero_media),
+        digital_human_media_url=media_url(settings.digital_human_media),
+        story_poster_url=media_url(settings.story_poster),
+        story_video_01_url=media_url(settings.story_video_01),
+        story_video_02_url=media_url(settings.story_video_02),
+        story_video_03_url=media_url(settings.story_video_03),
+        story_subtitles_01_url=media_url(settings.story_subtitles_01),
+        story_subtitles_02_url=media_url(settings.story_subtitles_02),
+        story_subtitles_03_url=media_url(settings.story_subtitles_03),
+        strategy_photo_url=media_url(settings.strategy_photo),
+    )
 
 
 @public_bp.get("/programs")

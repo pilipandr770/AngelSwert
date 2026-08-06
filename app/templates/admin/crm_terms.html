@@ -1,0 +1,47 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}CRM Terms{% endblock %}
+{% block content %}
+<h1>CRM Terms для AI-ассистента</h1>
+<p>Справочник терминов для устойчивых ответов ассистента в CRM (DE/EN).</p>
+
+<form method="post" action="{{ url_for('admin.crm_terms_create') }}" class="admin-form">
+  <h2>Добавить термин</h2>
+  <label>Language</label>
+  <select name="language">
+    <option value="de">DE</option>
+    <option value="en">EN</option>
+  </select>
+  <label>Category</label>
+  <input name="category" value="general">
+  <label>Term</label>
+  <input name="term" required>
+  <label>Definition</label>
+  <textarea name="definition" rows="4" required></textarea>
+  <button class="btn" type="submit">Сохранить</button>
+</form>
+
+<table class="table">
+  <tr>
+    <th>Language</th>
+    <th>Category</th>
+    <th>Term</th>
+    <th>Definition</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  {% for item in terms %}
+  <tr>
+    <td>{{ item.language }}</td>
+    <td>{{ item.category }}</td>
+    <td>{{ item.term }}</td>
+    <td>{{ item.definition }}</td>
+    <td>{{ 'active' if item.is_active else 'off' }}</td>
+    <td>
+      <form method="post" action="{{ url_for('admin.crm_terms_toggle', term_id=item.id) }}">
+        <button class="btn" type="submit">{{ 'Disable' if item.is_active else 'Enable' }}</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

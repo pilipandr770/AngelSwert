@@ -1,0 +1,38 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Discovery Queue{% endblock %}
+{% block content %}
+<h1>AI Discovery Queue</h1>
+<p>Управление квалификацией Green/Yellow/Red и доступом к календарю.</p>
+
+<table class="table">
+  <tr>
+    <th>Lead</th>
+    <th>Status</th>
+    <th>Score</th>
+    <th>Package</th>
+    <th>Calendar</th>
+    <th>Updated</th>
+    <th>Action</th>
+  </tr>
+  {% for item in assessments %}
+  <tr>
+    <td><a href="{{ url_for('admin.crm_detail', lead_id=item.lead_id) }}">{{ item.lead.name }}</a></td>
+    <td>{{ item.status|upper }}</td>
+    <td>{{ item.score }}</td>
+    <td>{{ item.recommended_package or '-' }}</td>
+    <td>{{ 'open' if item.calendar_unlocked else 'locked' }}</td>
+    <td>{{ item.updated_at.strftime('%d.%m.%Y %H:%M') if item.updated_at else '-' }}</td>
+    <td>
+      <form method="post" action="{{ url_for('admin.crm_discovery_update_status', assessment_id=item.id) }}">
+        <select name="status">
+          <option value="green" {% if item.status == 'green' %}selected{% endif %}>Green</option>
+          <option value="yellow" {% if item.status == 'yellow' %}selected{% endif %}>Yellow</option>
+          <option value="red" {% if item.status == 'red' %}selected{% endif %}>Red</option>
+        </select>
+        <button class="btn" type="submit">Save</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

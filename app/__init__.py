@@ -1,8 +1,9 @@
 from flask import Flask
+from urllib.parse import urlparse
 
 from .config import Config
 from .extensions import db, login_manager
-from .models import AssistantInstructionSettings, BlogAutomationSettings, User, YouTubeLink
+from .models import AssistantInstructionSettings, BlogAutomationSettings, ServicePageSettings, User, YouTubeLink
 from .routes.admin import admin_bp
 from .routes.api import api_bp
 from .routes.auth import auth_bp
@@ -43,6 +44,18 @@ def _seed_defaults(app: Flask) -> None:
                 ),
                 auto_from_rss_enabled=False,
                 max_rss_items_per_run=2,
+            )
+        )
+
+    if not ServicePageSettings.query.first():
+        discovery_endpoint = urlparse(app.config.get("PUBLIC_DISCOVERY_URL") or "").path or "/contact"
+        db.session.add(
+            ServicePageSettings(
+                hero_media="img/services_tz/image1.png",
+                digital_human_media="img/services_tz/image2.png",
+                story_poster="img/services_tz/image3.png",
+                strategy_photo="img/client-consultation.jpg",
+                discovery_url=discovery_endpoint,
             )
         )
 

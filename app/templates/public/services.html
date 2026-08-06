@@ -2,55 +2,364 @@
 {% block title %}{{ t('services.page_title') }} | {{ brand_name }}{% endblock %}
 {% block meta_description %}{{ t('services.meta_description') }}{% endblock %}
 {% block content %}
-<section class="page-block">
-  <h1>{{ t('services.h1') }}</h1>
-  <div class="cards-grid">
-    <article class="card"><h3>{{ t('services.s1_title') }}</h3><p>{{ t('services.s1_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.s2_title') }}</h3><p>{{ t('services.s2_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.s3_title') }}</h3><p>{{ t('services.s3_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.s4_title') }}</h3><p>{{ t('services.s4_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.s5_title') }}</h3><p>{{ t('services.s5_body') }}</p></article>
+{% set is_de = lang == 'de' %}
+
+<section class="hero services-hero">
+  <div class="split split--media">
+    <div>
+      <p class="eyebrow">{{ 'UNSERE LEISTUNGEN' if is_de else 'OUR SERVICES' }}</p>
+      <h1>{{ 'Strukturierte KI-Video-, Digital-Human- und Content-Systeme für wiederkehrende Unternehmenskommunikation.' if is_de else 'Structured AI video, digital human and content systems for recurring business communication.' }}</h1>
+      <p class="section-lead">
+        {{ 'ASAI Studio verbindet Videoproduktion, Creative Direction, Digital Humans, Content-Systeme, KI-Agenten und kontrollierte Automatisierung zu einer skalierbaren Kommunikationslösung.' if is_de else 'ASAI Studio combines video production, creative direction, digital humans, content systems, AI agents and controlled automation into one scalable communication solution.' }}
+      </p>
+      <div class="cta-row">
+        <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="hero_primary">{{ 'AI Discovery starten' if is_de else 'Start AI Discovery' }}</a>
+        <a class="btn btn-ghost" href="#packages" data-track-event="package_cta_click" data-track-label="hero_packages">{{ 'Pakete ansehen' if is_de else 'See packages' }}</a>
+      </div>
+    </div>
+    <figure class="media-frame media-frame--portrait services-hero-media">
+      <img src="{{ hero_media_url }}" alt="ASAI Studio hero visual" loading="eager">
+    </figure>
   </div>
 </section>
 
 <section class="page-block">
-  <h2>{{ t('services.process_title') }}</h2>
-  <div class="cards-grid">
-    <article class="card"><p>{{ t('services.process_1') }}</p></article>
-    <article class="card"><p>{{ t('services.process_2') }}</p></article>
-    <article class="card"><p>{{ t('services.process_3') }}</p></article>
-    <article class="card"><p>{{ t('services.process_4') }}</p></article>
+  <h2>{{ 'Fünf Hauptleistungen' if is_de else 'Five core services' }}</h2>
+  <div class="services-five-grid">
+    <details class="card service-card" data-track-event="service_card_click" data-track-label="videoproduction">
+      <summary>{{ 'Videoproduktion & Creative Direction' if is_de else 'Video production & creative direction' }}</summary>
+      <p>{{ 'Konzeption, Drehbuch, Produktion, Schnitt, Postproduktion, Motion Design, 3D und Lokalisierung.' if is_de else 'Concept, scripting, production, editing, post-production, motion design, 3D and localization.' }}</p>
+    </details>
+    <details class="card service-card" data-track-event="service_card_click" data-track-label="digital_humans">
+      <summary>{{ 'Digital Humans, KI-Avatare & KI-Influencer' if is_de else 'Digital humans, AI avatars & AI influencers' }}</summary>
+      <p>{{ 'Digitale Präsentatoren und fiktionale Medienpersönlichkeiten mit klarer Rolle, Stimme, Sprache und Human Approval.' if is_de else 'Digital presenters and fictional media personalities with a clear role, voice, language and human approval.' }}</p>
+    </details>
+    <details class="card service-card" data-track-event="service_card_click" data-track-label="content_youtube">
+      <summary>{{ 'Content-, Medien- & YouTube-Systeme' if is_de else 'Content, media & YouTube systems' }}</summary>
+      <p>{{ 'Planbare Content-Säulen, Redaktion, Publishing-Workflows und wiederkehrende Videoformate.' if is_de else 'Plannable content pillars, editorial systems, publishing workflows and recurring video formats.' }}</p>
+    </details>
+    <details class="card service-card" data-track-event="service_card_click" data-track-label="ai_automation">
+      <summary>{{ 'KI-Agenten, Automatisierung & Integrationen' if is_de else 'AI agents, automation & integrations' }}</summary>
+      <p>{{ 'Assistenzsysteme, Routing, Freigaben, APIs und kontrollierte Datenflüsse für skalierbare Prozesse.' if is_de else 'Assistant systems, routing, approvals, APIs and controlled data flows for scalable processes.' }}</p>
+    </details>
+    <details class="card service-card" data-track-event="service_card_click" data-track-label="strategy_implementation">
+      <summary>{{ 'Strategie, Beratung & Implementierung' if is_de else 'Strategy, consulting & implementation' }}</summary>
+      <p>{{ 'Business-Analyse, Implementierungsweg, Governance, Trainings und operative Projektkoordination.' if is_de else 'Business analysis, implementation path, governance, training and operational project coordination.' }}</p>
+    </details>
   </div>
 </section>
 
 <section class="page-block split split--media">
   <figure class="media-frame media-frame--portrait">
-    <img src="{{ url_for('static', filename='img/client-consultation.jpg') }}" alt="{{ t('services.consult_image_alt') }}" loading="lazy">
+    <img src="{{ digital_human_media_url }}" alt="Digital Human visual" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">{{ t('services.consult_eyebrow') }}</p>
-    <h2>{{ t('services.consult_title') }}</h2>
-    <p>{{ t('services.consult_body') }}</p>
+    <p class="eyebrow">Digital Humans</p>
+    <h2>{{ 'Digital Humans für Marken, Unternehmen und Medien' if is_de else 'Digital humans for brands, companies and media' }}</h2>
+    <p>{{ 'Konsistente digitale Persönlichkeiten für wiederkehrende, mehrsprachige und skalierbare Kommunikation mit klarer Nutzungslogik.' if is_de else 'Consistent digital personalities for recurring, multilingual and scalable communication with clear usage logic.' }}</p>
     <ul class="feature-list">
-      <li>{{ t('services.consult_point_1') }}</li>
-      <li>{{ t('services.consult_point_2') }}</li>
-      <li>{{ t('services.consult_point_3') }}</li>
+      <li>{{ 'Business Presenter für Erklärvideos und interne Kommunikation' if is_de else 'Business presenter for explainers and internal communication' }}</li>
+      <li>{{ 'Multilingual Host für Länder und Zielgruppen' if is_de else 'Multilingual host for countries and audiences' }}</li>
+      <li>{{ 'Authorised Digital Twin auf Basis freigegebener Rechte' if is_de else 'Authorised digital twin based on approved rights' }}</li>
+      <li>{{ 'Fictional AI Influencer für Storytelling und Kampagnen' if is_de else 'Fictional AI influencer for storytelling and campaigns' }}</li>
     </ul>
-    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ t('services.consult_cta') }}</a>
+    <p class="meta">{{ 'Transparenz: Bei sprechenden Avataren wird klar gekennzeichnet, dass es sich um einen KI-Assistenten handelt.' if is_de else 'Transparency: speaking avatars are clearly disclosed as AI assistants.' }}</p>
+    <div class="cta-row">
+      <a class="btn" href="{{ discovery_href }}" data-track-event="digital_human_cta_click" data-track-label="digital_human_project">{{ 'Digital Human Projekt prüfen' if is_de else 'Evaluate digital human project' }}</a>
+      <a class="btn btn-ghost" href="#story-showcase" data-track-event="digital_human_cta_click" data-track-label="to_story">{{ 'Stronger Than Yesterday ansehen' if is_de else 'View Stronger Than Yesterday' }}</a>
+    </div>
   </div>
 </section>
 
-<section class="cards-section">
-  <h2>{{ t('services.catalog_title') }}</h2>
+<section id="story-showcase" class="cards-section story-section">
+  <p class="eyebrow">AI Influencer Storytelling</p>
+  <h2>Stronger Than Yesterday</h2>
+  <p class="section-lead">{{ 'Eine visuelle Storytelling-Serie mit fiktionalen KI-Influencern, filmischer KI-Produktion und menschlicher Creative Direction.' if is_de else 'A visual storytelling series with fictional AI influencers, cinematic AI production and human creative direction.' }}</p>
+
+  <div class="story-poster media-frame">
+    <img src="{{ story_poster_url }}" alt="Stronger Than Yesterday poster" loading="lazy">
+  </div>
+
   <div class="cards-grid">
-    <article class="card"><h3>{{ t('services.c1_title') }}</h3><p>{{ t('services.c1_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.c2_title') }}</h3><p>{{ t('services.c2_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.c3_title') }}</h3><p>{{ t('services.c3_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.c4_title') }}</h3><p>{{ t('services.c4_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.c5_title') }}</h3><p>{{ t('services.c5_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.c6_title') }}</h3><p>{{ t('services.c6_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.c7_title') }}</h3><p>{{ t('services.c7_body') }}</p></article>
-    <article class="card"><h3>{{ t('services.c8_title') }}</h3><p>{{ t('services.c8_body') }}</p></article>
+    <article class="card story-card">
+      <p class="eyebrow">EPISODE 01</p>
+      <h3>THE ARRIVAL</h3>
+      <p>{{ 'In Produktion' if is_de else 'In production' }}</p>
+      <button class="btn open-story-video" data-video-src="{{ story_video_01_url }}" data-sub-src="{{ story_subtitles_01_url }}" data-story-label="episode_01">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
+    </article>
+    <article class="card story-card">
+      <p class="eyebrow">EPISODE 02</p>
+      <h3>THE MISSION</h3>
+      <p>{{ 'In Produktion' if is_de else 'In production' }}</p>
+      <button class="btn open-story-video" data-video-src="{{ story_video_02_url }}" data-sub-src="{{ story_subtitles_02_url }}" data-story-label="episode_02">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
+    </article>
+    <article class="card story-card">
+      <p class="eyebrow">EPISODE 03</p>
+      <h3>STRONGER TOGETHER</h3>
+      <p>{{ 'In Produktion' if is_de else 'In production' }}</p>
+      <button class="btn open-story-video" data-video-src="{{ story_video_03_url }}" data-sub-src="{{ story_subtitles_03_url }}" data-story-label="episode_03">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
+    </article>
+  </div>
+
+  <div class="cta-row">
+    <button class="btn open-story-video" data-video-src="{{ story_video_01_url }}" data-sub-src="{{ story_subtitles_01_url }}" data-story-label="episode_01" data-track-event="story_cta_click" data-track-label="watch_story">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
+    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="story_cta_click" data-track-label="influencer_production">{{ 'Explore AI Influencer Production' if not is_de else 'AI Influencer Production entdecken' }}</a>
+    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="story_block">{{ 'Start AI Discovery' if not is_de else 'AI Discovery starten' }}</a>
+  </div>
+
+  <p class="meta">{{ 'KI-generiertes Storytelling-Projekt mit fiktionalen Digital Humans und autorisierter KI-Darstellung. Creative Direction und menschliche Kontrolle durch ASAI Studio.' if is_de else 'AI-generated storytelling project with fictional digital humans and authorised AI representation. Creative direction and human control by ASAI Studio.' }}</p>
+</section>
+
+<section class="cards-section">
+  <p class="eyebrow">YouTube Media Ecosystem</p>
+  <h2>Built Through Real Media Practice</h2>
+  <p class="section-lead">{{ 'ASAI Studio wird durch praktische Produktion in vier Medienumgebungen geformt: Technologie, mehrsprachiger Experten-Content, Finance und Kinder-Storytelling.' if is_de else 'ASAI Studio is informed by hands-on production across four media environments: technology, multilingual expert content, finance and children\'s storytelling.' }}</p>
+  <div class="video-grid">
+    {% for video in featured_channels %}
+    <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener" data-track-event="youtube_channel_click" data-track-label="channel_{{ video.slot }}">
+      <div class="video-card-media">
+        {% if video.thumbnail_candidates %}
+        <img
+          src="{{ video.thumbnail_candidates[0] }}"
+          alt="{{ video.title }}"
+          loading="lazy"
+          data-thumb-candidates="{{ video.thumbnail_candidates|join(',') }}"
+          data-fallback-src="{{ story_poster_url }}"
+        >
+        {% else %}
+        <img src="{{ story_poster_url }}" alt="{{ video.title }}" loading="lazy">
+        {% endif %}
+      </div>
+      <div class="video-card-body">
+        <h3>{{ video.title }}</h3>
+        <p>{{ 'Kanal besuchen' if is_de else 'Visit channel' }}</p>
+      </div>
+    </a>
+    {% endfor %}
   </div>
 </section>
+
+<section id="packages" class="cards-section">
+  <p class="eyebrow">Packages</p>
+  <h2>{{ 'Pakete und Preise' if is_de else 'Packages and pricing' }}</h2>
+  <div class="packages-grid">
+    <article class="card package-card">
+      <h3>Starter</h3>
+      <p class="package-price">Content-Basis · EUR 999 + MwSt. / {{ 'Monat' if is_de else 'month' }}</p>
+      <ul class="feature-list">
+        <li>{{ '10 Videos pro Monat' if is_de else '10 videos per month' }}</li>
+        <li>{{ '30-60 Sekunden pro Video' if is_de else '30-60 seconds per video' }}</li>
+        <li>{{ '1 Digital Human · 1 KI-Stimme' if is_de else '1 digital human · 1 AI voice' }}</li>
+        <li>{{ 'Untertitel inklusive · 1 Korrekturrunde' if is_de else 'Subtitles included · 1 revision round' }}</li>
+      </ul>
+      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="starter">{{ 'Eignung prüfen' if is_de else 'Check fit' }}</a>
+    </article>
+    <article class="card package-card">
+      <h3>Growth</h3>
+      <p class="package-price">Mehrsprachiges Publishing-System · EUR 1.999 + MwSt. / {{ 'Monat' if is_de else 'month' }}</p>
+      <ul class="feature-list">
+        <li>{{ '20 Videos pro Monat' if is_de else '20 videos per month' }}</li>
+        <li>{{ 'Bis zu 2 Digital Humans und 2 Sprachen' if is_de else 'Up to 2 digital humans and 2 languages' }}</li>
+        <li>{{ 'Premium-Visual-System und Redaktion' if is_de else 'Premium visual system and editorial structure' }}</li>
+        <li>{{ 'Monatliche Content-Auswertung' if is_de else 'Monthly content evaluation' }}</li>
+      </ul>
+      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="growth">{{ 'Eignung prüfen' if is_de else 'Check fit' }}</a>
+    </article>
+    <article class="card package-card package-card--pro">
+      <h3>PRO</h3>
+      <p class="package-price">Kontrolliertes Video-System · {{ 'ab' if is_de else 'from' }} EUR 3.999 + MwSt. / {{ 'Monat' if is_de else 'month' }}</p>
+      <ul class="feature-list">
+        <li>{{ 'Mehrere Digital Humans, Stimmen und Sprachen' if is_de else 'Multiple digital humans, voices and languages' }}</li>
+        <li>{{ 'Individuelle Workflow-Architektur und Integrationen' if is_de else 'Custom workflow architecture and integrations' }}</li>
+        <li>{{ 'Menschliche Kontrolle vor Veröffentlichung' if is_de else 'Human control before publication' }}</li>
+        <li>{{ 'Analyse, Optimierung und Team-Support' if is_de else 'Analysis, optimization and team support' }}</li>
+      </ul>
+      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="pro">{{ 'PRO-Bedarf prüfen' if is_de else 'Check PRO fit' }}</a>
+    </article>
+  </div>
+  <p class="meta">{{ 'Alle Preise sind Nettopreise. Die gesetzliche Mehrwertsteuer, Integrationen und Zusatzanforderungen werden nach der Discovery bestätigt.' if is_de else 'All prices are net prices. VAT, integrations and additional requirements are confirmed after discovery.' }}</p>
+</section>
+
+<section class="page-block">
+  <p class="eyebrow">Optional Growth</p>
+  <h2>{{ 'Optionale Growth-, Marketing- und Markenleistungen' if is_de else 'Optional growth, marketing and brand services' }}</h2>
+  <div class="cards-grid">
+    <article class="card">
+      <h3>Content & Growth</h3>
+      <p>{{ 'Content-Marketing, Social-Media-Marketing, Lead-Generierungs-Content und Sales-Support-Videos.' if is_de else 'Content marketing, social media marketing, lead generation content and sales support videos.' }}</p>
+    </article>
+    <article class="card">
+      <h3>Paid & Search</h3>
+      <p>{{ 'SEO, SEA, PPC, Google Ads, digitale Kampagnen und Kampagnen-Kreatives.' if is_de else 'SEO, SEA, PPC, Google Ads, digital campaigns and campaign creatives.' }}</p>
+    </article>
+    <article class="card">
+      <h3>Brand Partnerships</h3>
+      <p>{{ 'Sponsoring, Affiliate- und Referral-Projekte sowie Ambassador-Kooperationen.' if is_de else 'Sponsorships, affiliate and referral projects, plus ambassador collaborations.' }}</p>
+    </article>
+  </div>
+  <p class="meta">{{ 'Diese Leistungen und externe Werbebudgets sind kein automatischer Bestandteil der monatlichen Video-Pakete.' if is_de else 'These services and external ad budgets are not automatically included in monthly video packages.' }}</p>
+</section>
+
+<section class="page-block">
+  <h2>{{ 'So arbeiten wir' if is_de else 'How we work' }}</h2>
+  <ol class="work-timeline">
+    <li><strong>{{ '01 - Discovery & Strategie' if is_de else '01 - Discovery & strategy' }}:</strong> {{ 'Business-Review, Zielgruppen- und Angebotsanalyse, erste Empfehlung.' if is_de else 'Business review, audience and offer analysis, first recommendation.' }}</li>
+    <li><strong>{{ '02 - Konzeption & Systemdesign' if is_de else '02 - Concept & system design' }}:</strong> {{ 'Content-Modell, Digital Human, visuelles System, Produktionslogik.' if is_de else 'Content model, digital human, visual system and production logic.' }}</li>
+    <li><strong>{{ '03 - Produktion & Launch' if is_de else '03 - Production & launch' }}:</strong> {{ 'Skripte, Produktion, Lokalisierung, Review, Auslieferung.' if is_de else 'Scripts, production, localization, review and delivery.' }}</li>
+    <li><strong>{{ '04 - Stabilisierung & Automatisierung' if is_de else '04 - Stabilization & automation' }}:</strong> {{ 'Workflow-Optimierung, Rollen, Monitoring, Integrationen.' if is_de else 'Workflow optimization, roles, monitoring and integrations.' }}</li>
+    <li><strong>{{ '05 - Wachstum & Skalierung' if is_de else '05 - Growth & scaling' }}:</strong> {{ 'Mehr Content und Sprachen, zusätzliche Kanäle, Growth-Kampagnen.' if is_de else 'More content and languages, additional channels, growth campaigns.' }}</li>
+  </ol>
+  <p class="meta">{{ 'Aufbauen. Produzieren. Stabilisieren. Automatisieren. Dann skalieren.' if is_de else 'Build. Produce. Stabilize. Automate. Then scale.' }}</p>
+</section>
+
+<section class="page-block split split--media">
+  <figure class="media-frame media-frame--portrait">
+    <img src="{{ strategy_photo_url }}" alt="Strategy session portrait" loading="lazy">
+  </figure>
+  <div>
+    <p class="eyebrow">Strategy Session</p>
+    <h2>{{ 'Starten Sie mit einer 1:1-Strategie-Session' if is_de else 'Start with a 1:1 strategy session' }}</h2>
+    <p>{{ 'In einer fokussierten 90-Minuten-Session analysieren wir Geschäftsmodell, Kommunikation, Zielgruppe und den Implementierungsweg.' if is_de else 'In a focused 90-minute session we analyze your business model, communication, audience and implementation path.' }}</p>
+    <p class="package-price">90 {{ 'Minuten' if is_de else 'minutes' }} · EUR 250 + MwSt.</p>
+    <ul class="feature-list">
+      <li>{{ 'Business- und Kommunikations-Review' if is_de else 'Business and communication review' }}</li>
+      <li>{{ 'Content-Ziele, Zielgruppe und Kanäle' if is_de else 'Content goals, audience and channels' }}</li>
+      <li>{{ 'Empfohlene Paket- oder Pilot-Empfehlung' if is_de else 'Recommended package or pilot path' }}</li>
+    </ul>
+    <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="strategy_session">{{ 'AI Discovery starten' if is_de else 'Start AI Discovery' }}</a>
+    <p class="meta">{{ 'Kalenderbuchung wird nach Discovery und Eignungsprüfung freigeschaltet.' if is_de else 'Calendar booking is unlocked after discovery and qualification.' }}</p>
+  </div>
+</section>
+
+<div id="storyModal" class="story-modal hidden" aria-hidden="true">
+  <div class="story-modal-backdrop" data-close-modal="1"></div>
+  <div class="story-modal-card" role="dialog" aria-modal="true" aria-label="Story video modal">
+    <button class="story-modal-close" type="button" data-close-modal="1">x</button>
+    <video id="storyVideoPlayer" controls preload="metadata" playsinline>
+      <source id="storyVideoSource" src="" type="video/mp4">
+      <track id="storyVideoTrack" kind="subtitles" src="" srclang="de" label="Deutsch">
+    </video>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const lang = '{{ lang }}';
+    const page = 'services';
+    const track = function(eventName, label, meta) {
+      const payload = {
+        event: eventName,
+        label: label || '',
+        page,
+        lang,
+        meta: meta || {}
+      };
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(function () {});
+    };
+
+    document.querySelectorAll('[data-track-event]').forEach(function(el) {
+      el.addEventListener('click', function() {
+        track(el.dataset.trackEvent, el.dataset.trackLabel || '', {});
+      });
+    });
+
+    const thumbs = document.querySelectorAll('.video-card-media img[data-thumb-candidates]');
+    thumbs.forEach(function(img) {
+      const candidates = (img.dataset.thumbCandidates || '')
+        .split(',')
+        .map(function(item) { return item.trim(); })
+        .filter(Boolean);
+      let index = 0;
+      if (candidates.length) {
+        img.src = candidates[index];
+      }
+      img.addEventListener('error', function() {
+        index += 1;
+        if (index < candidates.length) {
+          img.src = candidates[index];
+          return;
+        }
+        img.src = img.dataset.fallbackSrc || img.src;
+      });
+    });
+
+    document.querySelectorAll('.service-card').forEach(function(card) {
+      card.addEventListener('toggle', function() {
+        if (card.open) {
+          track(card.dataset.trackEvent || 'service_card_click', card.dataset.trackLabel || '', { state: 'open' });
+        }
+      });
+    });
+
+    const modal = document.getElementById('storyModal');
+    const player = document.getElementById('storyVideoPlayer');
+    const source = document.getElementById('storyVideoSource');
+    const trackEl = document.getElementById('storyVideoTrack');
+    let currentStory = '';
+    const sentMilestones = {};
+
+    const closeModal = function() {
+      player.pause();
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
+      source.src = '';
+      trackEl.src = '';
+      player.load();
+    };
+
+    document.querySelectorAll('.open-story-video').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const src = btn.dataset.videoSrc || '';
+        const sub = btn.dataset.subSrc || '';
+        currentStory = btn.dataset.storyLabel || 'story';
+        if (!src) {
+          track('story_video_play', currentStory, { status: 'missing_url' });
+          return;
+        }
+        sentMilestones[currentStory] = {25:false,50:false,75:false};
+        source.src = src;
+        trackEl.src = sub;
+        player.muted = true;
+        player.load();
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        track('story_video_play', currentStory, { status: 'started' });
+      });
+    });
+
+    modal.addEventListener('click', function(e) {
+      if (e.target.dataset.closeModal === '1') {
+        closeModal();
+      }
+    });
+
+    player.addEventListener('timeupdate', function() {
+      if (!player.duration || !currentStory) return;
+      const ratio = (player.currentTime / player.duration) * 100;
+      [25, 50, 75].forEach(function(mark) {
+        if (ratio >= mark && sentMilestones[currentStory] && !sentMilestones[currentStory][mark]) {
+          sentMilestones[currentStory][mark] = true;
+          track('story_video_progress', currentStory, { progress: mark });
+        }
+      });
+    });
+
+    player.addEventListener('ended', function() {
+      if (currentStory) {
+        track('story_video_complete', currentStory, { complete: true });
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  })();
+</script>
 {% endblock %}

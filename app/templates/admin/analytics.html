@@ -1,0 +1,27 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Аналітика{% endblock %}
+{% block content %}
+<h1>Події аналітики</h1>
+<p>Останні 200 подій із фронтенду.</p>
+
+<table class="table">
+  <tr>
+    <th>Дата</th>
+    <th>Подія</th>
+    <th>Сторінка</th>
+    <th>Мова</th>
+    <th>Label</th>
+    <th>Meta</th>
+  </tr>
+  {% for event in events %}
+  <tr>
+    <td>{{ event.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+    <td>{{ event.event_name }}</td>
+    <td>{{ event.page }}</td>
+    <td>{{ event.lang }}</td>
+    <td>{{ event.label }}</td>
+    <td>{{ event.meta_json }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

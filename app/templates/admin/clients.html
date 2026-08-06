@@ -21,12 +21,13 @@
 </form>
 
 <table class="table">
-  <tr><th>Ім'я</th><th>Email</th><th>Етап</th><th>Джерело</th><th>Дія</th></tr>
+  <tr><th>Ім'я</th><th>Email</th><th>Етап</th><th>Discovery</th><th>Джерело</th><th>Дія</th></tr>
   {% for lead in leads %}
   <tr>
     <td>{{ lead.name }}</td>
     <td>{{ lead.email }}</td>
     <td>{{ lead.stage }}</td>
+    <td>{{ lead.discoveries|length }}</td>
     <td>{{ lead.source }}</td>
     <td><a href="{{ url_for('admin.crm_detail', lead_id=lead.id) }}">Картка</a></td>
   </tr>

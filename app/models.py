@@ -105,3 +105,57 @@ class LeadMessage(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     lead = db.relationship("Lead", backref=db.backref("messages", lazy=True, order_by="LeadMessage.created_at.desc()"))
+
+
+class ServicePageSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    hero_media = db.Column(db.String(1024), default="img/services_tz/image1.png", nullable=False)
+    digital_human_media = db.Column(db.String(1024), default="img/services_tz/image2.png", nullable=False)
+    story_poster = db.Column(db.String(1024), default="img/services_tz/image3.png", nullable=False)
+    story_video_01 = db.Column(db.String(1024), default="", nullable=False)
+    story_video_02 = db.Column(db.String(1024), default="", nullable=False)
+    story_video_03 = db.Column(db.String(1024), default="", nullable=False)
+    story_subtitles_01 = db.Column(db.String(1024), default="", nullable=False)
+    story_subtitles_02 = db.Column(db.String(1024), default="", nullable=False)
+    story_subtitles_03 = db.Column(db.String(1024), default="", nullable=False)
+    strategy_photo = db.Column(db.String(1024), default="img/client-consultation.jpg", nullable=False)
+    discovery_url = db.Column(db.String(1024), default="/contact", nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class AnalyticsEvent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    event_name = db.Column(db.String(120), nullable=False)
+    page = db.Column(db.String(120), default="", nullable=False)
+    lang = db.Column(db.String(10), default="de", nullable=False)
+    label = db.Column(db.String(255), default="", nullable=False)
+    meta_json = db.Column(db.Text, default="", nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+
+class DiscoveryAssessment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lead_id = db.Column(db.Integer, db.ForeignKey("lead.id"), nullable=False)
+    status = db.Column(db.String(20), default="yellow", nullable=False)
+    score = db.Column(db.Integer, default=0, nullable=False)
+    recommended_package = db.Column(db.String(50), default="", nullable=False)
+    summary = db.Column(db.Text, default="", nullable=False)
+    answers_json = db.Column(db.Text, default="", nullable=False)
+    calendar_unlocked = db.Column(db.Boolean, default=False, nullable=False)
+    reviewed_by = db.Column(db.String(255), default="", nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    lead = db.relationship("Lead", backref=db.backref("discoveries", lazy=True, order_by="DiscoveryAssessment.created_at.desc()"))
+
+
+class CrmGlossaryTerm(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    language = db.Column(db.String(10), default="de", nullable=False)
+    term = db.Column(db.String(255), nullable=False)
+    definition = db.Column(db.Text, nullable=False)
+    category = db.Column(db.String(120), default="general", nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
+    updated_by = db.Column(db.String(255), default="", nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

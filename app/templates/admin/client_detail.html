@@ -29,6 +29,42 @@
   </form>
 </section>
 
+<section class="admin-grid">
+  <form method="post" action="{{ url_for('admin.crm_add_discovery', lead_id=lead.id) }}" class="admin-form">
+    <h2>AI Discovery Assessment</h2>
+    <label>Status</label>
+    <select name="status">
+      <option value="green">Green</option>
+      <option value="yellow" selected>Yellow</option>
+      <option value="red">Red</option>
+    </select>
+    <label>Score (0-100)</label>
+    <input type="number" min="0" max="100" name="score" value="0">
+    <label>Recommended package</label>
+    <input name="recommended_package" placeholder="Starter / Growth / PRO">
+    <label>Summary</label>
+    <textarea name="summary" rows="4" placeholder="Preliminary ASAI assessment summary"></textarea>
+    <label>Answers JSON (optional)</label>
+    <textarea name="answers_json" rows="4" placeholder='{"goal":"...","timeline":"..."}'></textarea>
+    <button class="btn" type="submit">Save assessment</button>
+  </form>
+
+  <div class="admin-form">
+    <h2>Discovery History</h2>
+    {% if lead.discoveries %}
+      {% for item in lead.discoveries %}
+      <article class="card">
+        <p><strong>{{ item.status|upper }}</strong> | score: {{ item.score }} | package: {{ item.recommended_package or '-' }}</p>
+        <p>{{ item.summary or '-' }}</p>
+        <p class="meta">{{ item.created_at.strftime('%d.%m.%Y %H:%M') }} | calendar {{ 'open' if item.calendar_unlocked else 'locked' }}</p>
+      </article>
+      {% endfor %}
+    {% else %}
+      <p>No discovery assessments yet.</p>
+    {% endif %}
+  </div>
+</section>
+
 <h2>Історія комунікацій</h2>
 <table class="table">
   <tr><th>Дата</th><th>Напрям</th><th>Канал</th><th>Текст</th></tr>
