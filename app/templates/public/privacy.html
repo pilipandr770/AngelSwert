@@ -17,6 +17,8 @@
   <p>Wenn Sie uns über das Kontaktformular, per E-Mail oder telefonisch kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage und zur möglichen Anbahnung eines Vertragsverhältnisses.</p>
   <h2>Hosting, Analyse und Einbindungen</h2>
   <p>Unser Onlineangebot kann Hosting-, Analyse-, Cookie-, Social-Media- und eingebettete Inhaltsdienste einsetzen. Dazu können insbesondere Webhosting, Reichweitenmessung, Cookie-Management, soziale Netzwerke und eingebettete Medieninhalte gehören.</p>
+  <h2>Cookie-Einwilligungsmanagement</h2>
+  <p>Beim ersten Besuch wird ein Einwilligungsbanner angezeigt. Optionale Analytics-Ereignisse werden erst nach aktiver Zustimmung verarbeitet. Die Auswahl kann uber die Cookie-Einstellungen jederzeit geandert werden.</p>
   <h2>Rechtsgrundlagen</h2>
   <p>Die Verarbeitung erfolgt je nach Kontext auf Grundlage von Einwilligung, Vertragserfüllung, vorvertraglichen Maßnahmen, rechtlichen Verpflichtungen oder berechtigten Interessen.</p>
   <h2>Speicherdauer</h2>
@@ -25,6 +27,7 @@
   <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit, Widerruf erteilter Einwilligungen sowie Widerspruch gegen bestimmte Verarbeitungen. Zudem besteht ein Beschwerderecht bei einer Aufsichtsbehörde.</p>
   <h2>Hinweis</h2>
   <p>Vor dem finalen Go-live sollte diese Datenschutzerklärung zusammen mit dem endgültigen Tool- und Cookie-Setup des Produktionssystems nochmals rechtlich und technisch abgeglichen werden.</p>
+  <p>Informationen zum Verbraucher-Widerruf finden Sie in der Seite <a href="{{ url_for('public.withdrawal', lang=lang) }}">Widerrufsbelehrung</a>.</p>
   {% else %}
   <p>This privacy policy explains how personal data is processed in connection with this website and related communication and business activities.</p>
   <h2>Controller</h2>
@@ -38,6 +41,8 @@
   <p>If you contact us via contact form, email or phone, we process the information you provide in order to respond to your inquiry and potentially initiate a business relationship.</p>
   <h2>Hosting, analytics and integrations</h2>
   <p>Our online offer may use hosting, analytics, cookie management, social media and embedded content services. This may include web hosting, traffic measurement, cookie tools, social networks and embedded media.</p>
+  <h2>Cookie consent management</h2>
+  <p>On first visit, a consent banner is shown. Optional analytics events are processed only after explicit consent. Consent choices can be changed at any time via cookie settings.</p>
   <h2>Legal bases</h2>
   <p>Depending on context, processing is based on consent, contract performance, pre-contractual measures, legal obligations or legitimate interests.</p>
   <h2>Retention</h2>
@@ -46,6 +51,7 @@
   <p>You have the right to access, rectify, erase, restrict processing, receive data portability, withdraw consent and object to certain processing activities. You also have the right to lodge a complaint with a supervisory authority.</p>
   <h2>Note</h2>
   <p>Before final production launch, this privacy policy should be reviewed again against the final tool stack, cookie setup and legal requirements.</p>
+  <p>Consumer withdrawal information is available on the <a href="{{ url_for('public.withdrawal', lang=lang) }}">Withdrawal Policy</a> page.</p>
   {% endif %}
 </section>
 {% endblock %}

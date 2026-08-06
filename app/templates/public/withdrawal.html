@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Widerrufsbelehrung' if lang == 'de' else 'Withdrawal Policy' }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ 'Informationen zum gesetzlichen Widerrufsrecht fur Verbraucher.' if lang == 'de' else 'Information about statutory consumer withdrawal rights.' }}{% endblock %}
+{% block content %}
+<section class="page-block legal-copy">
+  {% if lang == 'de' %}
+  <h1>Widerrufsbelehrung</h1>
+  <p>Verbraucherinnen und Verbraucher haben bei Fernabsatzvertragen grundsatzlich ein gesetzliches Widerrufsrecht.</p>
+
+  <h2>Widerrufsrecht</h2>
+  <p>Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Grunden diesen Vertrag zu widerrufen.</p>
+  <p>Die Widerrufsfrist betragt vierzehn Tage ab dem Tag des Vertragsschlusses.</p>
+
+  <h2>Zur Ausubung des Widerrufs</h2>
+  <p>Um Ihr Widerrufsrecht auszuuben, mussen Sie uns (Svitlana Lebedynska, Angel Swert Videoproduktion, Waldstrasse 1, 63128 Dietzenbach, Deutschland, E-Mail: info@angelswert.de, Telefon: +49 (0) 173 294 21 23) mittels einer eindeutigen Erklarung (z. B. ein mit der Post versandter Brief oder E-Mail) uber Ihren Entschluss, diesen Vertrag zu widerrufen, informieren.</p>
+
+  <h2>Folgen des Widerrufs</h2>
+  <p>Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, unverzuglich und spatestens binnen vierzehn Tagen ab dem Tag zuruckzuzahlen, an dem die Mitteilung uber Ihren Widerruf dieses Vertrags bei uns eingegangen ist.</p>
+
+  <h2>Hinweis bei Dienstleistungen</h2>
+  <p>Das Widerrufsrecht kann vorzeitig erloschen, wenn die Dienstleistung vollstandig erbracht wurde und Sie zuvor ausdrucklich zugestimmt haben, dass wir mit der Ausfuhrung beginnen, und Sie Ihre Kenntnis davon bestatigt haben, dass Sie Ihr Widerrufsrecht bei vollstandiger Vertragserfullung verlieren.</p>
+
+  <p class="meta">Hinweis: Dieser Text ist ein Muster fur die Website-Struktur und sollte vor Livebetrieb final juristisch gepruft werden.</p>
+  {% else %}
+  <h1>Withdrawal Policy</h1>
+  <p>Consumers generally have a statutory right of withdrawal for distance contracts.</p>
+
+  <h2>Right of withdrawal</h2>
+  <p>You have the right to withdraw from this contract within fourteen days without giving any reason.</p>
+  <p>The withdrawal period is fourteen days from the date the contract is concluded.</p>
+
+  <h2>How to exercise withdrawal</h2>
+  <p>To exercise your right of withdrawal, you must inform us (Svitlana Lebedynska, Angel Swert Videoproduction, Waldstrasse 1, 63128 Dietzenbach, Germany, email: info@angelswert.de, phone: +49 (0) 173 294 21 23) by means of a clear statement (for example, a letter sent by post or email) of your decision to withdraw from this contract.</p>
+
+  <h2>Effects of withdrawal</h2>
+  <p>If you withdraw from this contract, we will reimburse all payments received from you without undue delay and at the latest within fourteen days from the day on which we receive your notice of withdrawal.</p>
+
+  <h2>Services notice</h2>
+  <p>Your withdrawal right may expire prematurely if the service has been fully performed and you have expressly agreed beforehand that performance starts before the withdrawal period ends and acknowledged that you lose the right once the contract is fully performed.</p>
+
+  <p class="meta">Note: This is a structural template and should be legally reviewed before production use.</p>
+  {% endif %}
+</section>
+{% endblock %}

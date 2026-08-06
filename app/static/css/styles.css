@@ -521,6 +521,130 @@ select {
   width: fit-content;
 }
 
+.cookie-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  width: min(980px, 94vw);
+  z-index: 30;
+  border: 1px solid rgba(228, 204, 132, 0.3);
+  border-radius: 16px;
+  background: rgba(26, 30, 37, 0.98);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.38);
+}
+
+.cookie-banner-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.9rem 1rem;
+}
+
+.cookie-banner-title {
+  margin: 0 0 0.2rem;
+  font-weight: 800;
+  color: var(--accent-2);
+}
+
+.cookie-banner-copy p {
+  margin: 0;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.cookie-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.cookie-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 7, 10, 0.7);
+}
+
+.cookie-modal-card {
+  position: relative;
+  width: min(520px, 92vw);
+  margin: 10vh auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #171b22;
+  padding: 1rem;
+}
+
+.cookie-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.cookie-modal-header h3 {
+  margin: 0;
+}
+
+.cookie-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(228, 204, 132, 0.28);
+  color: var(--accent-2);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0;
+}
+
+.cookie-modal-body {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.cookie-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid rgba(228, 204, 132, 0.2);
+  background: #242b35;
+}
+
+.cookie-option input {
+  width: auto;
+  margin: 0;
+}
+
+.cookie-option-locked {
+  opacity: 0.92;
+}
+
+.cookie-modal-actions {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cookie-manage-btn {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 29;
+  border-radius: 999px;
+  border: 1px solid rgba(228, 204, 132, 0.3);
+  background: rgba(24, 29, 36, 0.94);
+  color: var(--accent-2);
+  padding: 0.5rem 0.8rem;
+}
+
 .legal-copy h2 {
   margin-top: 1.5rem;
 }
@@ -685,6 +809,18 @@ select {
   .chatbot-panel {
     width: min(96vw, 440px);
     height: min(82vh, 720px);
+  }
+
+  .cookie-banner {
+    width: min(96vw, 540px);
+  }
+
+  .cookie-banner-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .cookie-banner-actions {
+    justify-content: flex-start;
   }
 }
 

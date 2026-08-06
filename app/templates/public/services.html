@@ -246,7 +246,17 @@
   (function () {
     const lang = '{{ lang }}';
     const page = 'services';
+    const hasAnalyticsConsent = function() {
+      if (window.ASConsent && typeof window.ASConsent.canTrackAnalytics === 'function') {
+        return window.ASConsent.canTrackAnalytics();
+      }
+      return document.cookie.indexOf('as_cookie_consent=all') !== -1;
+    };
+
     const track = function(eventName, label, meta) {
+      if (!hasAnalyticsConsent()) {
+        return;
+      }
       const payload = {
         event: eventName,
         label: label || '',
@@ -256,7 +266,10 @@
       };
       fetch('/api/track', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Consent-Analytics': 'true'
+        },
         body: JSON.stringify(payload),
         keepalive: true
       }).catch(function () {});

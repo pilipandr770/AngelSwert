@@ -374,18 +374,30 @@ def blog_post(slug):
 
 
 @public_bp.get("/impressum")
+@public_bp.get("/impressum/")
 def impressum():
     return render_template("public/impressum.html")
 
 
 @public_bp.get("/privacy")
+@public_bp.get("/datenschutzerklaerung")
+@public_bp.get("/datenschutzerklaerung/")
 def privacy():
     return render_template("public/privacy.html")
 
 
 @public_bp.get("/terms")
+@public_bp.get("/allgemeine-geschaeftsbedingungen")
+@public_bp.get("/allgemeine-geschaeftsbedingungen/")
 def terms():
     return render_template("public/terms.html")
+
+
+@public_bp.get("/widerrufsbelehrung")
+@public_bp.get("/widerrufsbelehrung/")
+@public_bp.get("/withdrawal")
+def withdrawal():
+    return render_template("public/withdrawal.html")
 
 
 @public_bp.get("/health")

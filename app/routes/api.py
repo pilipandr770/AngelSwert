@@ -21,6 +21,15 @@ from ..services.ai_service import generate_chat_reply, generate_crm_hint
 api_bp = Blueprint("api", __name__, url_prefix="/api")
 
 
+def _has_analytics_consent() -> bool:
+    consent = (request.cookies.get("as_cookie_consent") or "").strip().lower()
+    if consent in {"all", "analytics", "accepted"}:
+        return True
+
+    header_value = (request.headers.get("X-Consent-Analytics") or "").strip().lower()
+    return header_value in {"1", "true", "yes", "on"}
+
+
 def _resolve_timezone(tz_name: str | None) -> ZoneInfo:
     candidate = (tz_name or "").strip()
     if not candidate:
@@ -220,6 +229,9 @@ def chat():
 
 @api_bp.post("/track")
 def track_event():
+    if not _has_analytics_consent():
+        return jsonify({"ok": True, "skipped": "consent_required"})
+
     payload = request.get_json(silent=True) or {}
     event_name = (payload.get("event") or "").strip()
     if not event_name:

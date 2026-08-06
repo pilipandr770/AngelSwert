@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+  {% set is_de = lang == 'de' %}
   <header class="site-header">
     <a class="brand" href="{{ url_for('public.home', lang=lang) }}">
       <img class="brand-mark" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
@@ -68,12 +69,54 @@
             <a href="{{ url_for('public.terms', lang=lang) }}">{{ t('footer.terms') }}</a>
             <a href="{{ url_for('public.impressum', lang=lang) }}">{{ t('footer.impressum') }}</a>
             <a href="{{ url_for('public.privacy', lang=lang) }}">{{ t('footer.privacy') }}</a>
+            <a href="{{ url_for('public.withdrawal', lang=lang) }}">{{ 'Widerrufsbelehrung' if is_de else 'Withdrawal' }}</a>
           </div>
         </div>
       </div>
       <p class="meta site-footer-meta">© {{ brand_name }}. {{ t('footer.rights') }}</p>
     </div>
   </footer>
+
+  <div id="cookieBanner" class="cookie-banner hidden" role="dialog" aria-live="polite" aria-label="Cookie consent">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-copy">
+        <p class="cookie-banner-title">{{ 'Cookies & Datenschutz' if is_de else 'Cookies & Privacy' }}</p>
+        <p>
+          {{ 'Wir nutzen essentielle Cookies fur den Betrieb und optionale Analytics-Cookies nur mit Ihrer Einwilligung.' if is_de else 'We use essential cookies for operation and optional analytics cookies only with your consent.' }}
+        </p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button type="button" id="cookieAcceptAll">{{ 'Alle akzeptieren' if is_de else 'Accept all' }}</button>
+        <button type="button" id="cookieRejectOptional" class="btn-ghost">{{ 'Nur essenziell' if is_de else 'Essential only' }}</button>
+        <button type="button" id="cookieOpenSettings" class="btn-ghost">{{ 'Einstellungen' if is_de else 'Settings' }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cookieSettingsModal" class="cookie-modal hidden" aria-hidden="true">
+    <div class="cookie-modal-backdrop" data-cookie-close="1"></div>
+    <div class="cookie-modal-card" role="dialog" aria-modal="true" aria-label="Cookie settings">
+      <div class="cookie-modal-header">
+        <h3>{{ 'Cookie-Einstellungen' if is_de else 'Cookie settings' }}</h3>
+        <button type="button" id="cookieCloseSettings" class="cookie-modal-close" aria-label="Close">×</button>
+      </div>
+      <div class="cookie-modal-body">
+        <label class="cookie-option cookie-option-locked">
+          <input type="checkbox" checked disabled>
+          <span>{{ 'Essenzielle Cookies (immer aktiv)' if is_de else 'Essential cookies (always active)' }}</span>
+        </label>
+        <label class="cookie-option">
+          <input type="checkbox" id="cookieAnalyticsOptIn">
+          <span>{{ 'Analytics-Cookies (optional)' if is_de else 'Analytics cookies (optional)' }}</span>
+        </label>
+      </div>
+      <div class="cookie-modal-actions">
+        <button type="button" id="cookieSaveSettings">{{ 'Auswahl speichern' if is_de else 'Save selection' }}</button>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" id="cookieManageBtn" class="cookie-manage-btn hidden">{{ 'Cookie-Einstellungen' if is_de else 'Cookie settings' }}</button>
 
   <div id="chatbot" class="chatbot">
     <button id="chatToggle" class="chatbot-toggle">{{ t('chat.toggle') }}</button>
@@ -101,6 +144,7 @@
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='js/chatbot.js', v='20260806a') }}"></script>
+  <script src="{{ url_for('static', filename='js/cookie_consent.js', v='20260806a') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatbot.js', v='20260806b') }}"></script>
 </body>
 </html>
