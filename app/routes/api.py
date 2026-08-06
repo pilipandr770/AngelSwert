@@ -51,6 +51,33 @@ def _looks_like_calendar_request(text: str) -> bool:
     return any(m in t for m in markers)
 
 
+def _looks_like_booking_request(text: str) -> bool:
+    t = text.lower()
+    markers = [
+        "запис", "запиши", "book", "booking", "термин", "appointment", "консультац", "consultation", "beratung",
+    ]
+    return any(m in t for m in markers)
+
+
+def _looks_like_pricing_request(text: str) -> bool:
+    t = text.lower()
+    markers = ["цена", "стоимость", "price", "pricing", "preise", "kostet", "пакет", "package", "angebot"]
+    return any(m in t for m in markers)
+
+
+def _is_no_access_disclaimer(text: str) -> bool:
+    t = (text or "").lower()
+    markers = [
+        "не имею доступа",
+        "не можу отримати доступ",
+        "i don't have access",
+        "i do not have access",
+        "kein zugriff",
+        "couldn't access",
+    ]
+    return any(m in t for m in markers)
+
+
 @api_bp.post("/chat")
 def chat():
     payload = request.get_json(silent=True) or {}
@@ -99,16 +126,6 @@ def chat():
         f"{terms_block or '- no glossary terms yet'}"
     )
 
-    if _looks_like_time_request(message):
-        return jsonify(
-            {
-                "reply": (
-                    f"Поточний UTC час: {now_iso}. "
-                    f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
-                )
-            }
-        )
-
     if _looks_like_calendar_request(message):
         if not slots:
             return jsonify(
@@ -129,12 +146,75 @@ def chat():
         lines.append("Щоб забронювати, оберіть слот у чат-віджеті нижче.")
         return jsonify({"reply": "\n".join(lines)})
 
+    if _looks_like_time_request(message):
+        return jsonify(
+            {
+                "reply": (
+                    f"Поточний UTC час: {now_iso}. "
+                    f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
+                )
+            }
+        )
+
+    if _looks_like_booking_request(message):
+        if not slots:
+            return jsonify(
+                {
+                    "reply": (
+                        "Я можу записати вас на консультацію, але зараз немає вільних слотів у найближчі 14 днів. "
+                        "Будь ласка, спробуйте пізніше або зверніться до адміністратора."
+                    )
+                }
+            )
+        slot = slots[0]
+        local_start = _to_user_time(slot.starts_at, tz).strftime("%Y-%m-%d %H:%M")
+        local_end = _to_user_time(slot.ends_at, tz).strftime("%H:%M")
+        return jsonify(
+            {
+                "reply": (
+                    "Так, я можу записати вас на термін. "
+                    f"Найближчий вільний слот: #{slot.id}, {local_start} - {local_end}. "
+                    "Оберіть слот у віджеті та вкажіть ім'я й email для підтвердження."
+                )
+            }
+        )
+
+    if _looks_like_pricing_request(message):
+        return jsonify(
+            {
+                "reply": (
+                    "Орієнтовні пакети: Starter - 999 EUR/місяць, Growth - 1.999 EUR/місяць, PRO - від 3.999 EUR/місяць (без ПДВ). "
+                    "Для точного розрахунку можемо забронювати персональну консультацію через календар у чаті."
+                )
+            }
+        )
+
     reply = generate_chat_reply(
         api_key=current_app.config["OPENAI_API_KEY"],
         model=current_app.config["OPENAI_MODEL"],
         user_message=message,
         custom_instructions=f"{custom_instructions}\n\n{runtime_context}",
     )
+
+    if _is_no_access_disclaimer(reply):
+        if _looks_like_calendar_request(message) or _looks_like_booking_request(message):
+            if slots:
+                slot = slots[0]
+                local_start = _to_user_time(slot.starts_at, tz).strftime("%Y-%m-%d %H:%M")
+                local_end = _to_user_time(slot.ends_at, tz).strftime("%H:%M")
+                reply = (
+                    "Я маю доступ до внутрішнього календаря. "
+                    f"Найближчий вільний слот: #{slot.id}, {local_start} - {local_end}. "
+                    "Оберіть слот у віджеті нижче та надішліть ім'я й email для бронювання."
+                )
+            else:
+                reply = "Я маю доступ до внутрішнього календаря, але наразі вільних слотів у найближчі 14 днів немає."
+        elif _looks_like_time_request(message):
+            reply = (
+                f"Поточний UTC час: {now_iso}. "
+                f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
+            )
+
     return jsonify({"reply": reply})
 
 
