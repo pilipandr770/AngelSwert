@@ -76,7 +76,7 @@ async function loadSlots() {
       return;
     }
 
-    addMessage('bot', `Поточний час (${data.timezone || userTimezone}): ${data.now_local || data.now_utc}`);
+    addMessage('bot', `Время (${data.timezone || userTimezone}): ${data.now_local || data.now_utc}`);
     slots.forEach((slot) => {
       const btn = document.createElement('button');
       btn.type = 'button';

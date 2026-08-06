@@ -150,7 +150,7 @@ def chat():
         return jsonify(
             {
                 "reply": (
-                    f"Поточний UTC час: {now_iso}. "
+                    f"Время UTC: {now_iso}. "
                     f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
                 )
             }
@@ -211,7 +211,7 @@ def chat():
                 reply = "Я маю доступ до внутрішнього календаря, але наразі вільних слотів у найближчі 14 днів немає."
         elif _looks_like_time_request(message):
             reply = (
-                f"Поточний UTC час: {now_iso}. "
+                f"Время UTC: {now_iso}. "
                 f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
             )
 
