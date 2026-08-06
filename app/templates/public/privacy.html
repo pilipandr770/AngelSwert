@@ -28,6 +28,7 @@
   <h2>Hinweis</h2>
   <p>Vor dem finalen Go-live sollte diese Datenschutzerklärung zusammen mit dem endgültigen Tool- und Cookie-Setup des Produktionssystems nochmals rechtlich und technisch abgeglichen werden.</p>
   <p>Informationen zum Verbraucher-Widerruf finden Sie in der Seite <a href="{{ url_for('public.withdrawal', lang=lang) }}">Widerrufsbelehrung</a>.</p>
+  <p>Details zu Cookies und Einwilligungen finden Sie in der <a href="{{ url_for('public.cookie_policy', lang=lang) }}">Cookie-Richtlinie</a>.</p>
   {% else %}
   <p>This privacy policy explains how personal data is processed in connection with this website and related communication and business activities.</p>
   <h2>Controller</h2>
@@ -52,6 +53,7 @@
   <h2>Note</h2>
   <p>Before final production launch, this privacy policy should be reviewed again against the final tool stack, cookie setup and legal requirements.</p>
   <p>Consumer withdrawal information is available on the <a href="{{ url_for('public.withdrawal', lang=lang) }}">Withdrawal Policy</a> page.</p>
+  <p>Details about cookie usage and consent are available in the <a href="{{ url_for('public.cookie_policy', lang=lang) }}">Cookie Policy</a>.</p>
   {% endif %}
 </section>
 {% endblock %}

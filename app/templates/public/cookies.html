@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Cookie-Richtlinie' if lang == 'de' else 'Cookie Policy' }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ 'Informationen uber eingesetzte Cookies und Einwilligungen.' if lang == 'de' else 'Information about cookies used and consent choices.' }}{% endblock %}
+{% block content %}
+<section class="page-block legal-copy">
+  {% if lang == 'de' %}
+  <h1>Cookie-Richtlinie</h1>
+  <p>Diese Seite informiert uber den Einsatz von Cookies und vergleichbaren Technologien in diesem Onlineangebot.</p>
+
+  <h2>1. Essenzielle Cookies</h2>
+  <p>Essenzielle Cookies sind fur den technischen Betrieb der Website erforderlich. Dazu gehort insbesondere die Speicherung Ihrer Sprachwahl und Ihrer Cookie-Entscheidung.</p>
+
+  <h2>2. Optionale Analytics-Cookies</h2>
+  <p>Analysebezogene Ereignisse werden nur verarbeitet, wenn Sie im Cookie-Banner oder in den Cookie-Einstellungen zugestimmt haben.</p>
+
+  <h2>3. Rechtsgrundlage</h2>
+  <p>Essenzielle Cookies basieren auf berechtigtem Interesse bzw. technischer Erforderlichkeit. Optionale Analytics-Verarbeitung erfolgt auf Grundlage Ihrer Einwilligung.</p>
+
+  <h2>4. Widerruf und Anderung</h2>
+  <p>Sie konnen Ihre Auswahl jederzeit uber den Button "Cookie-Einstellungen" unten links auf der Website anpassen.</p>
+
+  <h2>5. Weitere Informationen</h2>
+  <p>Weitere Informationen zur Datenverarbeitung finden Sie in der <a href="{{ url_for('public.privacy', lang=lang) }}">Datenschutzerklarung</a>.</p>
+  {% else %}
+  <h1>Cookie Policy</h1>
+  <p>This page explains the use of cookies and similar technologies in this online offering.</p>
+
+  <h2>1. Essential cookies</h2>
+  <p>Essential cookies are required for the technical operation of the website. This includes storing your language choice and cookie decision.</p>
+
+  <h2>2. Optional analytics cookies</h2>
+  <p>Analytics-related events are processed only when you provide consent in the cookie banner or cookie settings.</p>
+
+  <h2>3. Legal basis</h2>
+  <p>Essential cookies rely on legitimate interest / technical necessity. Optional analytics processing relies on your consent.</p>
+
+  <h2>4. Withdrawal and changes</h2>
+  <p>You can change your choice at any time using the "Cookie settings" button at the lower left corner of the website.</p>
+
+  <h2>5. More information</h2>
+  <p>For more details about data processing, see the <a href="{{ url_for('public.privacy', lang=lang) }}">Privacy Policy</a>.</p>
+  {% endif %}
+</section>
+{% endblock %}

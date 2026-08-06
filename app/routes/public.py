@@ -311,10 +311,18 @@ def contact_submit():
     preferred_language = (request.form.get("preferred_language") or "").strip()
     timeline = (request.form.get("timeline") or "").strip()
     message = (request.form.get("message") or "").strip()
+    privacy_consent = (request.form.get("privacy_consent") or "").strip().lower()
     lang = getattr(g, "lang", "de")
 
     if not name or not email or not message:
         flash(translate(lang, "contact.form_error"), "error")
+        return redirect(url_for("public.contact", lang=lang))
+
+    if privacy_consent not in {"1", "on", "true", "yes"}:
+        if lang == "de":
+            flash("Bitte stimmen Sie der Datenschutzerklarung zu.", "error")
+        else:
+            flash("Please agree to the privacy policy.", "error")
         return redirect(url_for("public.contact", lang=lang))
 
     structured_lines = [
@@ -326,6 +334,7 @@ def contact_submit():
         f"Service interest: {service_interest or '-'}",
         f"Preferred language: {preferred_language or '-'}",
         f"Timeline: {timeline or '-'}",
+        f"Privacy consent: yes",
         "",
         "Message:",
         message,
@@ -398,6 +407,14 @@ def terms():
 @public_bp.get("/withdrawal")
 def withdrawal():
     return render_template("public/withdrawal.html")
+
+
+@public_bp.get("/cookie-policy")
+@public_bp.get("/cookie-policy/")
+@public_bp.get("/cookie-richtlinie")
+@public_bp.get("/cookie-richtlinie/")
+def cookie_policy():
+    return render_template("public/cookies.html")
 
 
 @public_bp.get("/health")

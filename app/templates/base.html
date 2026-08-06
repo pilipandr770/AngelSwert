@@ -70,6 +70,7 @@
             <a href="{{ url_for('public.impressum', lang=lang) }}">{{ t('footer.impressum') }}</a>
             <a href="{{ url_for('public.privacy', lang=lang) }}">{{ t('footer.privacy') }}</a>
             <a href="{{ url_for('public.withdrawal', lang=lang) }}">{{ 'Widerrufsbelehrung' if is_de else 'Withdrawal' }}</a>
+            <a href="{{ url_for('public.cookie_policy', lang=lang) }}">{{ 'Cookie-Richtlinie' if is_de else 'Cookie Policy' }}</a>
           </div>
         </div>
       </div>
