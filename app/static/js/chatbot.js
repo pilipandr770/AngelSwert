@@ -1,5 +1,6 @@
 const toggle = document.getElementById('chatToggle');
 const panel = document.getElementById('chatPanel');
+const closeBtn = document.getElementById('chatClose');
 const form = document.getElementById('chatForm');
 const input = document.getElementById('chatInput');
 const messages = document.getElementById('chatMessages');
@@ -7,8 +8,28 @@ const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
 
 let selectedSlot = null;
 
+function openPanel() {
+  if (!panel) return;
+  panel.classList.remove('hidden');
+  if (toggle) {
+    toggle.classList.add('chatbot-toggle-hidden');
+  }
+}
+
+function closePanel() {
+  if (!panel) return;
+  panel.classList.add('hidden');
+  if (toggle) {
+    toggle.classList.remove('chatbot-toggle-hidden');
+  }
+}
+
 if (toggle && panel) {
-  toggle.addEventListener('click', () => panel.classList.toggle('hidden'));
+  toggle.addEventListener('click', openPanel);
+}
+
+if (closeBtn) {
+  closeBtn.addEventListener('click', closePanel);
 }
 
 function addMessage(role, text) {
@@ -117,15 +138,19 @@ async function bookSelectedSlot() {
 
 function bindBookingUi() {
   const showBookingBtn = document.getElementById('chatShowBookingBtn');
+  const controls = document.getElementById('chatCalendarControls');
   const loadSlotsBtn = document.getElementById('chatLoadSlotsBtn');
   const bookBtn = document.getElementById('chatBookBtn');
 
   if (showBookingBtn && !showBookingBtn.dataset.bound) {
     showBookingBtn.addEventListener('click', async () => {
-      const controls = document.getElementById('chatCalendarControls');
       if (controls) {
-        controls.classList.remove('chat-calendar-hidden');
-        controls.scrollIntoView({ block: 'nearest' });
+        const collapsed = controls.classList.contains('chat-calendar-collapsed');
+        controls.classList.toggle('chat-calendar-collapsed', !collapsed);
+        showBookingBtn.setAttribute('aria-expanded', collapsed ? 'true' : 'false');
+        if (!collapsed) {
+          return;
+        }
       }
       await loadSlots();
     });
@@ -168,3 +193,9 @@ if (form) {
     }
   });
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && panel && !panel.classList.contains('hidden')) {
+    closePanel();
+  }
+});

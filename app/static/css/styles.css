@@ -529,24 +529,51 @@ select {
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.15);
 }
 
+.chatbot-toggle-hidden {
+  display: none;
+}
+
 .chatbot-panel {
-  width: min(360px, 90vw);
+  width: min(420px, 94vw);
+  height: min(78vh, 680px);
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 18px;
   padding: 0.8rem;
   margin-top: 0.6rem;
   display: grid;
-  gap: 0.6rem;
+  grid-template-rows: auto minmax(120px, 1fr) auto auto;
+  gap: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.36);
+}
+
+.chatbot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.chatbot-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(228, 204, 132, 0.32);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-2);
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0;
 }
 
 .chatbot-title {
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
 }
 
 .chatbot-messages {
-  height: 220px;
+  min-height: 0;
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -587,12 +614,17 @@ select {
   margin-top: 0;
   display: grid;
   gap: 0.5rem;
+  min-height: 0;
+}
+
+.chat-calendar-collapsed {
+  display: none;
 }
 
 .chat-slots {
   display: grid;
   gap: 0.35rem;
-  max-height: 180px;
+  max-height: min(24vh, 220px);
   overflow: auto;
 }
 
@@ -614,6 +646,9 @@ select {
 .chat-booking-form {
   display: grid;
   gap: 0.4rem;
+  max-height: min(24vh, 220px);
+  overflow: auto;
+  padding-right: 0.2rem;
 }
 
 .chat-booking-form input,
@@ -627,6 +662,18 @@ select {
 
 .hidden {
   display: none;
+}
+
+@media (max-width: 640px) {
+  .chatbot {
+    right: 0.5rem;
+    bottom: 0.5rem;
+  }
+
+  .chatbot-panel {
+    width: min(96vw, 440px);
+    height: min(82vh, 720px);
+  }
 }
 
 .auth-body {

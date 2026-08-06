@@ -78,14 +78,17 @@
   <div id="chatbot" class="chatbot">
     <button id="chatToggle" class="chatbot-toggle">{{ t('chat.toggle') }}</button>
     <div id="chatPanel" class="chatbot-panel hidden">
-      <div class="chatbot-title">{{ t('chat.title') }}</div>
+      <div class="chatbot-header">
+        <div class="chatbot-title">{{ t('chat.title') }}</div>
+        <button type="button" id="chatClose" class="chatbot-close" aria-label="Close chat">×</button>
+      </div>
       <div id="chatMessages" class="chatbot-messages"></div>
       <form id="chatForm" class="chatbot-form">
         <input id="chatInput" type="text" placeholder="{{ t('chat.placeholder') }}" required>
-        <button type="button" id="chatShowBookingBtn">Book slot</button>
+        <button type="button" id="chatShowBookingBtn" aria-expanded="false">Book slot</button>
         <button type="submit">{{ t('chat.send') }}</button>
       </form>
-      <div id="chatCalendarControls" class="chat-calendar-controls">
+      <div id="chatCalendarControls" class="chat-calendar-controls chat-calendar-collapsed">
         <button type="button" id="chatLoadSlotsBtn">Показати вільні слоти</button>
         <div id="chatSlotsContainer" class="chat-slots"></div>
         <div class="chat-booking-form">
