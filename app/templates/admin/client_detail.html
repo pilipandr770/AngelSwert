@@ -77,4 +77,41 @@
   </tr>
   {% endfor %}
 </table>
+
+<section class="admin-grid">
+  <div class="admin-form">
+    <h2>Календарні бронювання</h2>
+    {% if lead.calendar_bookings %}
+      {% for booking in lead.calendar_bookings %}
+      <article class="card">
+        <p><strong>{{ booking.client_name }}</strong> ({{ booking.client_email }})</p>
+        <p>Слот: {{ booking.slot.starts_at.strftime('%d.%m.%Y %H:%M') }} - {{ booking.slot.ends_at.strftime('%H:%M') }} UTC</p>
+        <p>Статус: {{ booking.status }}</p>
+      </article>
+      {% endfor %}
+    {% else %}
+      <p>Бронювань ще немає.</p>
+    {% endif %}
+  </div>
+
+  <div class="admin-form">
+    <h2>Звіти AI для CRM</h2>
+    <form method="post" action="{{ url_for('admin.crm_generate_report', lead_id=lead.id) }}">
+      <label>Запит до CRM-асистента</label>
+      <textarea name="question" rows="3" placeholder="Сформуй короткий звіт по лиду, ризики та наступну дію"></textarea>
+      <button class="btn" type="submit">Згенерувати AI-звіт</button>
+    </form>
+    {% if lead.ai_reports %}
+      {% for report in lead.ai_reports %}
+      <article class="card">
+        <p>{{ report.summary }}</p>
+        <p class="meta">Рекомендована дія: {{ report.recommended_action }}</p>
+        <p class="meta">{{ report.created_at.strftime('%d.%m.%Y %H:%M') }}</p>
+      </article>
+      {% endfor %}
+    {% else %}
+      <p>Звітів AI ще немає.</p>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

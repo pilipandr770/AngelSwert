@@ -159,3 +159,51 @@ class CrmGlossaryTerm(db.Model):
     updated_by = db.Column(db.String(255), default="", nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class InternalCalendarSlot(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    starts_at = db.Column(db.DateTime, nullable=False, index=True)
+    ends_at = db.Column(db.DateTime, nullable=False)
+    is_available = db.Column(db.Boolean, default=True, nullable=False)
+    created_by = db.Column(db.String(255), default="system", nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class InternalCalendarBooking(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slot_id = db.Column(db.Integer, db.ForeignKey("internal_calendar_slot.id"), nullable=False)
+    lead_id = db.Column(db.Integer, db.ForeignKey("lead.id"), nullable=False)
+    client_name = db.Column(db.String(255), nullable=False)
+    client_email = db.Column(db.String(255), nullable=False)
+    note = db.Column(db.Text, default="", nullable=False)
+    source = db.Column(db.String(120), default="chatbot", nullable=False)
+    status = db.Column(db.String(50), default="booked", nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    slot = db.relationship("InternalCalendarSlot", backref=db.backref("bookings", lazy=True))
+    lead = db.relationship("Lead", backref=db.backref("calendar_bookings", lazy=True, order_by="InternalCalendarBooking.created_at.desc()"))
+
+
+class CrmAiReport(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lead_id = db.Column(db.Integer, db.ForeignKey("lead.id"), nullable=False)
+    summary = db.Column(db.Text, nullable=False)
+    recommended_action = db.Column(db.Text, default="", nullable=False)
+    created_by = db.Column(db.String(120), default="crm_assistant", nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    lead = db.relationship("Lead", backref=db.backref("ai_reports", lazy=True, order_by="CrmAiReport.created_at.desc()"))
+
+
+class InternalCalendarSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    day_start_hour = db.Column(db.Integer, default=9, nullable=False)
+    day_end_hour = db.Column(db.Integer, default=18, nullable=False)
+    slot_duration_minutes = db.Column(db.Integer, default=90, nullable=False)
+    slot_interval_minutes = db.Column(db.Integer, default=120, nullable=False)
+    weekdays_csv = db.Column(db.String(32), default="0,1,2,3,4", nullable=False)
+    horizon_days = db.Column(db.Integer, default=90, nullable=False)
+    updated_by = db.Column(db.String(255), default="system", nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

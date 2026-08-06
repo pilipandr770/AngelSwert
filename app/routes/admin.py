@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 from pathlib import Path
 import uuid
 
@@ -14,8 +15,11 @@ from ..models import (
     BlogAutomationSettings,
     BlogPost,
     BlogTopic,
+    CrmAiReport,
     CrmGlossaryTerm,
     DiscoveryAssessment,
+    InternalCalendarSettings,
+    InternalCalendarSlot,
     Lead,
     LeadMessage,
     ServicePageSettings,
@@ -68,6 +72,57 @@ def _save_uploaded_static_file(file_storage, folder: str, allowed_ext: set[str])
 
 def _admin_required():
     return current_user.is_authenticated and current_user.is_admin
+
+
+def _calendar_weekdays_from_csv(csv_value: str) -> set[int]:
+    values = {int(x.strip()) for x in (csv_value or "").split(",") if x.strip().isdigit()}
+    return values or {0, 1, 2, 3, 4}
+
+
+def _regenerate_future_calendar_slots(settings: InternalCalendarSettings, actor: str) -> int:
+    now = datetime.utcnow()
+
+    # Remove only future slots that are still free; keep already booked slots.
+    free_slots = InternalCalendarSlot.query.filter(
+        InternalCalendarSlot.starts_at >= now,
+        InternalCalendarSlot.is_available.is_(True),
+    ).all()
+    for slot in free_slots:
+        if not slot.bookings:
+            db.session.delete(slot)
+
+    weekdays = _calendar_weekdays_from_csv(settings.weekdays_csv)
+    start_hour = max(0, min(23, settings.day_start_hour))
+    end_hour = max(start_hour + 1, min(24, settings.day_end_hour))
+    duration = max(15, settings.slot_duration_minutes)
+    interval = max(duration, settings.slot_interval_minutes)
+    horizon = max(1, min(180, settings.horizon_days))
+
+    generated = 0
+    day = now.date()
+    end_date = (now + timedelta(days=horizon)).date()
+    while day <= end_date:
+        if day.weekday() in weekdays:
+            minute_cursor = start_hour * 60
+            day_end_minutes = end_hour * 60
+            while minute_cursor + duration <= day_end_minutes:
+                starts_at = datetime(day.year, day.month, day.day, minute_cursor // 60, minute_cursor % 60, 0)
+                if starts_at > now:
+                    exists = InternalCalendarSlot.query.filter_by(starts_at=starts_at).first()
+                    if not exists:
+                        db.session.add(
+                            InternalCalendarSlot(
+                                starts_at=starts_at,
+                                ends_at=starts_at + timedelta(minutes=duration),
+                                is_available=True,
+                                created_by=actor or "admin",
+                            )
+                        )
+                        generated += 1
+                minute_cursor += interval
+        day += timedelta(days=1)
+
+    return generated
 
 
 @admin_bp.before_request
@@ -200,6 +255,45 @@ def services_content_settings_save():
 def analytics_events():
     events = AnalyticsEvent.query.order_by(AnalyticsEvent.created_at.desc()).limit(200).all()
     return render_template("admin/analytics.html", events=events)
+
+
+@admin_bp.get("/calendar-settings")
+@login_required
+def calendar_settings():
+    settings = InternalCalendarSettings.query.first()
+    if not settings:
+        settings = InternalCalendarSettings(updated_by=current_user.email)
+        db.session.add(settings)
+        db.session.commit()
+    return render_template("admin/calendar_settings.html", settings=settings)
+
+
+@admin_bp.post("/calendar-settings")
+@login_required
+def calendar_settings_save():
+    settings = InternalCalendarSettings.query.first()
+    if not settings:
+        settings = InternalCalendarSettings()
+        db.session.add(settings)
+
+    def _int_field(name: str, default: int) -> int:
+        try:
+            return int((request.form.get(name) or str(default)).strip())
+        except ValueError:
+            return default
+
+    settings.day_start_hour = max(0, min(23, _int_field("day_start_hour", 9)))
+    settings.day_end_hour = max(settings.day_start_hour + 1, min(24, _int_field("day_end_hour", 18)))
+    settings.slot_duration_minutes = max(15, min(180, _int_field("slot_duration_minutes", 90)))
+    settings.slot_interval_minutes = max(settings.slot_duration_minutes, min(240, _int_field("slot_interval_minutes", 120)))
+    settings.horizon_days = max(1, min(180, _int_field("horizon_days", 90)))
+    settings.weekdays_csv = (request.form.get("weekdays_csv") or "0,1,2,3,4").strip()
+    settings.updated_by = current_user.email
+
+    generated = _regenerate_future_calendar_slots(settings, actor=current_user.email)
+    db.session.commit()
+    flash(f"Налаштування календаря збережено. Згенеровано нових слотів: {generated}.", "success")
+    return redirect(url_for("admin.calendar_settings"))
 
 
 @admin_bp.get("/blog")
@@ -651,3 +745,29 @@ def crm_ai_hint(lead_id):
         question=question,
     )
     return render_template("admin/client_detail.html", lead=lead, ai_hint=ai_hint)
+
+
+@admin_bp.post("/crm/<int:lead_id>/report")
+@login_required
+def crm_generate_report(lead_id):
+    lead = Lead.query.get_or_404(lead_id)
+    question = (request.form.get("question") or "").strip() or "Create concise CRM report and next action."
+
+    summary = generate_crm_hint(
+        api_key=current_app.config["OPENAI_API_KEY"],
+        model=current_app.config["OPENAI_MODEL"],
+        lead_name=lead.name,
+        lead_stage=lead.stage,
+        question=question,
+    )
+    report = CrmAiReport(
+        lead_id=lead.id,
+        summary=summary,
+        recommended_action="Зв'яжіться з клієнтом протягом 24 годин та підтвердіть наступний крок.",
+        created_by="crm_assistant",
+    )
+    db.session.add(report)
+    db.session.commit()
+
+    flash("AI-звіт для CRM згенеровано та збережено.", "success")
+    return redirect(url_for("admin.crm_detail", lead_id=lead.id))

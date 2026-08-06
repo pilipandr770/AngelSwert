@@ -1,0 +1,28 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Календар{% endblock %}
+{% block content %}
+<h1>Налаштування внутрішнього календаря</h1>
+<p>Слоти генеруються на горизонт до 3 місяців (або інший період, який ви задасте).</p>
+
+<form method="post" action="{{ url_for('admin.calendar_settings_save') }}" class="admin-form">
+  <label>Початок робочого дня (година, UTC)</label>
+  <input type="number" min="0" max="23" name="day_start_hour" value="{{ settings.day_start_hour }}" required>
+
+  <label>Кінець робочого дня (година, UTC)</label>
+  <input type="number" min="1" max="24" name="day_end_hour" value="{{ settings.day_end_hour }}" required>
+
+  <label>Тривалість слоту (хв)</label>
+  <input type="number" min="15" max="180" name="slot_duration_minutes" value="{{ settings.slot_duration_minutes }}" required>
+
+  <label>Інтервал між стартами слотів (хв)</label>
+  <input type="number" min="15" max="240" name="slot_interval_minutes" value="{{ settings.slot_interval_minutes }}" required>
+
+  <label>Робочі дні (0=Пн ... 6=Нд, через кому)</label>
+  <input name="weekdays_csv" value="{{ settings.weekdays_csv }}" placeholder="0,1,2,3,4" required>
+
+  <label>Горизонт генерації (днів)</label>
+  <input type="number" min="1" max="180" name="horizon_days" value="{{ settings.horizon_days }}" required>
+
+  <button class="btn" type="submit">Зберегти та перегенерувати слоти</button>
+</form>
+{% endblock %}
