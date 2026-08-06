@@ -35,6 +35,22 @@ def _to_user_time(dt_utc_naive: datetime, tz: ZoneInfo) -> datetime:
     return dt_utc_naive.replace(tzinfo=timezone.utc).astimezone(tz)
 
 
+def _looks_like_time_request(text: str) -> bool:
+    t = text.lower()
+    markers = [
+        "дата", "время", "час", "котра година", "который час", "time", "date", "uhrzeit", "datum",
+    ]
+    return any(m in t for m in markers)
+
+
+def _looks_like_calendar_request(text: str) -> bool:
+    t = text.lower()
+    markers = [
+        "календар", "calendar", "termin", "appointment", "slot", "слот", "встреч", "зустріч",
+    ]
+    return any(m in t for m in markers)
+
+
 @api_bp.post("/chat")
 def chat():
     payload = request.get_json(silent=True) or {}
@@ -82,6 +98,36 @@ def chat():
         "CRM glossary terms:\n"
         f"{terms_block or '- no glossary terms yet'}"
     )
+
+    if _looks_like_time_request(message):
+        return jsonify(
+            {
+                "reply": (
+                    f"Поточний UTC час: {now_iso}. "
+                    f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
+                )
+            }
+        )
+
+    if _looks_like_calendar_request(message):
+        if not slots:
+            return jsonify(
+                {
+                    "reply": (
+                        "Зараз немає вільних слотів у календарі на найближчі 14 днів. "
+                        "Спробуйте пізніше або зверніться до адміністратора."
+                    )
+                }
+            )
+        lines = [
+            "Ось найближчі вільні слоти (локальний час):"
+        ]
+        for slot in slots[:5]:
+            local_start = _to_user_time(slot.starts_at, tz).strftime("%Y-%m-%d %H:%M")
+            local_end = _to_user_time(slot.ends_at, tz).strftime("%H:%M")
+            lines.append(f"- #{slot.id}: {local_start} - {local_end}")
+        lines.append("Щоб забронювати, оберіть слот у чат-віджеті нижче.")
+        return jsonify({"reply": "\n".join(lines)})
 
     reply = generate_chat_reply(
         api_key=current_app.config["OPENAI_API_KEY"],
