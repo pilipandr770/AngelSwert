@@ -84,9 +84,19 @@
         <input id="chatInput" type="text" placeholder="{{ t('chat.placeholder') }}" required>
         <button type="submit">{{ t('chat.send') }}</button>
       </form>
+      <div id="chatCalendarControls" class="chat-calendar-controls">
+        <button type="button" id="chatLoadSlotsBtn">Показати вільні слоти</button>
+        <div id="chatSlotsContainer" class="chat-slots"></div>
+        <div class="chat-booking-form">
+          <input id="chatBookName" type="text" placeholder="Ваше ім'я">
+          <input id="chatBookEmail" type="email" placeholder="Ваш email">
+          <textarea id="chatBookNote" rows="2" placeholder="Коментар (необов'язково)"></textarea>
+          <button type="button" id="chatBookBtn">Забронювати обраний слот</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatbot.js', v='20260806a') }}"></script>
 </body>
 </html>
