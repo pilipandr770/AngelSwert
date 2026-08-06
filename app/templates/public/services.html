@@ -2,19 +2,17 @@
 {% block title %}{{ t('services.page_title') }} | {{ brand_name }}{% endblock %}
 {% block meta_description %}{{ t('services.meta_description') }}{% endblock %}
 {% block content %}
-{% set is_de = lang == 'de' %}
+{% set copy = services_copy %}
 
 <section class="hero services-hero">
   <div class="split split--media">
     <div>
-      <p class="eyebrow">{{ 'UNSERE LEISTUNGEN' if is_de else 'OUR SERVICES' }}</p>
-      <h1>{{ 'Strukturierte KI-Video-, Digital-Human- und Content-Systeme für wiederkehrende Unternehmenskommunikation.' if is_de else 'Structured AI video, digital human and content systems for recurring business communication.' }}</h1>
-      <p class="section-lead">
-        {{ 'ASAI Studio verbindet Videoproduktion, Creative Direction, Digital Humans, Content-Systeme, KI-Agenten und kontrollierte Automatisierung zu einer skalierbaren Kommunikationslösung.' if is_de else 'ASAI Studio combines video production, creative direction, digital humans, content systems, AI agents and controlled automation into one scalable communication solution.' }}
-      </p>
+      <p class="eyebrow">{{ copy.hero.eyebrow }}</p>
+      <h1>{{ copy.hero.title }}</h1>
+      <p class="section-lead">{{ copy.hero.lead }}</p>
       <div class="cta-row">
-        <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="hero_primary">{{ 'AI Discovery starten' if is_de else 'Start AI Discovery' }}</a>
-        <a class="btn btn-ghost" href="#packages" data-track-event="package_cta_click" data-track-label="hero_packages">{{ 'Pakete ansehen' if is_de else 'See packages' }}</a>
+        <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="hero_primary">{{ copy.hero.cta_primary }}</a>
+        <a class="btn btn-ghost" href="#packages" data-track-event="package_cta_click" data-track-label="hero_packages">{{ copy.hero.cta_secondary }}</a>
       </div>
     </div>
     <figure class="media-frame media-frame--hero media-frame--contain services-hero-media">
@@ -24,28 +22,15 @@
 </section>
 
 <section class="page-block">
-  <h2>{{ 'Fünf Hauptleistungen' if is_de else 'Five core services' }}</h2>
+  <h2>{{ copy.five_core.title }}</h2>
+  {% set five_labels = ['videoproduction', 'digital_humans', 'content_youtube', 'ai_automation', 'strategy_implementation'] %}
   <div class="services-five-grid">
-    <details class="card service-card" data-track-event="service_card_click" data-track-label="videoproduction">
-      <summary>{{ 'Videoproduktion & Creative Direction' if is_de else 'Video production & creative direction' }}</summary>
-      <p>{{ 'Konzeption, Drehbuch, Produktion, Schnitt, Postproduktion, Motion Design, 3D und Lokalisierung.' if is_de else 'Concept, scripting, production, editing, post-production, motion design, 3D and localization.' }}</p>
+    {% for card in copy.five_core.cards %}
+    <details class="card service-card" data-track-event="service_card_click" data-track-label="{{ five_labels[loop.index0] }}">
+      <summary>{{ card.summary }}</summary>
+      <p>{{ card.body }}</p>
     </details>
-    <details class="card service-card" data-track-event="service_card_click" data-track-label="digital_humans">
-      <summary>{{ 'Digital Humans, KI-Avatare & KI-Influencer' if is_de else 'Digital humans, AI avatars & AI influencers' }}</summary>
-      <p>{{ 'Digitale Präsentatoren und fiktionale Medienpersönlichkeiten mit klarer Rolle, Stimme, Sprache und Human Approval.' if is_de else 'Digital presenters and fictional media personalities with a clear role, voice, language and human approval.' }}</p>
-    </details>
-    <details class="card service-card" data-track-event="service_card_click" data-track-label="content_youtube">
-      <summary>{{ 'Content-, Medien- & YouTube-Systeme' if is_de else 'Content, media & YouTube systems' }}</summary>
-      <p>{{ 'Planbare Content-Säulen, Redaktion, Publishing-Workflows und wiederkehrende Videoformate.' if is_de else 'Plannable content pillars, editorial systems, publishing workflows and recurring video formats.' }}</p>
-    </details>
-    <details class="card service-card" data-track-event="service_card_click" data-track-label="ai_automation">
-      <summary>{{ 'KI-Agenten, Automatisierung & Integrationen' if is_de else 'AI agents, automation & integrations' }}</summary>
-      <p>{{ 'Assistenzsysteme, Routing, Freigaben, APIs und kontrollierte Datenflüsse für skalierbare Prozesse.' if is_de else 'Assistant systems, routing, approvals, APIs and controlled data flows for scalable processes.' }}</p>
-    </details>
-    <details class="card service-card" data-track-event="service_card_click" data-track-label="strategy_implementation">
-      <summary>{{ 'Strategie, Beratung & Implementierung' if is_de else 'Strategy, consulting & implementation' }}</summary>
-      <p>{{ 'Business-Analyse, Implementierungsweg, Governance, Trainings und operative Projektkoordination.' if is_de else 'Business analysis, implementation path, governance, training and operational project coordination.' }}</p>
-    </details>
+    {% endfor %}
   </div>
 </section>
 
@@ -54,66 +39,57 @@
     <img src="{{ digital_human_media_url }}" alt="Digital Human visual" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">Digital Humans</p>
-    <h2>{{ 'Digital Humans für Marken, Unternehmen und Medien' if is_de else 'Digital humans for brands, companies and media' }}</h2>
-    <p>{{ 'Konsistente digitale Persönlichkeiten für wiederkehrende, mehrsprachige und skalierbare Kommunikation mit klarer Nutzungslogik.' if is_de else 'Consistent digital personalities for recurring, multilingual and scalable communication with clear usage logic.' }}</p>
+    <p class="eyebrow">{{ copy.digital_humans.eyebrow }}</p>
+    <h2>{{ copy.digital_humans.title }}</h2>
+    <p>{{ copy.digital_humans.body }}</p>
     <ul class="feature-list">
-      <li>{{ 'Business Presenter für Erklärvideos und interne Kommunikation' if is_de else 'Business presenter for explainers and internal communication' }}</li>
-      <li>{{ 'Multilingual Host für Länder und Zielgruppen' if is_de else 'Multilingual host for countries and audiences' }}</li>
-      <li>{{ 'Authorised Digital Twin auf Basis freigegebener Rechte' if is_de else 'Authorised digital twin based on approved rights' }}</li>
-      <li>{{ 'Fictional AI Influencer für Storytelling und Kampagnen' if is_de else 'Fictional AI influencer for storytelling and campaigns' }}</li>
+      {% for item in copy.digital_humans.features %}
+      <li>{{ item }}</li>
+      {% endfor %}
     </ul>
-    <p class="meta">{{ 'Transparenz: Bei sprechenden Avataren wird klar gekennzeichnet, dass es sich um einen KI-Assistenten handelt.' if is_de else 'Transparency: speaking avatars are clearly disclosed as AI assistants.' }}</p>
+    <p class="meta">{{ copy.digital_humans.meta }}</p>
     <div class="cta-row">
-      <a class="btn" href="{{ discovery_href }}" data-track-event="digital_human_cta_click" data-track-label="digital_human_project">{{ 'Digital Human Projekt prüfen' if is_de else 'Evaluate digital human project' }}</a>
-      <a class="btn btn-ghost" href="#story-showcase" data-track-event="digital_human_cta_click" data-track-label="to_story">{{ 'Stronger Than Yesterday ansehen' if is_de else 'View Stronger Than Yesterday' }}</a>
+      <a class="btn" href="{{ discovery_href }}" data-track-event="digital_human_cta_click" data-track-label="digital_human_project">{{ copy.digital_humans.cta_primary }}</a>
+      <a class="btn btn-ghost" href="#story-showcase" data-track-event="digital_human_cta_click" data-track-label="to_story">{{ copy.digital_humans.cta_secondary }}</a>
     </div>
   </div>
 </section>
 
 <section id="story-showcase" class="cards-section story-section">
-  <p class="eyebrow">AI Influencer Storytelling</p>
-  <h2>Stronger Than Yesterday</h2>
-  <p class="section-lead">{{ 'Eine visuelle Storytelling-Serie mit fiktionalen KI-Influencern, filmischer KI-Produktion und menschlicher Creative Direction.' if is_de else 'A visual storytelling series with fictional AI influencers, cinematic AI production and human creative direction.' }}</p>
+  <p class="eyebrow">{{ copy.story.eyebrow }}</p>
+  <h2>{{ copy.story.title }}</h2>
+  <p class="section-lead">{{ copy.story.lead }}</p>
 
   <div class="story-poster media-frame media-frame--contain">
     <img src="{{ story_poster_url }}" alt="Stronger Than Yesterday poster" loading="lazy">
   </div>
 
+  {% set story_videos = [story_video_01_url, story_video_02_url, story_video_03_url] %}
+  {% set story_labels = ['episode_01', 'episode_02', 'episode_03'] %}
   <div class="cards-grid">
+    {% for episode in copy.story.episodes %}
     <article class="card story-card">
-      <p class="eyebrow">EPISODE 01</p>
-      <h3>THE ARRIVAL</h3>
-      <p>{{ 'In Produktion' if is_de else 'In production' }}</p>
-      <button class="btn open-story-video" data-video-src="{{ story_video_01_url }}" data-sub-src="{{ story_subtitles_01_url }}" data-story-label="episode_01">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
+      <p class="eyebrow">{{ episode.eyebrow }}</p>
+      <h3>{{ episode.title }}</h3>
+      <p>{{ episode.status }}</p>
+      <button class="btn open-story-video" data-video-src="{{ story_videos[loop.index0] }}" data-story-label="{{ story_labels[loop.index0] }}">{{ episode.button }}</button>
     </article>
-    <article class="card story-card">
-      <p class="eyebrow">EPISODE 02</p>
-      <h3>THE MISSION</h3>
-      <p>{{ 'In Produktion' if is_de else 'In production' }}</p>
-      <button class="btn open-story-video" data-video-src="{{ story_video_02_url }}" data-sub-src="{{ story_subtitles_02_url }}" data-story-label="episode_02">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
-    </article>
-    <article class="card story-card">
-      <p class="eyebrow">EPISODE 03</p>
-      <h3>STRONGER TOGETHER</h3>
-      <p>{{ 'In Produktion' if is_de else 'In production' }}</p>
-      <button class="btn open-story-video" data-video-src="{{ story_video_03_url }}" data-sub-src="{{ story_subtitles_03_url }}" data-story-label="episode_03">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
-    </article>
+    {% endfor %}
   </div>
 
   <div class="cta-row">
-    <button class="btn open-story-video" data-video-src="{{ story_video_01_url }}" data-sub-src="{{ story_subtitles_01_url }}" data-story-label="episode_01" data-track-event="story_cta_click" data-track-label="watch_story">{{ 'Story ansehen' if is_de else 'Watch the story' }}</button>
-    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="story_cta_click" data-track-label="influencer_production">{{ 'Explore AI Influencer Production' if not is_de else 'AI Influencer Production entdecken' }}</a>
-    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="story_block">{{ 'Start AI Discovery' if not is_de else 'AI Discovery starten' }}</a>
+    <button class="btn open-story-video" data-video-src="{{ story_video_01_url }}" data-story-label="episode_01" data-track-event="story_cta_click" data-track-label="watch_story">{{ copy.story.cta_watch }}</button>
+    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="story_cta_click" data-track-label="influencer_production">{{ copy.story.cta_explore }}</a>
+    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="story_block">{{ copy.story.cta_discovery }}</a>
   </div>
 
-  <p class="meta">{{ 'KI-generiertes Storytelling-Projekt mit fiktionalen Digital Humans und autorisierter KI-Darstellung. Creative Direction und menschliche Kontrolle durch ASAI Studio.' if is_de else 'AI-generated storytelling project with fictional digital humans and authorised AI representation. Creative direction and human control by ASAI Studio.' }}</p>
+  <p class="meta">{{ copy.story.meta }}</p>
 </section>
 
 <section class="cards-section">
-  <p class="eyebrow">YouTube Media Ecosystem</p>
-  <h2>Built Through Real Media Practice</h2>
-  <p class="section-lead">{{ 'ASAI Studio wird durch praktische Produktion in vier Medienumgebungen geformt: Technologie, mehrsprachiger Experten-Content, Finance und Kinder-Storytelling.' if is_de else 'ASAI Studio is informed by hands-on production across four media environments: technology, multilingual expert content, finance and children\'s storytelling.' }}</p>
+  <p class="eyebrow">{{ copy.youtube.eyebrow }}</p>
+  <h2>{{ copy.youtube.title }}</h2>
+  <p class="section-lead">{{ copy.youtube.lead }}</p>
   <div class="video-grid">
     {% for video in featured_channels %}
     <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener" data-track-event="youtube_channel_click" data-track-label="channel_{{ video.slot }}">
@@ -132,7 +108,7 @@
       </div>
       <div class="video-card-body">
         <h3>{{ video.title }}</h3>
-        <p>{{ 'Kanal besuchen' if is_de else 'Visit channel' }}</p>
+        <p>{{ copy.youtube.visit_label }}</p>
       </div>
     </a>
     {% endfor %}
@@ -140,76 +116,49 @@
 </section>
 
 <section id="packages" class="cards-section">
-  <p class="eyebrow">Packages</p>
-  <h2>{{ 'Pakete und Preise' if is_de else 'Packages and pricing' }}</h2>
+  <p class="eyebrow">{{ copy.packages.eyebrow }}</p>
+  <h2>{{ copy.packages.title }}</h2>
+  {% set package_labels = ['starter', 'growth', 'pro'] %}
+  {% set package_classes = ['card package-card', 'card package-card', 'card package-card package-card--pro'] %}
   <div class="packages-grid">
-    <article class="card package-card">
-      <h3>Starter</h3>
-      <p class="package-price">Content-Basis · EUR 999 + MwSt. / {{ 'Monat' if is_de else 'month' }}</p>
+    {% for item in copy.packages['items'] %}
+    <article class="{{ package_classes[loop.index0] }}">
+      <h3>{{ item.name }}</h3>
+      <p class="package-price">{{ item.price }}</p>
       <ul class="feature-list">
-        <li>{{ '10 Videos pro Monat' if is_de else '10 videos per month' }}</li>
-        <li>{{ '30-60 Sekunden pro Video' if is_de else '30-60 seconds per video' }}</li>
-        <li>{{ '1 Digital Human · 1 KI-Stimme' if is_de else '1 digital human · 1 AI voice' }}</li>
-        <li>{{ 'Untertitel inklusive · 1 Korrekturrunde' if is_de else 'Subtitles included · 1 revision round' }}</li>
+        {% for feature in item.features %}
+        <li>{{ feature }}</li>
+        {% endfor %}
       </ul>
-      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="starter">{{ 'Eignung prüfen' if is_de else 'Check fit' }}</a>
+      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="{{ package_labels[loop.index0] }}">{{ item.cta }}</a>
     </article>
-    <article class="card package-card">
-      <h3>Growth</h3>
-      <p class="package-price">Mehrsprachiges Publishing-System · EUR 1.999 + MwSt. / {{ 'Monat' if is_de else 'month' }}</p>
-      <ul class="feature-list">
-        <li>{{ '20 Videos pro Monat' if is_de else '20 videos per month' }}</li>
-        <li>{{ 'Bis zu 2 Digital Humans und 2 Sprachen' if is_de else 'Up to 2 digital humans and 2 languages' }}</li>
-        <li>{{ 'Premium-Visual-System und Redaktion' if is_de else 'Premium visual system and editorial structure' }}</li>
-        <li>{{ 'Monatliche Content-Auswertung' if is_de else 'Monthly content evaluation' }}</li>
-      </ul>
-      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="growth">{{ 'Eignung prüfen' if is_de else 'Check fit' }}</a>
-    </article>
-    <article class="card package-card package-card--pro">
-      <h3>PRO</h3>
-      <p class="package-price">Kontrolliertes Video-System · {{ 'ab' if is_de else 'from' }} EUR 3.999 + MwSt. / {{ 'Monat' if is_de else 'month' }}</p>
-      <ul class="feature-list">
-        <li>{{ 'Mehrere Digital Humans, Stimmen und Sprachen' if is_de else 'Multiple digital humans, voices and languages' }}</li>
-        <li>{{ 'Individuelle Workflow-Architektur und Integrationen' if is_de else 'Custom workflow architecture and integrations' }}</li>
-        <li>{{ 'Menschliche Kontrolle vor Veröffentlichung' if is_de else 'Human control before publication' }}</li>
-        <li>{{ 'Analyse, Optimierung und Team-Support' if is_de else 'Analysis, optimization and team support' }}</li>
-      </ul>
-      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="pro">{{ 'PRO-Bedarf prüfen' if is_de else 'Check PRO fit' }}</a>
-    </article>
+    {% endfor %}
   </div>
-  <p class="meta">{{ 'Alle Preise sind Nettopreise. Die gesetzliche Mehrwertsteuer, Integrationen und Zusatzanforderungen werden nach der Discovery bestätigt.' if is_de else 'All prices are net prices. VAT, integrations and additional requirements are confirmed after discovery.' }}</p>
+  <p class="meta">{{ copy.packages.meta }}</p>
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">Optional Growth</p>
-  <h2>{{ 'Optionale Growth-, Marketing- und Markenleistungen' if is_de else 'Optional growth, marketing and brand services' }}</h2>
+  <p class="eyebrow">{{ copy.optional_growth.eyebrow }}</p>
+  <h2>{{ copy.optional_growth.title }}</h2>
   <div class="cards-grid">
+    {% for card in copy.optional_growth.cards %}
     <article class="card">
-      <h3>Content & Growth</h3>
-      <p>{{ 'Content-Marketing, Social-Media-Marketing, Lead-Generierungs-Content und Sales-Support-Videos.' if is_de else 'Content marketing, social media marketing, lead generation content and sales support videos.' }}</p>
+      <h3>{{ card.title }}</h3>
+      <p>{{ card.body }}</p>
     </article>
-    <article class="card">
-      <h3>Paid & Search</h3>
-      <p>{{ 'SEO, SEA, PPC, Google Ads, digitale Kampagnen und Kampagnen-Kreatives.' if is_de else 'SEO, SEA, PPC, Google Ads, digital campaigns and campaign creatives.' }}</p>
-    </article>
-    <article class="card">
-      <h3>Brand Partnerships</h3>
-      <p>{{ 'Sponsoring, Affiliate- und Referral-Projekte sowie Ambassador-Kooperationen.' if is_de else 'Sponsorships, affiliate and referral projects, plus ambassador collaborations.' }}</p>
-    </article>
+    {% endfor %}
   </div>
-  <p class="meta">{{ 'Diese Leistungen und externe Werbebudgets sind kein automatischer Bestandteil der monatlichen Video-Pakete.' if is_de else 'These services and external ad budgets are not automatically included in monthly video packages.' }}</p>
+  <p class="meta">{{ copy.optional_growth.meta }}</p>
 </section>
 
 <section class="page-block">
-  <h2>{{ 'So arbeiten wir' if is_de else 'How we work' }}</h2>
+  <h2>{{ copy.workflow.title }}</h2>
   <ol class="work-timeline">
-    <li><strong>{{ '01 - Discovery & Strategie' if is_de else '01 - Discovery & strategy' }}:</strong> {{ 'Business-Review, Zielgruppen- und Angebotsanalyse, erste Empfehlung.' if is_de else 'Business review, audience and offer analysis, first recommendation.' }}</li>
-    <li><strong>{{ '02 - Konzeption & Systemdesign' if is_de else '02 - Concept & system design' }}:</strong> {{ 'Content-Modell, Digital Human, visuelles System, Produktionslogik.' if is_de else 'Content model, digital human, visual system and production logic.' }}</li>
-    <li><strong>{{ '03 - Produktion & Launch' if is_de else '03 - Production & launch' }}:</strong> {{ 'Skripte, Produktion, Lokalisierung, Review, Auslieferung.' if is_de else 'Scripts, production, localization, review and delivery.' }}</li>
-    <li><strong>{{ '04 - Stabilisierung & Automatisierung' if is_de else '04 - Stabilization & automation' }}:</strong> {{ 'Workflow-Optimierung, Rollen, Monitoring, Integrationen.' if is_de else 'Workflow optimization, roles, monitoring and integrations.' }}</li>
-    <li><strong>{{ '05 - Wachstum & Skalierung' if is_de else '05 - Growth & scaling' }}:</strong> {{ 'Mehr Content und Sprachen, zusätzliche Kanäle, Growth-Kampagnen.' if is_de else 'More content and languages, additional channels, growth campaigns.' }}</li>
+    {% for step in copy.workflow.steps %}
+    <li><strong>{{ step.label }}:</strong> {{ step.body }}</li>
+    {% endfor %}
   </ol>
-  <p class="meta">{{ 'Aufbauen. Produzieren. Stabilisieren. Automatisieren. Dann skalieren.' if is_de else 'Build. Produce. Stabilize. Automate. Then scale.' }}</p>
+  <p class="meta">{{ copy.workflow.meta }}</p>
 </section>
 
 <section class="page-block split split--media">
@@ -217,17 +166,17 @@
     <img src="{{ strategy_photo_url }}" alt="Strategy session portrait" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">Strategy Session</p>
-    <h2>{{ 'Starten Sie mit einer 1:1-Strategie-Session' if is_de else 'Start with a 1:1 strategy session' }}</h2>
-    <p>{{ 'In einer fokussierten 90-Minuten-Session analysieren wir Geschäftsmodell, Kommunikation, Zielgruppe und den Implementierungsweg.' if is_de else 'In a focused 90-minute session we analyze your business model, communication, audience and implementation path.' }}</p>
-    <p class="package-price">90 {{ 'Minuten' if is_de else 'minutes' }} · EUR 250 + MwSt.</p>
+    <p class="eyebrow">{{ copy.strategy.eyebrow }}</p>
+    <h2>{{ copy.strategy.title }}</h2>
+    <p>{{ copy.strategy.body }}</p>
+    <p class="package-price">{{ copy.strategy.price }}</p>
     <ul class="feature-list">
-      <li>{{ 'Business- und Kommunikations-Review' if is_de else 'Business and communication review' }}</li>
-      <li>{{ 'Content-Ziele, Zielgruppe und Kanäle' if is_de else 'Content goals, audience and channels' }}</li>
-      <li>{{ 'Empfohlene Paket- oder Pilot-Empfehlung' if is_de else 'Recommended package or pilot path' }}</li>
+      {% for feature in copy.strategy.features %}
+      <li>{{ feature }}</li>
+      {% endfor %}
     </ul>
-    <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="strategy_session">{{ 'AI Discovery starten' if is_de else 'Start AI Discovery' }}</a>
-    <p class="meta">{{ 'Kalenderbuchung wird nach Discovery und Eignungsprüfung freigeschaltet.' if is_de else 'Calendar booking is unlocked after discovery and qualification.' }}</p>
+    <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="strategy_session">{{ copy.strategy.cta }}</a>
+    <p class="meta">{{ copy.strategy.meta }}</p>
   </div>
 </section>
 
@@ -237,7 +186,6 @@
     <button class="story-modal-close" type="button" data-close-modal="1">x</button>
     <video id="storyVideoPlayer" controls preload="metadata" playsinline>
       <source id="storyVideoSource" src="" type="video/mp4">
-      <track id="storyVideoTrack" kind="subtitles" src="" srclang="de" label="Deutsch">
     </video>
   </div>
 </div>
@@ -312,7 +260,6 @@
     const modal = document.getElementById('storyModal');
     const player = document.getElementById('storyVideoPlayer');
     const source = document.getElementById('storyVideoSource');
-    const trackEl = document.getElementById('storyVideoTrack');
     let currentStory = '';
     const sentMilestones = {};
 
@@ -321,14 +268,12 @@
       modal.classList.add('hidden');
       modal.setAttribute('aria-hidden', 'true');
       source.src = '';
-      trackEl.src = '';
       player.load();
     };
 
     document.querySelectorAll('.open-story-video').forEach(function(btn) {
       btn.addEventListener('click', function() {
         const src = btn.dataset.videoSrc || '';
-        const sub = btn.dataset.subSrc || '';
         currentStory = btn.dataset.storyLabel || 'story';
         if (!src) {
           track('story_video_play', currentStory, { status: 'missing_url' });
@@ -336,7 +281,6 @@
         }
         sentMilestones[currentStory] = {25:false,50:false,75:false};
         source.src = src;
-        trackEl.src = sub;
         player.muted = true;
         player.load();
         modal.classList.remove('hidden');

@@ -4,62 +4,254 @@
 <h1>CMS: Services & Packages</h1>
 <p>Заповнюйте або локальні шляхи в static (наприклад, img/services_tz/image3.png), або повні URL.</p>
 
-<form method="post" action="{{ url_for('admin.services_content_settings_save') }}" class="admin-form" enctype="multipart/form-data">
-  <h2>Медіа</h2>
-  <label>Hero медіа</label>
-  <input name="hero_media" value="{{ settings.hero_media }}" required>
-  <label>Або завантажити Hero файл</label>
-  <input type="file" name="hero_media_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+<div class="services-admin-actions">
+  <form method="post" action="{{ url_for('admin.services_content_reset_copy') }}" onsubmit="return confirm('Скинути всі тексти DE/EN до дефолтних значень?');">
+    <input type="hidden" name="active_tab" id="resetActiveTabInput" value="{{ initial_tab }}">
+    <button class="btn btn-ghost" type="submit">Скинути тексти до дефолтних</button>
+  </form>
+</div>
 
-  <label>Digital Human медіа</label>
-  <input name="digital_human_media" value="{{ settings.digital_human_media }}" required>
-  <label>Або завантажити Digital Human файл</label>
-  <input type="file" name="digital_human_media_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+<div class="admin-tabs" data-tabs-root>
+  <div class="admin-tabs-nav" role="tablist" aria-label="Services CMS Tabs">
+    <button type="button" class="admin-tab-btn is-active" data-tab-target="tab-media" role="tab" aria-selected="true">Медіа</button>
+    <button type="button" class="admin-tab-btn" data-tab-target="tab-de" role="tab" aria-selected="false">Тексти DE</button>
+    <button type="button" class="admin-tab-btn" data-tab-target="tab-en" role="tab" aria-selected="false">Texts EN</button>
+    <button type="button" class="admin-tab-btn" data-tab-target="tab-flow" role="tab" aria-selected="false">Флоу</button>
+  </div>
 
-  <label>Постер історії</label>
-  <input name="story_poster" value="{{ settings.story_poster }}" required>
-  <label>Або завантажити постер</label>
-  <input type="file" name="story_poster_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+  <form method="post" action="{{ url_for('admin.services_content_settings_save') }}" class="admin-form" enctype="multipart/form-data">
+    <input type="hidden" name="active_tab" id="activeTabInput" value="{{ initial_tab }}">
+    <section id="tab-media" class="admin-tab-panel is-active" role="tabpanel">
+      <h2>Медіа</h2>
+      <label>Hero медіа</label>
+      <input name="hero_media" value="{{ settings.hero_media }}" required>
+      <label>Або завантажити Hero файл</label>
+      <input type="file" name="hero_media_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
 
-  <label>Відео історії 01 (mp4/webm URL або шлях у static)</label>
-  <input name="story_video_01" value="{{ settings.story_video_01 }}">
-  <label>Або завантажити відео 01 (mp4/webm)</label>
-  <input type="file" name="story_video_01_file" accept=".mp4,.webm">
+      <label>Digital Human медіа</label>
+      <input name="digital_human_media" value="{{ settings.digital_human_media }}" required>
+      <label>Або завантажити Digital Human файл</label>
+      <input type="file" name="digital_human_media_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
 
-  <label>Субтитри історії 01 (.vtt URL або шлях у static)</label>
-  <input name="story_subtitles_01" value="{{ settings.story_subtitles_01 }}">
-  <label>Або завантажити субтитри 01 (.vtt)</label>
-  <input type="file" name="story_subtitles_01_file" accept=".vtt">
+      <label>Постер історії</label>
+      <input name="story_poster" value="{{ settings.story_poster }}" required>
+      <label>Або завантажити постер</label>
+      <input type="file" name="story_poster_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
 
-  <label>Відео історії 02</label>
-  <input name="story_video_02" value="{{ settings.story_video_02 }}">
-  <label>Або завантажити відео 02 (mp4/webm)</label>
-  <input type="file" name="story_video_02_file" accept=".mp4,.webm">
+      <label>Відео історії 01 (mp4/webm URL або шлях у static)</label>
+      <input name="story_video_01" value="{{ settings.story_video_01 }}">
+      <label>Або завантажити відео 01 (mp4/webm)</label>
+      <input type="file" name="story_video_01_file" accept=".mp4,.webm">
 
-  <label>Субтитри історії 02</label>
-  <input name="story_subtitles_02" value="{{ settings.story_subtitles_02 }}">
-  <label>Або завантажити субтитри 02 (.vtt)</label>
-  <input type="file" name="story_subtitles_02_file" accept=".vtt">
+      <label>Відео історії 02</label>
+      <input name="story_video_02" value="{{ settings.story_video_02 }}">
+      <label>Або завантажити відео 02 (mp4/webm)</label>
+      <input type="file" name="story_video_02_file" accept=".mp4,.webm">
 
-  <label>Відео історії 03</label>
-  <input name="story_video_03" value="{{ settings.story_video_03 }}">
-  <label>Або завантажити відео 03 (mp4/webm)</label>
-  <input type="file" name="story_video_03_file" accept=".mp4,.webm">
+      <label>Відео історії 03</label>
+      <input name="story_video_03" value="{{ settings.story_video_03 }}">
+      <label>Або завантажити відео 03 (mp4/webm)</label>
+      <input type="file" name="story_video_03_file" accept=".mp4,.webm">
 
-  <label>Субтитри історії 03</label>
-  <input name="story_subtitles_03" value="{{ settings.story_subtitles_03 }}">
-  <label>Або завантажити субтитри 03 (.vtt)</label>
-  <input type="file" name="story_subtitles_03_file" accept=".vtt">
+      <label>Фото Strategy Session</label>
+      <input name="strategy_photo" value="{{ settings.strategy_photo }}" required>
+      <label>Або завантажити фото Strategy Session</label>
+      <input type="file" name="strategy_photo_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+    </section>
 
-  <label>Фото Strategy Session</label>
-  <input name="strategy_photo" value="{{ settings.strategy_photo }}" required>
-  <label>Або завантажити фото Strategy Session</label>
-  <input type="file" name="strategy_photo_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+    {% for lang_code, lang_label in [('de', 'DE'), ('en', 'EN')] %}
+    {% set c = services_copy[lang_code] %}
+    <section id="tab-{{ lang_code }}" class="admin-tab-panel" role="tabpanel">
+      <h2>Всі тексти сторінки Services ({{ lang_label }})</h2>
+      <p>Порада: для списків кожен пункт редагується окремим полем.</p>
 
-  <h2>Флоу</h2>
-  <label>Discovery URL (зараз усі CTA ведуть сюди)</label>
-  <input name="discovery_url" value="{{ settings.discovery_url }}" required>
+      <label>Hero: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__hero__eyebrow" value="{{ c.hero.eyebrow }}">
+      <label>Hero: Title ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__hero__title" rows="2">{{ c.hero.title }}</textarea>
+      <label>Hero: Lead ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__hero__lead" rows="3">{{ c.hero.lead }}</textarea>
+      <label>Hero: CTA primary ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__hero__cta_primary" value="{{ c.hero.cta_primary }}">
+      <label>Hero: CTA secondary ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__hero__cta_secondary" value="{{ c.hero.cta_secondary }}">
 
-  <button class="btn" type="submit">Зберегти</button>
-</form>
+      <label>Five Core: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__five_core__title" value="{{ c.five_core.title }}">
+      {% for card in c.five_core.cards %}
+      <label>Five Core Card {{ loop.index }}: Summary ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__five_core__cards__{{ loop.index0 }}__summary" value="{{ card.summary }}">
+      <label>Five Core Card {{ loop.index }}: Body ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__five_core__cards__{{ loop.index0 }}__body" rows="3">{{ card.body }}</textarea>
+      {% endfor %}
+
+      <label>Digital Humans: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__digital_humans__eyebrow" value="{{ c.digital_humans.eyebrow }}">
+      <label>Digital Humans: Title ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__digital_humans__title" rows="2">{{ c.digital_humans.title }}</textarea>
+      <label>Digital Humans: Body ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__digital_humans__body" rows="3">{{ c.digital_humans.body }}</textarea>
+      {% for item in c.digital_humans.features %}
+      <label>Digital Humans: Feature {{ loop.index }} ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__digital_humans__features__{{ loop.index0 }}" value="{{ item }}">
+      {% endfor %}
+      <label>Digital Humans: Meta ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__digital_humans__meta" rows="2">{{ c.digital_humans.meta }}</textarea>
+      <label>Digital Humans: CTA primary ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__digital_humans__cta_primary" value="{{ c.digital_humans.cta_primary }}">
+      <label>Digital Humans: CTA secondary ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__digital_humans__cta_secondary" value="{{ c.digital_humans.cta_secondary }}">
+
+      <label>Story: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__eyebrow" value="{{ c.story.eyebrow }}">
+      <label>Story: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__title" value="{{ c.story.title }}">
+      <label>Story: Lead ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__story__lead" rows="3">{{ c.story.lead }}</textarea>
+      {% for episode in c.story.episodes %}
+      <label>Story Episode {{ loop.index }}: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__episodes__{{ loop.index0 }}__eyebrow" value="{{ episode.eyebrow }}">
+      <label>Story Episode {{ loop.index }}: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__episodes__{{ loop.index0 }}__title" value="{{ episode.title }}">
+      <label>Story Episode {{ loop.index }}: Status ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__episodes__{{ loop.index0 }}__status" value="{{ episode.status }}">
+      <label>Story Episode {{ loop.index }}: Button ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__episodes__{{ loop.index0 }}__button" value="{{ episode.button }}">
+      {% endfor %}
+      <label>Story: CTA watch ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__cta_watch" value="{{ c.story.cta_watch }}">
+      <label>Story: CTA explore ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__cta_explore" value="{{ c.story.cta_explore }}">
+      <label>Story: CTA discovery ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__cta_discovery" value="{{ c.story.cta_discovery }}">
+      <label>Story: Meta ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__story__meta" rows="2">{{ c.story.meta }}</textarea>
+
+      <label>YouTube: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__youtube__eyebrow" value="{{ c.youtube.eyebrow }}">
+      <label>YouTube: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__youtube__title" value="{{ c.youtube.title }}">
+      <label>YouTube: Lead ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__youtube__lead" rows="3">{{ c.youtube.lead }}</textarea>
+      <label>YouTube: Visit label ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__youtube__visit_label" value="{{ c.youtube.visit_label }}">
+
+      <label>Packages: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__packages__eyebrow" value="{{ c.packages.eyebrow }}">
+      <label>Packages: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__packages__title" value="{{ c.packages.title }}">
+      {% for item in c.packages['items'] %}
+      <label>Package {{ loop.index }}: Name ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__packages__items__{{ loop.index0 }}__name" value="{{ item.name }}">
+      <label>Package {{ loop.index }}: Price line ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__packages__items__{{ loop.index0 }}__price" value="{{ item.price }}">
+      {% set package_num = loop.index %}
+      {% set package_idx = loop.index0 %}
+      {% for feature in item.features %}
+      <label>Package {{ package_num }}: Feature {{ loop.index }} ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__packages__items__{{ package_idx }}__features__{{ loop.index0 }}" value="{{ feature }}">
+      {% endfor %}
+      <label>Package {{ loop.index }}: CTA ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__packages__items__{{ loop.index0 }}__cta" value="{{ item.cta }}">
+      {% endfor %}
+      <label>Packages: Meta ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__packages__meta" rows="2">{{ c.packages.meta }}</textarea>
+
+      <label>Optional Growth: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__optional_growth__eyebrow" value="{{ c.optional_growth.eyebrow }}">
+      <label>Optional Growth: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__optional_growth__title" value="{{ c.optional_growth.title }}">
+      {% for card in c.optional_growth.cards %}
+      <label>Optional Growth Card {{ loop.index }}: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__optional_growth__cards__{{ loop.index0 }}__title" value="{{ card.title }}">
+      <label>Optional Growth Card {{ loop.index }}: Body ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__optional_growth__cards__{{ loop.index0 }}__body" rows="2">{{ card.body }}</textarea>
+      {% endfor %}
+      <label>Optional Growth: Meta ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__optional_growth__meta" rows="2">{{ c.optional_growth.meta }}</textarea>
+
+      <label>Workflow: Title ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__workflow__title" value="{{ c.workflow.title }}">
+      {% for step in c.workflow.steps %}
+      <label>Workflow Step {{ loop.index }}: Label ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__workflow__steps__{{ loop.index0 }}__label" value="{{ step.label }}">
+      <label>Workflow Step {{ loop.index }}: Body ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__workflow__steps__{{ loop.index0 }}__body" rows="2">{{ step.body }}</textarea>
+      {% endfor %}
+      <label>Workflow: Meta ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__workflow__meta" rows="2">{{ c.workflow.meta }}</textarea>
+
+      <label>Strategy: Eyebrow ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__strategy__eyebrow" value="{{ c.strategy.eyebrow }}">
+      <label>Strategy: Title ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__strategy__title" rows="2">{{ c.strategy.title }}</textarea>
+      <label>Strategy: Body ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__strategy__body" rows="3">{{ c.strategy.body }}</textarea>
+      <label>Strategy: Price line ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__strategy__price" value="{{ c.strategy.price }}">
+      {% for feature in c.strategy.features %}
+      <label>Strategy: Feature {{ loop.index }} ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__strategy__features__{{ loop.index0 }}" value="{{ feature }}">
+      {% endfor %}
+      <label>Strategy: CTA ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__strategy__cta" value="{{ c.strategy.cta }}">
+      <label>Strategy: Meta ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__strategy__meta" rows="2">{{ c.strategy.meta }}</textarea>
+    </section>
+    {% endfor %}
+
+    <section id="tab-flow" class="admin-tab-panel" role="tabpanel">
+      <h2>Флоу</h2>
+      <label>Discovery URL (зараз усі CTA ведуть сюди)</label>
+      <input name="discovery_url" value="{{ settings.discovery_url }}" required>
+      <p class="meta">Це посилання використовується кнопками CTA на сторінці.</p>
+    </section>
+
+    <div class="services-form-actions">
+      <button class="btn" type="submit">Зберегти</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  (function () {
+    const root = document.querySelector('[data-tabs-root]');
+    if (!root) {
+      return;
+    }
+
+    const buttons = Array.from(root.querySelectorAll('.admin-tab-btn'));
+    const panels = Array.from(root.querySelectorAll('.admin-tab-panel'));
+    const activeTabInput = document.getElementById('activeTabInput');
+    const resetTabInput = document.getElementById('resetActiveTabInput');
+    const initialTab = '{{ initial_tab }}';
+
+    const activate = function (targetId) {
+      buttons.forEach(function (btn) {
+        const isActive = btn.dataset.tabTarget === targetId;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      panels.forEach(function (panel) {
+        panel.classList.toggle('is-active', panel.id === targetId);
+      });
+
+      if (activeTabInput) {
+        activeTabInput.value = targetId;
+      }
+      if (resetTabInput) {
+        resetTabInput.value = targetId;
+      }
+    };
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activate(btn.dataset.tabTarget);
+      });
+    });
+
+    activate(initialTab || 'tab-media');
+  })();
+</script>
 {% endblock %}

@@ -110,7 +110,48 @@ class LeadMessage(db.Model):
 class ServicePageSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hero_media = db.Column(db.String(1024), default="img/services_tz/image1.png", nullable=False)
+    services_copy_json = db.Column(db.Text, default="", nullable=False)
+    hero_title_de = db.Column(
+        db.Text,
+        default="Strukturierte KI-Video-, Digital-Human- und Content-Systeme für wiederkehrende Unternehmenskommunikation.",
+        nullable=False,
+    )
+    hero_title_en = db.Column(
+        db.Text,
+        default="Structured AI video, digital human and content systems for recurring business communication.",
+        nullable=False,
+    )
+    hero_lead_de = db.Column(
+        db.Text,
+        default="ASAI Studio verbindet Videoproduktion, Creative Direction, Digital Humans, Content-Systeme, KI-Agenten und kontrollierte Automatisierung zu einer skalierbaren Kommunikationslösung.",
+        nullable=False,
+    )
+    hero_lead_en = db.Column(
+        db.Text,
+        default="ASAI Studio combines video production, creative direction, digital humans, content systems, AI agents and controlled automation into one scalable communication solution.",
+        nullable=False,
+    )
     digital_human_media = db.Column(db.String(1024), default="img/services_tz/image2.png", nullable=False)
+    digital_human_title_de = db.Column(
+        db.Text,
+        default="Digital Humans für Marken, Unternehmen und Medien",
+        nullable=False,
+    )
+    digital_human_title_en = db.Column(
+        db.Text,
+        default="Digital humans for brands, companies and media",
+        nullable=False,
+    )
+    digital_human_body_de = db.Column(
+        db.Text,
+        default="Konsistente digitale Persönlichkeiten für wiederkehrende, mehrsprachige und skalierbare Kommunikation mit klarer Nutzungslogik.",
+        nullable=False,
+    )
+    digital_human_body_en = db.Column(
+        db.Text,
+        default="Consistent digital personalities for recurring, multilingual and scalable communication with clear usage logic.",
+        nullable=False,
+    )
     story_poster = db.Column(db.String(1024), default="img/services_tz/image3.png", nullable=False)
     story_video_01 = db.Column(db.String(1024), default="", nullable=False)
     story_video_02 = db.Column(db.String(1024), default="", nullable=False)
@@ -119,6 +160,26 @@ class ServicePageSettings(db.Model):
     story_subtitles_02 = db.Column(db.String(1024), default="", nullable=False)
     story_subtitles_03 = db.Column(db.String(1024), default="", nullable=False)
     strategy_photo = db.Column(db.String(1024), default="img/client-consultation.jpg", nullable=False)
+    strategy_title_de = db.Column(
+        db.Text,
+        default="Starten Sie mit einer 1:1-Strategie-Session",
+        nullable=False,
+    )
+    strategy_title_en = db.Column(
+        db.Text,
+        default="Start with a 1:1 strategy session",
+        nullable=False,
+    )
+    strategy_body_de = db.Column(
+        db.Text,
+        default="In einer fokussierten 90-Minuten-Session analysieren wir Geschäftsmodell, Kommunikation, Zielgruppe und den Implementierungsweg.",
+        nullable=False,
+    )
+    strategy_body_en = db.Column(
+        db.Text,
+        default="In a focused 90-minute session we analyze your business model, communication, audience and implementation path.",
+        nullable=False,
+    )
     discovery_url = db.Column(db.String(1024), default="/contact", nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

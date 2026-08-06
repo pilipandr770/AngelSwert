@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from datetime import timedelta
 from pathlib import Path
@@ -33,10 +34,12 @@ from ..services.ai_service import (
     normalize_blog_language,
 )
 from ..services.blog_scheduler import import_from_rss_sources
+from ..services.services_content import default_services_copy, parse_services_copy, update_services_copy_from_form
 from ..services.storage import s3_enabled, upload_bytes_to_s3
 
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+SERVICES_CMS_TABS = {"tab-media", "tab-de", "tab-en", "tab-flow"}
 
 
 def _save_uploaded_static_file(file_storage, folder: str, allowed_ext: set[str]) -> str:
@@ -182,7 +185,15 @@ def services_content_settings():
         settings = ServicePageSettings()
         db.session.add(settings)
         db.session.commit()
-    return render_template("admin/services_content.html", settings=settings)
+    services_copy = parse_services_copy(settings.services_copy_json)
+    requested_tab = (request.args.get("tab") or "").strip()
+    initial_tab = requested_tab if requested_tab in SERVICES_CMS_TABS else "tab-media"
+    return render_template(
+        "admin/services_content.html",
+        settings=settings,
+        services_copy=services_copy,
+        initial_tab=initial_tab,
+    )
 
 
 @admin_bp.post("/services-content")
@@ -199,15 +210,14 @@ def services_content_settings_save():
     settings.story_video_01 = (request.form.get("story_video_01") or "").strip()
     settings.story_video_02 = (request.form.get("story_video_02") or "").strip()
     settings.story_video_03 = (request.form.get("story_video_03") or "").strip()
-    settings.story_subtitles_01 = (request.form.get("story_subtitles_01") or "").strip()
-    settings.story_subtitles_02 = (request.form.get("story_subtitles_02") or "").strip()
-    settings.story_subtitles_03 = (request.form.get("story_subtitles_03") or "").strip()
     settings.strategy_photo = (request.form.get("strategy_photo") or "").strip() or settings.strategy_photo
     settings.discovery_url = (request.form.get("discovery_url") or "").strip() or "/contact"
+    settings.services_copy_json = update_services_copy_from_form(request.form, settings.services_copy_json)
+    active_tab = (request.form.get("active_tab") or "").strip()
+    safe_tab = active_tab if active_tab in SERVICES_CMS_TABS else "tab-media"
 
     image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
     video_ext = {".mp4", ".webm"}
-    subtitle_ext = {".vtt"}
 
     hero_uploaded = _save_uploaded_static_file(request.files.get("hero_media_file"), "uploads/services", image_ext)
     if hero_uploaded:
@@ -235,19 +245,25 @@ def services_content_settings_save():
     if video_03_uploaded:
         settings.story_video_03 = video_03_uploaded
 
-    sub_01_uploaded = _save_uploaded_static_file(request.files.get("story_subtitles_01_file"), "uploads/services", subtitle_ext)
-    if sub_01_uploaded:
-        settings.story_subtitles_01 = sub_01_uploaded
-    sub_02_uploaded = _save_uploaded_static_file(request.files.get("story_subtitles_02_file"), "uploads/services", subtitle_ext)
-    if sub_02_uploaded:
-        settings.story_subtitles_02 = sub_02_uploaded
-    sub_03_uploaded = _save_uploaded_static_file(request.files.get("story_subtitles_03_file"), "uploads/services", subtitle_ext)
-    if sub_03_uploaded:
-        settings.story_subtitles_03 = sub_03_uploaded
-
     db.session.commit()
     flash("Налаштування сторінки Services збережено.", "success")
-    return redirect(url_for("admin.services_content_settings"))
+    return redirect(url_for("admin.services_content_settings", tab=safe_tab))
+
+
+@admin_bp.post("/services-content/reset-copy")
+@login_required
+def services_content_reset_copy():
+    settings = ServicePageSettings.query.first()
+    if not settings:
+        settings = ServicePageSettings()
+        db.session.add(settings)
+
+    settings.services_copy_json = json.dumps(default_services_copy(), ensure_ascii=False)
+    active_tab = (request.form.get("active_tab") or "").strip()
+    safe_tab = active_tab if active_tab in SERVICES_CMS_TABS else "tab-media"
+    db.session.commit()
+    flash("Тексти сторінки Services скинуто до значень за замовчуванням.", "success")
+    return redirect(url_for("admin.services_content_settings", tab=safe_tab))
 
 
 @admin_bp.get("/analytics")

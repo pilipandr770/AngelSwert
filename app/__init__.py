@@ -1,6 +1,7 @@
+import json
 from datetime import datetime, timedelta
 from flask import Flask
-from sqlalchemy import text
+from sqlalchemy import inspect, text
 from urllib.parse import urlparse
 
 from .config import Config
@@ -19,6 +20,59 @@ from .routes.api import api_bp
 from .routes.auth import auth_bp
 from .routes.public import public_bp
 from .services.blog_scheduler import init_scheduler
+from .services.services_content import DEFAULT_SERVICES_COPY, parse_services_copy
+
+
+SERVICE_TEXT_DEFAULTS = {
+    "hero_title_de": "Strukturierte KI-Video-, Digital-Human- und Content-Systeme für wiederkehrende Unternehmenskommunikation.",
+    "hero_title_en": "Structured AI video, digital human and content systems for recurring business communication.",
+    "hero_lead_de": "ASAI Studio verbindet Videoproduktion, Creative Direction, Digital Humans, Content-Systeme, KI-Agenten und kontrollierte Automatisierung zu einer skalierbaren Kommunikationslösung.",
+    "hero_lead_en": "ASAI Studio combines video production, creative direction, digital humans, content systems, AI agents and controlled automation into one scalable communication solution.",
+    "digital_human_title_de": "Digital Humans für Marken, Unternehmen und Medien",
+    "digital_human_title_en": "Digital humans for brands, companies and media",
+    "digital_human_body_de": "Konsistente digitale Persönlichkeiten für wiederkehrende, mehrsprachige und skalierbare Kommunikation mit klarer Nutzungslogik.",
+    "digital_human_body_en": "Consistent digital personalities for recurring, multilingual and scalable communication with clear usage logic.",
+    "strategy_title_de": "Starten Sie mit einer 1:1-Strategie-Session",
+    "strategy_title_en": "Start with a 1:1 strategy session",
+    "strategy_body_de": "In einer fokussierten 90-Minuten-Session analysieren wir Geschäftsmodell, Kommunikation, Zielgruppe und den Implementierungsweg.",
+    "strategy_body_en": "In a focused 90-minute session we analyze your business model, communication, audience and implementation path.",
+}
+
+SERVICE_COPY_JSON_DEFAULT = json.dumps(DEFAULT_SERVICES_COPY, ensure_ascii=False)
+
+
+def _ensure_service_settings_columns() -> None:
+    required_columns = {
+        "services_copy_json": "TEXT NOT NULL DEFAULT ''",
+        "hero_title_de": "TEXT NOT NULL DEFAULT ''",
+        "hero_title_en": "TEXT NOT NULL DEFAULT ''",
+        "hero_lead_de": "TEXT NOT NULL DEFAULT ''",
+        "hero_lead_en": "TEXT NOT NULL DEFAULT ''",
+        "digital_human_title_de": "TEXT NOT NULL DEFAULT ''",
+        "digital_human_title_en": "TEXT NOT NULL DEFAULT ''",
+        "digital_human_body_de": "TEXT NOT NULL DEFAULT ''",
+        "digital_human_body_en": "TEXT NOT NULL DEFAULT ''",
+        "strategy_title_de": "TEXT NOT NULL DEFAULT ''",
+        "strategy_title_en": "TEXT NOT NULL DEFAULT ''",
+        "strategy_body_de": "TEXT NOT NULL DEFAULT ''",
+        "strategy_body_en": "TEXT NOT NULL DEFAULT ''",
+    }
+
+    inspector = inspect(db.engine)
+    try:
+        existing = {col["name"] for col in inspector.get_columns("service_page_settings")}
+    except Exception:
+        return
+
+    changed = False
+    for column, ddl in required_columns.items():
+        if column in existing:
+            continue
+        db.session.execute(text(f"ALTER TABLE service_page_settings ADD COLUMN {column} {ddl}"))
+        changed = True
+
+    if changed:
+        db.session.commit()
 
 
 def _seed_defaults(app: Flask) -> None:
@@ -62,12 +116,43 @@ def _seed_defaults(app: Flask) -> None:
         db.session.add(
             ServicePageSettings(
                 hero_media="img/services_tz/image1.png",
+                services_copy_json=SERVICE_COPY_JSON_DEFAULT,
+                hero_title_de=SERVICE_TEXT_DEFAULTS["hero_title_de"],
+                hero_title_en=SERVICE_TEXT_DEFAULTS["hero_title_en"],
+                hero_lead_de=SERVICE_TEXT_DEFAULTS["hero_lead_de"],
+                hero_lead_en=SERVICE_TEXT_DEFAULTS["hero_lead_en"],
                 digital_human_media="img/services_tz/image2.png",
+                digital_human_title_de=SERVICE_TEXT_DEFAULTS["digital_human_title_de"],
+                digital_human_title_en=SERVICE_TEXT_DEFAULTS["digital_human_title_en"],
+                digital_human_body_de=SERVICE_TEXT_DEFAULTS["digital_human_body_de"],
+                digital_human_body_en=SERVICE_TEXT_DEFAULTS["digital_human_body_en"],
                 story_poster="img/services_tz/image3.png",
                 strategy_photo="img/client-consultation.jpg",
+                strategy_title_de=SERVICE_TEXT_DEFAULTS["strategy_title_de"],
+                strategy_title_en=SERVICE_TEXT_DEFAULTS["strategy_title_en"],
+                strategy_body_de=SERVICE_TEXT_DEFAULTS["strategy_body_de"],
+                strategy_body_en=SERVICE_TEXT_DEFAULTS["strategy_body_en"],
                 discovery_url=discovery_endpoint,
             )
         )
+    else:
+        settings = ServicePageSettings.query.first()
+        changed = False
+
+        merged_copy = parse_services_copy(settings.services_copy_json)
+        merged_copy_json = json.dumps(merged_copy, ensure_ascii=False)
+        if (settings.services_copy_json or "") != merged_copy_json:
+            settings.services_copy_json = merged_copy_json
+            changed = True
+
+        for field_name, fallback_value in SERVICE_TEXT_DEFAULTS.items():
+            current_value = (getattr(settings, field_name, "") or "").strip()
+            if current_value:
+                continue
+            setattr(settings, field_name, fallback_value)
+            changed = True
+        if changed:
+            db.session.add(settings)
 
     settings = InternalCalendarSettings.query.first()
     if not settings:
@@ -143,6 +228,7 @@ def create_app() -> Flask:
     with app.app_context():
         _ensure_db_schema(app)
         db.create_all()
+        _ensure_service_settings_columns()
         _seed_defaults(app)
 
     init_scheduler(app)

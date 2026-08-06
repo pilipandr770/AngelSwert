@@ -10,6 +10,7 @@ from werkzeug.routing import BuildError
 from ..extensions import db
 from ..i18n import translate
 from ..models import BlogPost, Lead, LeadMessage, ServicePageSettings, YouTubeLink
+from ..services.services_content import localized_services_copy
 
 
 public_bp = Blueprint("public", __name__)
@@ -189,6 +190,7 @@ def services():
         db.session.commit()
 
     links = YouTubeLink.query.order_by(YouTubeLink.slot.asc()).all()
+    services_copy = localized_services_copy(settings.services_copy_json, getattr(g, "lang", "de"))
 
     def youtube_video_id(url: str) -> str:
         parsed = urlparse(url or "")
@@ -276,6 +278,7 @@ def services():
     return render_template(
         "public/services.html",
         services_settings=settings,
+        services_copy=services_copy,
         featured_channels=featured_channels,
         discovery_href=discovery_href,
         hero_media_url=media_url(settings.hero_media),
@@ -284,9 +287,6 @@ def services():
         story_video_01_url=media_url(settings.story_video_01),
         story_video_02_url=media_url(settings.story_video_02),
         story_video_03_url=media_url(settings.story_video_03),
-        story_subtitles_01_url=media_url(settings.story_subtitles_01),
-        story_subtitles_02_url=media_url(settings.story_subtitles_02),
-        story_subtitles_03_url=media_url(settings.story_subtitles_03),
         strategy_photo_url=media_url(settings.strategy_photo),
     )
 

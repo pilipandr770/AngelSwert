@@ -248,6 +248,48 @@ select {
   color: var(--accent-2);
 }
 
+.services-admin-actions {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-tabs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.admin-tab-btn {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  background: #2d333d;
+  color: var(--ink);
+}
+
+.admin-tab-btn.is-active {
+  background: linear-gradient(135deg, var(--accent), #9f7a33);
+  color: #1f2329;
+  border-color: rgba(228, 204, 132, 0.6);
+}
+
+.admin-tab-panel {
+  display: none;
+}
+
+.admin-tab-panel.is-active {
+  display: block;
+}
+
+.services-form-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .feature-list {
   margin: 0.8rem 0 1.1rem;
   padding-left: 1.15rem;
