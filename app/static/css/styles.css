@@ -339,6 +339,11 @@ select {
   gap: 1rem;
 }
 
+.split > *,
+.admin-grid > * {
+  min-width: 0;
+}
+
 .split--media {
   align-items: center;
 }
@@ -746,9 +751,16 @@ select {
   padding: 1.4rem;
 }
 
+.services-hero .split {
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  align-items: center;
+}
+
 .services-hero h1 {
   font-size: clamp(2.2rem, 4.1vw, 3.8rem);
   margin-bottom: 0.7rem;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .services-hero-media {
@@ -761,6 +773,12 @@ select {
 
 .media-frame--hero {
   aspect-ratio: 4 / 3;
+}
+
+@media (max-width: 980px) {
+  .services-hero .split {
+    grid-template-columns: 1fr;
+  }
 }
 
 .media-frame--contain {
