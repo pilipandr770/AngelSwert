@@ -19,6 +19,7 @@ def _database_uri_from_parts() -> str:
 
 def _database_uri() -> str:
     is_render = os.getenv("RENDER") == "true" or bool(os.getenv("RENDER_EXTERNAL_HOSTNAME"))
+    allow_render_sqlite_fallback = os.getenv("ALLOW_RENDER_SQLITE_FALLBACK", "false").lower() == "true"
 
     uri = ""
     for key in (
@@ -47,10 +48,16 @@ def _database_uri() -> str:
     if uri:
         return uri
 
-    # On Render, keep the app bootable even if DB variables are not configured yet.
-    # This allows deploying static/public pages while DB wiring is fixed in dashboard.
+    # In production on Render, avoid silent fallback to ephemeral SQLite.
+    # Otherwise each redeploy can reset admin-managed data.
     if is_render:
-        return "sqlite:////tmp/angelswert_render_fallback.db"
+        if allow_render_sqlite_fallback:
+            return "sqlite:////tmp/angelswert_render_fallback.db"
+        raise RuntimeError(
+            "DATABASE_URL is not configured on Render. "
+            "Configure a persistent Postgres connection or set "
+            "ALLOW_RENDER_SQLITE_FALLBACK=true only for temporary troubleshooting."
+        )
 
     if not uri:
         uri = "postgresql+psycopg2://angel:angelpass@db:5432/angelswert"

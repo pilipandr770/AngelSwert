@@ -17,7 +17,7 @@
         <a class="btn btn-ghost" href="#packages" data-track-event="package_cta_click" data-track-label="hero_packages">{{ 'Pakete ansehen' if is_de else 'See packages' }}</a>
       </div>
     </div>
-    <figure class="media-frame media-frame--portrait services-hero-media">
+    <figure class="media-frame media-frame--hero media-frame--contain services-hero-media">
       <img src="{{ hero_media_url }}" alt="ASAI Studio hero visual" loading="eager">
     </figure>
   </div>
@@ -50,7 +50,7 @@
 </section>
 
 <section class="page-block split split--media">
-  <figure class="media-frame media-frame--portrait">
+  <figure class="media-frame media-frame--portrait media-frame--contain">
     <img src="{{ digital_human_media_url }}" alt="Digital Human visual" loading="lazy">
   </figure>
   <div>
@@ -76,7 +76,7 @@
   <h2>Stronger Than Yesterday</h2>
   <p class="section-lead">{{ 'Eine visuelle Storytelling-Serie mit fiktionalen KI-Influencern, filmischer KI-Produktion und menschlicher Creative Direction.' if is_de else 'A visual storytelling series with fictional AI influencers, cinematic AI production and human creative direction.' }}</p>
 
-  <div class="story-poster media-frame">
+  <div class="story-poster media-frame media-frame--contain">
     <img src="{{ story_poster_url }}" alt="Stronger Than Yesterday poster" loading="lazy">
   </div>
 
@@ -213,7 +213,7 @@
 </section>
 
 <section class="page-block split split--media">
-  <figure class="media-frame media-frame--portrait">
+  <figure class="media-frame media-frame--portrait media-frame--contain">
     <img src="{{ strategy_photo_url }}" alt="Strategy session portrait" loading="lazy">
   </figure>
   <div>
