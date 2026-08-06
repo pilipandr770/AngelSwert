@@ -536,6 +536,8 @@ select {
   border-radius: 18px;
   padding: 0.8rem;
   margin-top: 0.6rem;
+  display: grid;
+  gap: 0.6rem;
 }
 
 .chatbot-title {
@@ -568,12 +570,21 @@ select {
 
 .chatbot-form {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.6rem;
+  margin-top: 0;
+}
+
+.chatbot-form input {
+  flex: 1 1 180px;
+}
+
+.chatbot-form button {
+  flex: 0 0 auto;
 }
 
 .chat-calendar-controls {
-  margin-top: 0.7rem;
+  margin-top: 0;
   display: grid;
   gap: 0.5rem;
 }

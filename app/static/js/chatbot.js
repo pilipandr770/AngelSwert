@@ -116,8 +116,21 @@ async function bookSelectedSlot() {
 }
 
 function bindBookingUi() {
+  const showBookingBtn = document.getElementById('chatShowBookingBtn');
   const loadSlotsBtn = document.getElementById('chatLoadSlotsBtn');
   const bookBtn = document.getElementById('chatBookBtn');
+
+  if (showBookingBtn && !showBookingBtn.dataset.bound) {
+    showBookingBtn.addEventListener('click', async () => {
+      const controls = document.getElementById('chatCalendarControls');
+      if (controls) {
+        controls.classList.remove('chat-calendar-hidden');
+        controls.scrollIntoView({ block: 'nearest' });
+      }
+      await loadSlots();
+    });
+    showBookingBtn.dataset.bound = '1';
+  }
 
   if (loadSlotsBtn && !loadSlotsBtn.dataset.bound) {
     loadSlotsBtn.addEventListener('click', loadSlots);
