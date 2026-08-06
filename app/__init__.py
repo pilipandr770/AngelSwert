@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from flask import Flask
+from sqlalchemy import text
 from urllib.parse import urlparse
 
 from .config import Config
@@ -118,6 +119,15 @@ def _seed_defaults(app: Flask) -> None:
     db.session.commit()
 
 
+def _ensure_db_schema(app: Flask) -> None:
+    schema = (app.config.get("DB_SCHEMA") or "public").strip()
+    if schema == "public":
+        return
+    # Schema name is validated in config.py.
+    db.session.execute(text(f'CREATE SCHEMA IF NOT EXISTS "{schema}"'))
+    db.session.commit()
+
+
 def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -131,6 +141,7 @@ def create_app() -> Flask:
     app.register_blueprint(admin_bp)
 
     with app.app_context():
+        _ensure_db_schema(app)
         db.create_all()
         _seed_defaults(app)
 

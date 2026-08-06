@@ -1,4 +1,5 @@
 import os
+import re
 from urllib.parse import urlparse
 
 
@@ -64,9 +65,33 @@ def _database_uri() -> str:
     return uri
 
 
+def _database_schema() -> str:
+    schema = (
+        os.getenv("DB_SCHEMA", "").strip()
+        or os.getenv("PGSCHEMA", "").strip()
+        or os.getenv("POSTGRES_SCHEMA", "").strip()
+        or "public"
+    )
+    if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", schema):
+        raise RuntimeError(
+            "Invalid DB schema name. Use only letters, numbers and underscore, "
+            "starting with a letter or underscore."
+        )
+    return schema
+
+
+def _engine_options(schema: str) -> dict:
+    if schema == "public":
+        return {}
+    # Force ORM operations into an isolated schema on shared Postgres.
+    return {"connect_args": {"options": f"-c search_path={schema},public"}}
+
+
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
     SQLALCHEMY_DATABASE_URI = _database_uri()
+    DB_SCHEMA = _database_schema()
+    SQLALCHEMY_ENGINE_OPTIONS = _engine_options(DB_SCHEMA)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
     OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")

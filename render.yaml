@@ -16,6 +16,8 @@ services:
         fromDatabase:
           name: angelswert-db
           property: connectionString
+      - key: DB_SCHEMA
+        value: "angelswert"
       - key: OPENAI_API_KEY
         sync: false
       - key: OPENAI_MODEL
