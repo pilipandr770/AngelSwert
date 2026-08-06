@@ -75,3 +75,9 @@ class Config:
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "ChangeThisStrongPassword")
     PUBLIC_BRAND_NAME = os.getenv("PUBLIC_BRAND_NAME", "AngelSwert")
     ENABLE_BLOG_SCHEDULER = os.getenv("ENABLE_BLOG_SCHEDULER", "true").lower() == "true"
+    S3_UPLOADS_ENABLED = os.getenv("S3_UPLOADS_ENABLED", "true").lower() == "true"
+    S3_BUCKET = os.getenv("S3_BUCKET", "").strip()
+    S3_REGION = os.getenv("S3_REGION", "").strip()
+    S3_ENDPOINT_URL = os.getenv("S3_ENDPOINT_URL", "").strip()
+    S3_PUBLIC_BASE_URL = os.getenv("S3_PUBLIC_BASE_URL", "").strip()
+    S3_KEY_PREFIX = os.getenv("S3_KEY_PREFIX", "angelswert").strip().strip("/")

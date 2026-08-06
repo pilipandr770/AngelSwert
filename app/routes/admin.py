@@ -1,8 +1,11 @@
 from datetime import datetime
+from pathlib import Path
+import uuid
 
 from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from slugify import slugify
+from werkzeug.utils import secure_filename
 
 from ..extensions import db
 from ..models import (
@@ -26,9 +29,41 @@ from ..services.ai_service import (
     normalize_blog_language,
 )
 from ..services.blog_scheduler import import_from_rss_sources
+from ..services.storage import s3_enabled, upload_bytes_to_s3
 
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+
+def _save_uploaded_static_file(file_storage, folder: str, allowed_ext: set[str]) -> str:
+    if not file_storage or not getattr(file_storage, "filename", ""):
+        return ""
+
+    raw_name = secure_filename(file_storage.filename)
+    ext = Path(raw_name).suffix.lower()
+    if not ext or ext not in allowed_ext:
+        return ""
+
+    unique_name = f"{Path(raw_name).stem}-{uuid.uuid4().hex[:10]}{ext}"
+    payload = file_storage.read()
+    if not payload:
+        return ""
+
+    relative_key = f"{folder.strip('/')}/{unique_name}".replace("\\", "/")
+
+    if s3_enabled():
+        try:
+            return upload_bytes_to_s3(payload, relative_key=relative_key, content_type=file_storage.mimetype)
+        except Exception as exc:
+            current_app.logger.exception("S3 upload failed, falling back to local storage: %s", exc)
+
+    static_root = Path(current_app.root_path) / "static"
+    target_dir = static_root / folder
+    target_dir.mkdir(parents=True, exist_ok=True)
+    save_path = target_dir / unique_name
+    save_path.write_bytes(payload)
+
+    return relative_key
 
 
 def _admin_required():
@@ -114,6 +149,46 @@ def services_content_settings_save():
     settings.story_subtitles_03 = (request.form.get("story_subtitles_03") or "").strip()
     settings.strategy_photo = (request.form.get("strategy_photo") or "").strip() or settings.strategy_photo
     settings.discovery_url = (request.form.get("discovery_url") or "").strip() or "/contact"
+
+    image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
+    video_ext = {".mp4", ".webm"}
+    subtitle_ext = {".vtt"}
+
+    hero_uploaded = _save_uploaded_static_file(request.files.get("hero_media_file"), "uploads/services", image_ext)
+    if hero_uploaded:
+        settings.hero_media = hero_uploaded
+
+    digital_uploaded = _save_uploaded_static_file(request.files.get("digital_human_media_file"), "uploads/services", image_ext)
+    if digital_uploaded:
+        settings.digital_human_media = digital_uploaded
+
+    poster_uploaded = _save_uploaded_static_file(request.files.get("story_poster_file"), "uploads/services", image_ext)
+    if poster_uploaded:
+        settings.story_poster = poster_uploaded
+
+    strategy_uploaded = _save_uploaded_static_file(request.files.get("strategy_photo_file"), "uploads/services", image_ext)
+    if strategy_uploaded:
+        settings.strategy_photo = strategy_uploaded
+
+    video_01_uploaded = _save_uploaded_static_file(request.files.get("story_video_01_file"), "uploads/services", video_ext)
+    if video_01_uploaded:
+        settings.story_video_01 = video_01_uploaded
+    video_02_uploaded = _save_uploaded_static_file(request.files.get("story_video_02_file"), "uploads/services", video_ext)
+    if video_02_uploaded:
+        settings.story_video_02 = video_02_uploaded
+    video_03_uploaded = _save_uploaded_static_file(request.files.get("story_video_03_file"), "uploads/services", video_ext)
+    if video_03_uploaded:
+        settings.story_video_03 = video_03_uploaded
+
+    sub_01_uploaded = _save_uploaded_static_file(request.files.get("story_subtitles_01_file"), "uploads/services", subtitle_ext)
+    if sub_01_uploaded:
+        settings.story_subtitles_01 = sub_01_uploaded
+    sub_02_uploaded = _save_uploaded_static_file(request.files.get("story_subtitles_02_file"), "uploads/services", subtitle_ext)
+    if sub_02_uploaded:
+        settings.story_subtitles_02 = sub_02_uploaded
+    sub_03_uploaded = _save_uploaded_static_file(request.files.get("story_subtitles_03_file"), "uploads/services", subtitle_ext)
+    if sub_03_uploaded:
+        settings.story_subtitles_03 = sub_03_uploaded
 
     db.session.commit()
     flash("Налаштування сторінки Services збережено.", "success")

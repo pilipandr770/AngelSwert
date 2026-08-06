@@ -28,3 +28,19 @@ services:
         sync: false
       - key: ENABLE_BLOG_SCHEDULER
         value: "true"
+      - key: S3_UPLOADS_ENABLED
+        value: "true"
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: S3_ENDPOINT_URL
+        sync: false
+      - key: S3_PUBLIC_BASE_URL
+        sync: false
+      - key: S3_KEY_PREFIX
+        value: "angelswert"
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false

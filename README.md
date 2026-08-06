@@ -50,6 +50,25 @@ If `OPENAI_API_KEY` is empty, the app still works and returns fallback demo AI r
   - `ADMIN_EMAIL`
   - `ADMIN_PASSWORD`
 
+## S3 Media Storage (recommended for production)
+To avoid media loss on redeploy, configure S3 uploads for CMS media files.
+
+Required/important variables:
+- `S3_UPLOADS_ENABLED=true`
+- `S3_BUCKET=your-bucket-name`
+- `S3_REGION=eu-central-1` (or your region)
+- `AWS_ACCESS_KEY_ID=...`
+- `AWS_SECRET_ACCESS_KEY=...`
+
+Optional:
+- `S3_ENDPOINT_URL=` (for S3-compatible storage)
+- `S3_PUBLIC_BASE_URL=` (CDN/public host for files)
+- `S3_KEY_PREFIX=angelswert`
+
+Behavior:
+- If S3 is configured, uploaded files from admin CMS are stored in S3 and DB keeps a public URL.
+- If S3 is not configured, app falls back to local `static/uploads/services`.
+
 ## Important
 - `db.create_all()` is used for MVP speed. For production evolution, add Alembic migrations.
 - Scheduler runs inside the web process; keep one worker (`gunicorn -w 1`) to avoid duplicate scheduled jobs.

@@ -4,37 +4,57 @@
 <h1>CMS: Services & Packages</h1>
 <p>Заповнюйте або локальні шляхи в static (наприклад, img/services_tz/image3.png), або повні URL.</p>
 
-<form method="post" action="{{ url_for('admin.services_content_settings_save') }}" class="admin-form">
+<form method="post" action="{{ url_for('admin.services_content_settings_save') }}" class="admin-form" enctype="multipart/form-data">
   <h2>Медіа</h2>
   <label>Hero медіа</label>
   <input name="hero_media" value="{{ settings.hero_media }}" required>
+  <label>Або завантажити Hero файл</label>
+  <input type="file" name="hero_media_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
 
   <label>Digital Human медіа</label>
   <input name="digital_human_media" value="{{ settings.digital_human_media }}" required>
+  <label>Або завантажити Digital Human файл</label>
+  <input type="file" name="digital_human_media_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
 
   <label>Постер історії</label>
   <input name="story_poster" value="{{ settings.story_poster }}" required>
+  <label>Або завантажити постер</label>
+  <input type="file" name="story_poster_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
 
   <label>Відео історії 01 (mp4/webm URL або шлях у static)</label>
   <input name="story_video_01" value="{{ settings.story_video_01 }}">
+  <label>Або завантажити відео 01 (mp4/webm)</label>
+  <input type="file" name="story_video_01_file" accept=".mp4,.webm">
 
   <label>Субтитри історії 01 (.vtt URL або шлях у static)</label>
   <input name="story_subtitles_01" value="{{ settings.story_subtitles_01 }}">
+  <label>Або завантажити субтитри 01 (.vtt)</label>
+  <input type="file" name="story_subtitles_01_file" accept=".vtt">
 
   <label>Відео історії 02</label>
   <input name="story_video_02" value="{{ settings.story_video_02 }}">
+  <label>Або завантажити відео 02 (mp4/webm)</label>
+  <input type="file" name="story_video_02_file" accept=".mp4,.webm">
 
   <label>Субтитри історії 02</label>
   <input name="story_subtitles_02" value="{{ settings.story_subtitles_02 }}">
+  <label>Або завантажити субтитри 02 (.vtt)</label>
+  <input type="file" name="story_subtitles_02_file" accept=".vtt">
 
   <label>Відео історії 03</label>
   <input name="story_video_03" value="{{ settings.story_video_03 }}">
+  <label>Або завантажити відео 03 (mp4/webm)</label>
+  <input type="file" name="story_video_03_file" accept=".mp4,.webm">
 
   <label>Субтитри історії 03</label>
   <input name="story_subtitles_03" value="{{ settings.story_subtitles_03 }}">
+  <label>Або завантажити субтитри 03 (.vtt)</label>
+  <input type="file" name="story_subtitles_03_file" accept=".vtt">
 
   <label>Фото Strategy Session</label>
   <input name="strategy_photo" value="{{ settings.strategy_photo }}" required>
+  <label>Або завантажити фото Strategy Session</label>
+  <input type="file" name="strategy_photo_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
 
   <h2>Флоу</h2>
   <label>Discovery URL (зараз усі CTA ведуть сюди)</label>
