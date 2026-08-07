@@ -344,9 +344,9 @@ select {
   position: relative;
   min-height: clamp(420px, 56vw, 760px);
   padding: 0;
-  border-radius: 28px;
+  border-radius: 24px;
   overflow: hidden;
-  clip-path: inset(0 round 28px);
+  clip-path: inset(0 round 24px);
 }
 
 .home-hero-media > img:first-child,
