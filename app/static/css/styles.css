@@ -344,7 +344,10 @@ select {
   position: relative;
   min-height: clamp(420px, 56vw, 760px);
   padding: 0;
+  border: 0;
   border-radius: 24px;
+  background: transparent;
+  box-shadow: none;
   overflow: hidden;
   clip-path: inset(0 round 24px);
 }
