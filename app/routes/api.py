@@ -14,6 +14,7 @@ from ..models import (
     InternalCalendarBooking,
     InternalCalendarSlot,
     Lead,
+    LeadMessage,
 )
 from ..services.ai_service import generate_chat_reply, generate_crm_hint
 
@@ -87,6 +88,60 @@ def _is_no_access_disclaimer(text: str) -> bool:
     return any(m in t for m in markers)
 
 
+def _looks_like_email(value: str) -> bool:
+    email = (value or "").strip()
+    return bool(email and "@" in email and "." in email.split("@")[-1])
+
+
+def _resolve_chat_lead(payload: dict) -> Lead | None:
+    email = (payload.get("lead_email") or payload.get("email") or "").strip().lower()
+    name = (payload.get("lead_name") or payload.get("name") or "").strip()
+    if not _looks_like_email(email):
+        return None
+
+    lead = Lead.query.filter_by(email=email).first()
+    if not lead:
+        lead = Lead(
+            name=name or email.split("@")[0],
+            email=email,
+            stage="new",
+            source="chatbot-widget",
+            notes="Lead created from chatbot conversation.",
+        )
+        db.session.add(lead)
+        db.session.flush()
+        return lead
+
+    if name and (not lead.name or lead.name == lead.email):
+        lead.name = name
+    return lead
+
+
+def _store_chat_messages(lead: Lead | None, user_message: str, bot_reply: str) -> None:
+    if not lead:
+        return
+    incoming = (user_message or "").strip()
+    outgoing = (bot_reply or "").strip()
+    if incoming:
+        db.session.add(
+            LeadMessage(
+                lead_id=lead.id,
+                direction="incoming",
+                channel="chatbot_widget",
+                body=incoming,
+            )
+        )
+    if outgoing:
+        db.session.add(
+            LeadMessage(
+                lead_id=lead.id,
+                direction="outgoing",
+                channel="chatbot_widget",
+                body=outgoing,
+            )
+        )
+
+
 @api_bp.post("/chat")
 def chat():
     payload = request.get_json(silent=True) or {}
@@ -98,6 +153,14 @@ def chat():
 
     settings = AssistantInstructionSettings.query.first()
     custom_instructions = settings.custom_instructions if settings else ""
+    lead = _resolve_chat_lead(payload)
+
+    def _reply(reply_text: str):
+        _store_chat_messages(lead, message, reply_text)
+        if lead:
+            db.session.add(lead)
+        db.session.commit()
+        return jsonify({"reply": reply_text})
 
     now_utc = datetime.utcnow()
     now_local = _to_user_time(now_utc, tz)
@@ -137,13 +200,9 @@ def chat():
 
     if _looks_like_calendar_request(message):
         if not slots:
-            return jsonify(
-                {
-                    "reply": (
-                        "Зараз немає вільних слотів у календарі на найближчі 14 днів. "
-                        "Спробуйте пізніше або зверніться до адміністратора."
-                    )
-                }
+            return _reply(
+                "Зараз немає вільних слотів у календарі на найближчі 14 днів. "
+                "Спробуйте пізніше або зверніться до адміністратора."
             )
         lines = [
             "Ось найближчі вільні слоти (локальний час):"
@@ -153,49 +212,33 @@ def chat():
             local_end = _to_user_time(slot.ends_at, tz).strftime("%H:%M")
             lines.append(f"- #{slot.id}: {local_start} - {local_end}")
         lines.append("Щоб забронювати, оберіть слот у чат-віджеті нижче.")
-        return jsonify({"reply": "\n".join(lines)})
+        return _reply("\n".join(lines))
 
     if _looks_like_time_request(message):
-        return jsonify(
-            {
-                "reply": (
-                    f"Время UTC: {now_iso}. "
-                    f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
-                )
-            }
+        return _reply(
+            f"Время UTC: {now_iso}. "
+            f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
         )
 
     if _looks_like_booking_request(message):
         if not slots:
-            return jsonify(
-                {
-                    "reply": (
-                        "Я можу записати вас на консультацію, але зараз немає вільних слотів у найближчі 14 днів. "
-                        "Будь ласка, спробуйте пізніше або зверніться до адміністратора."
-                    )
-                }
+            return _reply(
+                "Я можу записати вас на консультацію, але зараз немає вільних слотів у найближчі 14 днів. "
+                "Будь ласка, спробуйте пізніше або зверніться до адміністратора."
             )
         slot = slots[0]
         local_start = _to_user_time(slot.starts_at, tz).strftime("%Y-%m-%d %H:%M")
         local_end = _to_user_time(slot.ends_at, tz).strftime("%H:%M")
-        return jsonify(
-            {
-                "reply": (
-                    "Так, я можу записати вас на термін. "
-                    f"Найближчий вільний слот: #{slot.id}, {local_start} - {local_end}. "
-                    "Оберіть слот у віджеті та вкажіть ім'я й email для підтвердження."
-                )
-            }
+        return _reply(
+            "Так, я можу записати вас на термін. "
+            f"Найближчий вільний слот: #{slot.id}, {local_start} - {local_end}. "
+            "Оберіть слот у віджеті та вкажіть ім'я й email для підтвердження."
         )
 
     if _looks_like_pricing_request(message):
-        return jsonify(
-            {
-                "reply": (
-                    "Орієнтовні пакети: Starter - 999 EUR/місяць, Growth - 1.999 EUR/місяць, PRO - від 3.999 EUR/місяць (без ПДВ). "
-                    "Для точного розрахунку можемо забронювати персональну консультацію через календар у чаті."
-                )
-            }
+        return _reply(
+            "Орієнтовні пакети: Starter - 999 EUR/місяць, Growth - 1.999 EUR/місяць, PRO - від 3.999 EUR/місяць (без ПДВ). "
+            "Для точного розрахунку можемо забронювати персональну консультацію через календар у чаті."
         )
 
     reply = generate_chat_reply(
@@ -224,7 +267,7 @@ def chat():
                 f"Локальний час ({tz.key}): {now_local.strftime('%Y-%m-%d %H:%M:%S %Z')}."
             )
 
-    return jsonify({"reply": reply})
+    return _reply(reply)
 
 
 @api_bp.post("/track")
@@ -364,12 +407,25 @@ def crm_report():
     if not lead:
         return jsonify({"error": "Lead not found"}), 404
 
+    recent_messages = (
+        LeadMessage.query.filter_by(lead_id=lead.id)
+        .order_by(LeadMessage.created_at.desc())
+        .limit(20)
+        .all()
+    )
+    history_lines = [
+        f"- {item.created_at.isoformat()} [{item.channel}/{item.direction}] {item.body}"
+        for item in reversed(recent_messages)
+    ]
+    conversation_context = "\n".join(history_lines)
+
     ai_summary = generate_crm_hint(
         api_key=current_app.config["OPENAI_API_KEY"],
         model=current_app.config["OPENAI_MODEL"],
         lead_name=lead.name,
         lead_stage=lead.stage,
         question=question,
+        conversation_context=conversation_context,
     )
     report = CrmAiReport(
         lead_id=lead.id,

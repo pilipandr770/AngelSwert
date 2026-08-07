@@ -36,6 +36,13 @@ class YouTubeLink(db.Model):
 class AssistantInstructionSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     custom_instructions = db.Column(db.Text, default="", nullable=False)
+    widget_auto_open_enabled = db.Column(db.Boolean, default=True, nullable=False)
+    widget_auto_open_delay_seconds = db.Column(db.Integer, default=40, nullable=False)
+    widget_greeting_text = db.Column(
+        db.Text,
+        default="Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.",
+        nullable=False,
+    )
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 

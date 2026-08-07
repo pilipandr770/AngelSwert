@@ -79,6 +79,38 @@ def _admin_required():
     return current_user.is_authenticated and current_user.is_admin
 
 
+def _lead_crm_context(lead: Lead, message_limit: int = 25) -> str:
+    recent_messages = (
+        LeadMessage.query.filter_by(lead_id=lead.id)
+        .order_by(LeadMessage.created_at.desc())
+        .limit(max(5, min(100, message_limit)))
+        .all()
+    )
+    ordered_messages = list(reversed(recent_messages))
+    message_lines = [
+        f"- {item.created_at.strftime('%Y-%m-%d %H:%M')} [{item.channel}/{item.direction}] {item.body}"
+        for item in ordered_messages
+    ]
+
+    latest_discovery = (
+        DiscoveryAssessment.query.filter_by(lead_id=lead.id)
+        .order_by(DiscoveryAssessment.created_at.desc())
+        .first()
+    )
+    if latest_discovery:
+        discovery_line = (
+            "Discovery: "
+            f"status={latest_discovery.status}, "
+            f"score={latest_discovery.score}, "
+            f"package={latest_discovery.recommended_package or '-'}, "
+            f"summary={latest_discovery.summary or '-'}"
+        )
+    else:
+        discovery_line = "Discovery: -"
+
+    return "\n".join([discovery_line, "Messages:", *message_lines])
+
+
 def _calendar_weekdays_from_csv(csv_value: str) -> set[int]:
     values = {int(x.strip()) for x in (csv_value or "").split(",") if x.strip().isdigit()}
     return values or {0, 1, 2, 3, 4}
@@ -546,7 +578,12 @@ def blog_generate_ai():
 def assistant_settings():
     settings = AssistantInstructionSettings.query.first()
     if not settings:
-        settings = AssistantInstructionSettings(custom_instructions="")
+        settings = AssistantInstructionSettings(
+            custom_instructions="",
+            widget_auto_open_enabled=True,
+            widget_auto_open_delay_seconds=40,
+            widget_greeting_text="Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.",
+        )
         db.session.add(settings)
         db.session.commit()
 
@@ -561,6 +598,26 @@ def assistant_settings():
 @login_required
 def assistant_settings_save():
     raw_text = (request.form.get("custom_instructions") or "").strip()
+    widget_auto_open_enabled = (request.form.get("widget_auto_open_enabled") or "").strip().lower() in {"1", "on", "true", "yes"}
+    widget_greeting_text = (request.form.get("widget_greeting_text") or "").strip()
+    delay_raw = (request.form.get("widget_auto_open_delay_seconds") or "40").strip()
+
+    try:
+        widget_auto_open_delay_seconds = int(delay_raw)
+    except ValueError:
+        widget_auto_open_delay_seconds = 40
+
+    widget_auto_open_delay_seconds = max(5, min(300, widget_auto_open_delay_seconds))
+
+    if len(widget_greeting_text) > 1200:
+        flash("Привітання занадто довге. Максимум 1200 символів.", "error")
+        return redirect(url_for("admin.assistant_settings"))
+
+    if not widget_greeting_text:
+        widget_greeting_text = (
+            "Hallo und willkommen bei ASAI Studio. "
+            "Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen."
+        )
     lowered = raw_text.lower()
     blocked_phrases = [
         "ignore previous instructions",
@@ -580,10 +637,18 @@ def assistant_settings_save():
 
     settings = AssistantInstructionSettings.query.first()
     if not settings:
-        settings = AssistantInstructionSettings(custom_instructions=raw_text)
+        settings = AssistantInstructionSettings(
+            custom_instructions=raw_text,
+            widget_auto_open_enabled=widget_auto_open_enabled,
+            widget_auto_open_delay_seconds=widget_auto_open_delay_seconds,
+            widget_greeting_text=widget_greeting_text,
+        )
         db.session.add(settings)
     else:
         settings.custom_instructions = raw_text
+        settings.widget_auto_open_enabled = widget_auto_open_enabled
+        settings.widget_auto_open_delay_seconds = widget_auto_open_delay_seconds
+        settings.widget_greeting_text = widget_greeting_text
 
     db.session.commit()
     flash("Налаштування AI-асистента збережено.", "success")
@@ -761,7 +826,12 @@ def crm_create():
 @login_required
 def crm_detail(lead_id):
     lead = Lead.query.get_or_404(lead_id)
-    return render_template("admin/client_detail.html", lead=lead, ai_hint=None)
+    chatbot_messages = (
+        LeadMessage.query.filter_by(lead_id=lead.id, channel="chatbot_widget")
+        .order_by(LeadMessage.created_at.asc())
+        .all()
+    )
+    return render_template("admin/client_detail.html", lead=lead, ai_hint=None, chatbot_messages=chatbot_messages)
 
 
 @admin_bp.post("/crm/<int:lead_id>/discovery")
@@ -818,10 +888,16 @@ def crm_add_message(lead_id):
 @login_required
 def crm_ai_hint(lead_id):
     lead = Lead.query.get_or_404(lead_id)
+    action = (request.form.get("action") or "hint").strip().lower()
     question = (request.form.get("question") or "").strip()
+    if not question and action == "summary":
+        question = "Сделай краткое саммари переписки клиента: ключевой запрос, возражения, риск, следующий шаг."
+
     if not question:
         flash("Потрібно вказати запитання.", "error")
         return redirect(url_for("admin.crm_detail", lead_id=lead.id))
+
+    crm_context = _lead_crm_context(lead)
 
     ai_hint = generate_crm_hint(
         api_key=current_app.config["OPENAI_API_KEY"],
@@ -829,8 +905,14 @@ def crm_ai_hint(lead_id):
         lead_name=lead.name,
         lead_stage=lead.stage,
         question=question,
+        conversation_context=crm_context,
     )
-    return render_template("admin/client_detail.html", lead=lead, ai_hint=ai_hint)
+    chatbot_messages = (
+        LeadMessage.query.filter_by(lead_id=lead.id, channel="chatbot_widget")
+        .order_by(LeadMessage.created_at.asc())
+        .all()
+    )
+    return render_template("admin/client_detail.html", lead=lead, ai_hint=ai_hint, chatbot_messages=chatbot_messages)
 
 
 @admin_bp.post("/crm/<int:lead_id>/report")
@@ -838,6 +920,7 @@ def crm_ai_hint(lead_id):
 def crm_generate_report(lead_id):
     lead = Lead.query.get_or_404(lead_id)
     question = (request.form.get("question") or "").strip() or "Create concise CRM report and next action."
+    crm_context = _lead_crm_context(lead)
 
     summary = generate_crm_hint(
         api_key=current_app.config["OPENAI_API_KEY"],
@@ -845,6 +928,7 @@ def crm_generate_report(lead_id):
         lead_name=lead.name,
         lead_stage=lead.stage,
         question=question,
+        conversation_context=crm_context,
     )
     report = CrmAiReport(
         lead_id=lead.id,

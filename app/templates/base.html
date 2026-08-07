@@ -144,7 +144,13 @@
 
   <button type="button" id="cookieManageBtn" class="cookie-manage-btn hidden">{{ 'Cookie-Einstellungen' if is_de else 'Cookie settings' }}</button>
 
-  <div id="chatbot" class="chatbot">
+  <div
+    id="chatbot"
+    class="chatbot"
+    data-auto-open-enabled="{{ '1' if chat_widget_settings.auto_open_enabled else '0' }}"
+    data-auto-open-delay="{{ chat_widget_settings.auto_open_delay_seconds }}"
+    data-greeting-text="{{ chat_widget_settings.greeting_text | e }}"
+  >
     <button id="chatToggle" class="chatbot-toggle">{{ t('chat.toggle') }}</button>
     <div id="chatPanel" class="chatbot-panel hidden">
       <div class="chatbot-header">
@@ -171,6 +177,6 @@
   </div>
 
   <script src="{{ url_for('static', filename='js/cookie_consent.js', v='20260806a') }}"></script>
-  <script src="{{ url_for('static', filename='js/chatbot.js', v='20260806b') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatbot.js', v='20260807d') }}"></script>
 </body>
 </html>

@@ -216,7 +216,14 @@ def generate_blog_post(
         return _demo_article()
 
 
-def generate_crm_hint(api_key: str, model: str, lead_name: str, lead_stage: str, question: str) -> str:
+def generate_crm_hint(
+    api_key: str,
+    model: str,
+    lead_name: str,
+    lead_stage: str,
+    question: str,
+    conversation_context: str = "",
+) -> str:
     client = _get_client(api_key)
     if not client:
         return "AI hint is temporarily unavailable."
@@ -228,15 +235,21 @@ def generate_crm_hint(api_key: str, model: str, lead_name: str, lead_stage: str,
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a sales assistant helping with CRM communication strategy.",
+                    "content": (
+                        "You are a CRM analyst assistant for internal admin users. "
+                        "Do not roleplay the client. "
+                        "Answer with a concise practical structure: "
+                        "1) Summary, 2) Risks, 3) Recommended next action."
+                    ),
                 },
                 {
                     "role": "user",
                     "content": (
                         f"Client name: {lead_name}\n"
                         f"Stage: {lead_stage}\n"
+                        f"Conversation/context: {conversation_context or '-'}\n"
                         f"Question: {question}\n"
-                        "Provide actionable response in 3-5 bullet points."
+                        "Provide actionable response in 4-7 bullet points."
                     ),
                 },
             ],

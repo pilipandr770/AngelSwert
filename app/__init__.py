@@ -76,6 +76,30 @@ def _ensure_service_settings_columns() -> None:
         db.session.commit()
 
 
+def _ensure_assistant_settings_columns() -> None:
+    required_columns = {
+        "widget_auto_open_enabled": "BOOLEAN NOT NULL DEFAULT TRUE",
+        "widget_auto_open_delay_seconds": "INTEGER NOT NULL DEFAULT 40",
+        "widget_greeting_text": "TEXT NOT NULL DEFAULT ''",
+    }
+
+    inspector = inspect(db.engine)
+    try:
+        existing = {col["name"] for col in inspector.get_columns("assistant_instruction_settings")}
+    except Exception:
+        return
+
+    changed = False
+    for column, ddl in required_columns.items():
+        if column in existing:
+            continue
+        db.session.execute(text(f"ALTER TABLE assistant_instruction_settings ADD COLUMN {column} {ddl}"))
+        changed = True
+
+    if changed:
+        db.session.commit()
+
+
 def _seed_defaults(app: Flask) -> None:
     admin_email = app.config["ADMIN_EMAIL"]
     admin_password = app.config["ADMIN_PASSWORD"]
@@ -96,7 +120,25 @@ def _seed_defaults(app: Flask) -> None:
             db.session.add(YouTubeLink(slot=slot, title=title, url=url))
 
     if not AssistantInstructionSettings.query.first():
-        db.session.add(AssistantInstructionSettings(custom_instructions=""))
+        db.session.add(
+            AssistantInstructionSettings(
+                custom_instructions="",
+                widget_auto_open_enabled=True,
+                widget_auto_open_delay_seconds=40,
+                widget_greeting_text="Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.",
+            )
+        )
+    else:
+        assistant_settings = AssistantInstructionSettings.query.first()
+        if assistant_settings:
+            if not (assistant_settings.widget_greeting_text or "").strip():
+                assistant_settings.widget_greeting_text = (
+                    "Hallo und willkommen bei ASAI Studio. "
+                    "Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen."
+                )
+            if assistant_settings.widget_auto_open_delay_seconds <= 0:
+                assistant_settings.widget_auto_open_delay_seconds = 40
+            db.session.add(assistant_settings)
 
     if not BlogAutomationSettings.query.first():
         db.session.add(
@@ -232,6 +274,7 @@ def create_app() -> Flask:
     with app.app_context():
         _ensure_db_schema(app)
         db.create_all()
+        _ensure_assistant_settings_columns()
         _ensure_service_settings_columns()
         _seed_defaults(app)
 

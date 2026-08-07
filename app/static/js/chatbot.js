@@ -5,14 +5,100 @@ const form = document.getElementById('chatForm');
 const input = document.getElementById('chatInput');
 const messages = document.getElementById('chatMessages');
 const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+const chatbotRoot = document.getElementById('chatbot');
+
+const CHAT_DISMISS_UNTIL_KEY = 'as_chat_auto_open_dismiss_until';
+const CHAT_GREETING_SHOWN_KEY = 'as_chat_greeting_shown';
+const CHAT_SNOOZE_MS = 1000 * 60 * 60 * 8;
+const DEFAULT_AUTO_OPEN_DELAY_MS = 1000 * 40;
+const DEFAULT_GREETING_DE = 'Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.';
+
+function parseEnabled(rawValue) {
+  return ['1', 'true', 'yes', 'on'].includes((rawValue || '').toLowerCase());
+}
+
+function parseDelayMs(rawValue) {
+  const n = Number(rawValue);
+  if (!Number.isFinite(n)) return DEFAULT_AUTO_OPEN_DELAY_MS;
+  const boundedSeconds = Math.max(5, Math.min(300, Math.floor(n)));
+  return boundedSeconds * 1000;
+}
+
+const CHAT_AUTO_OPEN_ENABLED = parseEnabled(chatbotRoot ? chatbotRoot.dataset.autoOpenEnabled : '1');
+const CHAT_AUTO_OPEN_DELAY_MS = parseDelayMs(chatbotRoot ? chatbotRoot.dataset.autoOpenDelay : '40');
+const CHAT_GREETING_TEXT = (chatbotRoot && chatbotRoot.dataset.greetingText ? chatbotRoot.dataset.greetingText.trim() : '') || DEFAULT_GREETING_DE;
 
 let selectedSlot = null;
 
-function openPanel() {
+function saveChatIdentity(name, email) {
+  if (typeof window === 'undefined' || !window.localStorage) return;
+  const cleanName = (name || '').trim();
+  const cleanEmail = (email || '').trim().toLowerCase();
+  if (cleanName) {
+    window.localStorage.setItem('as_chat_name', cleanName);
+  }
+  if (cleanEmail) {
+    window.localStorage.setItem('as_chat_email', cleanEmail);
+  }
+}
+
+function getChatIdentity() {
+  const nameInput = document.getElementById('chatBookName');
+  const emailInput = document.getElementById('chatBookEmail');
+  const typedName = nameInput ? nameInput.value.trim() : '';
+  const typedEmail = emailInput ? emailInput.value.trim().toLowerCase() : '';
+
+  let savedName = '';
+  let savedEmail = '';
+  if (typeof window !== 'undefined' && window.localStorage) {
+    savedName = (window.localStorage.getItem('as_chat_name') || '').trim();
+    savedEmail = (window.localStorage.getItem('as_chat_email') || '').trim().toLowerCase();
+  }
+
+  return {
+    name: typedName || savedName,
+    email: typedEmail || savedEmail,
+  };
+}
+
+function shouldSuppressAutoOpen() {
+  if (typeof window === 'undefined' || !window.localStorage) return false;
+  const raw = window.localStorage.getItem(CHAT_DISMISS_UNTIL_KEY) || '';
+  const untilTs = Number(raw);
+  return Number.isFinite(untilTs) && untilTs > Date.now();
+}
+
+function rememberDismiss() {
+  if (typeof window === 'undefined' || !window.localStorage) return;
+  window.localStorage.setItem(CHAT_DISMISS_UNTIL_KEY, String(Date.now() + CHAT_SNOOZE_MS));
+}
+
+function maybeShowGreeting() {
+  if (!messages) return;
+  const hasHistory = messages.children.length > 0;
+  if (hasHistory) return;
+
+  let alreadyShown = false;
+  if (typeof window !== 'undefined' && window.localStorage) {
+    alreadyShown = window.localStorage.getItem(CHAT_GREETING_SHOWN_KEY) === '1';
+  }
+  if (alreadyShown) return;
+
+  addMessage('bot', CHAT_GREETING_TEXT);
+  if (typeof window !== 'undefined' && window.localStorage) {
+    window.localStorage.setItem(CHAT_GREETING_SHOWN_KEY, '1');
+  }
+}
+
+function openPanel(options = {}) {
+  const { isAuto = false } = options;
   if (!panel) return;
   panel.classList.remove('hidden');
   if (toggle) {
     toggle.classList.add('chatbot-toggle-hidden');
+  }
+  if (isAuto) {
+    maybeShowGreeting();
   }
 }
 
@@ -22,10 +108,11 @@ function closePanel() {
   if (toggle) {
     toggle.classList.remove('chatbot-toggle-hidden');
   }
+  rememberDismiss();
 }
 
 if (toggle && panel) {
-  toggle.addEventListener('click', openPanel);
+  toggle.addEventListener('click', () => openPanel({ isAuto: false }));
 }
 
 if (closeBtn) {
@@ -129,6 +216,7 @@ async function bookSelectedSlot() {
       return;
     }
 
+    saveChatIdentity(name, email);
     addMessage('bot', `Готово! Бронювання #${data.booking_id} на ${data.slot.starts_at_local || data.slot.starts_at}`);
     selectedSlot = null;
   } catch (error) {
@@ -171,6 +259,14 @@ function bindBookingUi() {
 ensureBookingUi();
 bindBookingUi();
 
+if (CHAT_AUTO_OPEN_ENABLED && panel && panel.classList.contains('hidden')) {
+  window.setTimeout(() => {
+    if (!panel.classList.contains('hidden')) return;
+    if (shouldSuppressAutoOpen()) return;
+    openPanel({ isAuto: true });
+  }, CHAT_AUTO_OPEN_DELAY_MS);
+}
+
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -181,10 +277,16 @@ if (form) {
     input.value = '';
 
     try {
+      const identity = getChatIdentity();
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: value, timezone: userTimezone })
+        body: JSON.stringify({
+          message: value,
+          timezone: userTimezone,
+          lead_name: identity.name,
+          lead_email: identity.email,
+        })
       });
       const data = await response.json();
       addMessage('bot', data.reply || 'AI response error.');

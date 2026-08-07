@@ -13,6 +13,16 @@
   <h2>Додаткові інструкції для бізнесу</h2>
   <p>Тут можна описати тон, стиль і бізнес-контекст відповіді для клієнтів. Ці інструкції застосовуються як другорядні.</p>
   <form method="post" action="{{ url_for('admin.assistant_settings_save') }}">
+    <h3>Поведение виджета чата</h3>
+    <label>
+      <input type="checkbox" name="widget_auto_open_enabled" {% if settings.widget_auto_open_enabled %}checked{% endif %}>
+      Автовідкриття віджета після затримки
+    </label>
+    <label>Затримка перед автовідкриттям (секунди, 5-300)</label>
+    <input type="number" min="5" max="300" name="widget_auto_open_delay_seconds" value="{{ settings.widget_auto_open_delay_seconds or 40 }}">
+    <label>Привітальне повідомлення (показується при автовідкритті)</label>
+    <textarea name="widget_greeting_text" rows="3" placeholder="Hallo und willkommen...">{{ settings.widget_greeting_text }}</textarea>
+
     <label>Кастомні інструкції (до 4000 символів)</label>
     <textarea name="custom_instructions" rows="12" placeholder="Наприклад: Відповідай німецькою мовою за замовчуванням, будь лаконічним, завжди пропонуй наступний крок у вигляді консультації.">{{ settings.custom_instructions }}</textarea>
     <button class="btn" type="submit">Зберегти</button>

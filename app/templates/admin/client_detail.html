@@ -20,13 +20,35 @@
 
   <form method="post" action="{{ url_for('admin.crm_ai_hint', lead_id=lead.id) }}" class="admin-form">
     <h2>AI-помічник</h2>
+    <p>Асистент відповідає адміну як CRM-аналітик, а не як клієнт.</p>
     <label>Запитання</label>
-    <textarea name="question" rows="4" placeholder="Як краще відповісти клієнту на це повідомлення?" required></textarea>
-    <button class="btn" type="submit">Отримати підказку</button>
+    <textarea name="question" rows="4" placeholder="Наприклад: дай следующий ответ клиенту и обоснуй его"></textarea>
+    <div class="cta-row">
+      <button class="btn" type="submit" name="action" value="summary">Саммарі переписки</button>
+      <button class="btn btn-ghost" type="submit" name="action" value="hint">Підказка по відповіді</button>
+    </div>
     {% if ai_hint %}
     <div class="ai-box">{{ ai_hint | replace('\n', '<br>') | safe }}</div>
     {% endif %}
   </form>
+</section>
+
+<section class="admin-form">
+  <h2>Переписка клієнта з чатботом</h2>
+  {% if chatbot_messages %}
+  <table class="table">
+    <tr><th>Дата</th><th>Напрям</th><th>Текст</th></tr>
+    {% for msg in chatbot_messages %}
+    <tr>
+      <td>{{ msg.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+      <td>{{ msg.direction }}</td>
+      <td>{{ msg.body }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>Поки що немає збереженої переписки чатбота для цього ліда.</p>
+  {% endif %}
 </section>
 
 <section class="admin-grid">

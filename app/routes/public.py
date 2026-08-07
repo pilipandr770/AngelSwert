@@ -9,7 +9,7 @@ from werkzeug.routing import BuildError
 
 from ..extensions import db
 from ..i18n import translate
-from ..models import BlogPost, HomePageHeroSettings, Lead, LeadMessage, ServicePageSettings, YouTubeLink
+from ..models import AssistantInstructionSettings, BlogPost, HomePageHeroSettings, Lead, LeadMessage, ServicePageSettings, YouTubeLink
 from ..services.seo import absolute_url, normalize_site_url, render_ai_txt, render_geo_txt, render_humans_txt, render_llms_txt, render_robots_txt, sitemap_xml
 from ..services.home_hero import resolve_home_hero_content
 from ..services.services_content import localized_services_copy
@@ -71,6 +71,18 @@ def inject_brand():
     def canonical_url() -> str:
         return site_url(lang_url(getattr(g, "lang", "de")))
 
+    assistant_settings = AssistantInstructionSettings.query.first()
+    widget_settings = {
+        "auto_open_enabled": bool(getattr(assistant_settings, "widget_auto_open_enabled", True)),
+        "auto_open_delay_seconds": int(getattr(assistant_settings, "widget_auto_open_delay_seconds", 40) or 40),
+        "greeting_text": (
+            getattr(assistant_settings, "widget_greeting_text", "")
+            or "Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen."
+        ),
+    }
+
+    widget_settings["auto_open_delay_seconds"] = max(5, min(300, widget_settings["auto_open_delay_seconds"]))
+
     return {
         "brand_name": current_app.config["PUBLIC_BRAND_NAME"],
         "lang": getattr(g, "lang", "de"),
@@ -78,6 +90,7 @@ def inject_brand():
         "lang_url": lang_url,
         "site_url": site_url,
         "canonical_url": canonical_url(),
+        "chat_widget_settings": widget_settings,
     }
 
 
