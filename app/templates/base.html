@@ -8,13 +8,13 @@
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{{ brand_name }}">
-  <meta property="og:title" content="{% block og_title %}{% block title %}{{ brand_name }}{% endblock %}{% endblock %}">
-  <meta property="og:description" content="{% block og_description %}{% block meta_description %}{{ brand_name }}{% endblock %}{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ brand_name }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ brand_name }}{% endblock %}">
   <meta property="og:url" content="{{ canonical_url }}">
   <meta property="og:locale" content="{{ 'de_DE' if is_de else 'en_US' }}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{% block twitter_title %}{% block title %}{{ brand_name }}{% endblock %}{% endblock %}">
-  <meta name="twitter:description" content="{% block twitter_description %}{% block meta_description %}{{ brand_name }}{% endblock %}{% endblock %}">
+  <meta name="twitter:title" content="{% block twitter_title %}{{ brand_name }}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{{ brand_name }}{% endblock %}">
   <link rel="canonical" href="{{ canonical_url }}">
   <link rel="alternate" hreflang="de" href="{{ lang_url('de') }}">
   <link rel="alternate" hreflang="en" href="{{ lang_url('en') }}">
