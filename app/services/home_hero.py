@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+
+
 HOME_HERO_TEXT_DEFAULTS = {
     "de": {
         "eyebrow": "UNSERE LEISTUNGEN",
@@ -39,6 +42,22 @@ def resolve_home_hero_media_url(path_or_url: str) -> str:
     return url_for("static", filename=value)
 
 
+def _media_extension(path_or_url: str) -> str:
+    raw = (path_or_url or "").strip().lower()
+    if not raw:
+        return ""
+    parsed = urlparse(raw)
+    path = parsed.path or raw
+    dot_index = path.rfind(".")
+    if dot_index == -1:
+        return ""
+    return path[dot_index:]
+
+
+def is_video_media(path_or_url: str) -> bool:
+    return _media_extension(path_or_url) in {".mp4", ".webm"}
+
+
 def home_hero_lang_code(lang: str) -> str:
     return "de" if (lang or "de").lower() == "de" else "en"
 
@@ -46,6 +65,10 @@ def home_hero_lang_code(lang: str) -> str:
 def resolve_home_hero_content(settings, lang: str) -> dict:
     lang_code = home_hero_lang_code(lang)
     defaults = HOME_HERO_TEXT_DEFAULTS[lang_code]
+
+    bg_media = resolve_home_hero_media_url((getattr(settings, "hero_background", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_bg_media"])
+    main_media = resolve_home_hero_media_url((getattr(settings, "hero_image_main", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_main_media"])
+    secondary_media = resolve_home_hero_media_url((getattr(settings, "hero_image_secondary", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_secondary_media"])
 
     return {
         "eyebrow": (getattr(settings, f"hero_eyebrow_{lang_code}", "") or "").strip() or defaults["eyebrow"],
@@ -56,7 +79,9 @@ def resolve_home_hero_content(settings, lang: str) -> dict:
         "point_3": (getattr(settings, f"hero_point_3_{lang_code}", "") or "").strip() or defaults["point_3"],
         "cta_primary": (getattr(settings, f"hero_cta_primary_{lang_code}", "") or "").strip() or defaults["cta_primary"],
         "cta_secondary": (getattr(settings, f"hero_cta_secondary_{lang_code}", "") or "").strip() or defaults["cta_secondary"],
-        "bg_media": resolve_home_hero_media_url((getattr(settings, "hero_background", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_bg_media"]),
-        "main_media": resolve_home_hero_media_url((getattr(settings, "hero_image_main", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_main_media"]),
-        "secondary_media": resolve_home_hero_media_url((getattr(settings, "hero_image_secondary", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_secondary_media"]),
+        "bg_media": bg_media,
+        "main_media": main_media,
+        "secondary_media": secondary_media,
+        "main_is_video": is_video_media(main_media),
+        "secondary_is_video": is_video_media(secondary_media),
     }

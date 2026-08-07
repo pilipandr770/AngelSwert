@@ -34,8 +34,16 @@
     </div>
   </div>
   <figure class="media-frame media-frame--hero home-hero-media">
+    {% if hero_content.main_is_video %}
+    <video src="{{ hero_image }}" autoplay muted loop playsinline preload="metadata" aria-label="Hero video"></video>
+    {% else %}
     <img src="{{ hero_image }}" alt="Stronger Than Yesterday hero visual" loading="eager">
+    {% endif %}
+    {% if hero_content.secondary_is_video %}
+    <video class="home-hero-media-secondary" src="{{ hero_secondary_image }}" autoplay muted loop playsinline preload="metadata" aria-label="Secondary hero video"></video>
+    {% else %}
     <img class="home-hero-media-secondary" src="{{ hero_secondary_image }}" alt="Secondary hero visual" loading="eager">
+    {% endif %}
   </figure>
 </section>
 

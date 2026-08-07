@@ -344,26 +344,43 @@ select {
   position: relative;
   min-height: clamp(420px, 56vw, 760px);
   padding: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  clip-path: inset(0 round 28px);
 }
 
-.home-hero-media > img:first-child {
+.home-hero-media::after {
+  content: "";
   position: absolute;
   inset: 0;
-  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.home-hero-media > img:first-child,
+.home-hero-media > video:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  border-radius: 24px;
+  object-fit: cover;
+  border-radius: inherit;
+  z-index: 1;
 }
 
 .home-hero-media-secondary {
   position: absolute;
-  right: 5%;
-  bottom: 5%;
-  width: min(38%, 220px);
+  right: 1rem;
+  bottom: 1rem;
+  width: min(34%, 200px);
   aspect-ratio: 0.82;
   object-fit: cover;
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 22px 45px rgba(0, 0, 0, 0.28);
+  z-index: 3;
 }
 
 .home-section-head {

@@ -316,11 +316,12 @@ def home_hero_settings_save():
             setattr(settings, field_name, value)
 
     image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
+    video_ext = {".mp4", ".webm"}
     bg_uploaded = _save_uploaded_static_file(request.files.get("hero_background_file"), "uploads/home", image_ext)
     if bg_uploaded:
         settings.hero_background = bg_uploaded
 
-    main_uploaded = _save_uploaded_static_file(request.files.get("hero_image_main_file"), "uploads/home", image_ext)
+    main_uploaded = _save_uploaded_static_file(request.files.get("hero_image_main_file"), "uploads/home", image_ext | video_ext)
     if main_uploaded:
         settings.hero_image_main = main_uploaded
 
