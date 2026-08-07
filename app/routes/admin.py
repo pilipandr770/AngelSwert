@@ -19,6 +19,7 @@ from ..models import (
     CrmAiReport,
     CrmGlossaryTerm,
     DiscoveryAssessment,
+    HomePageHeroSettings,
     InternalCalendarSettings,
     InternalCalendarSlot,
     Lead,
@@ -40,6 +41,7 @@ from ..services.storage import s3_enabled, upload_bytes_to_s3
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 SERVICES_CMS_TABS = {"tab-media", "tab-de", "tab-en", "tab-flow"}
+HOME_HERO_TABS = {"tab-media", "tab-de", "tab-en"}
 
 
 def _save_uploaded_static_file(file_storage, folder: str, allowed_ext: set[str]) -> str:
@@ -264,6 +266,73 @@ def services_content_reset_copy():
     db.session.commit()
     flash("Тексти сторінки Services скинуто до значень за замовчуванням.", "success")
     return redirect(url_for("admin.services_content_settings", tab=safe_tab))
+
+
+@admin_bp.get("/home-hero")
+@login_required
+def home_hero_settings():
+    settings = HomePageHeroSettings.query.first()
+    if not settings:
+        settings = HomePageHeroSettings()
+        db.session.add(settings)
+        db.session.commit()
+
+    requested_tab = (request.args.get("tab") or "").strip()
+    initial_tab = requested_tab if requested_tab in HOME_HERO_TABS else "tab-media"
+    return render_template("admin/home_hero.html", settings=settings, initial_tab=initial_tab)
+
+
+@admin_bp.post("/home-hero")
+@login_required
+def home_hero_settings_save():
+    settings = HomePageHeroSettings.query.first()
+    if not settings:
+        settings = HomePageHeroSettings()
+        db.session.add(settings)
+
+    for field_name in [
+        "hero_background",
+        "hero_image_main",
+        "hero_image_secondary",
+        "hero_eyebrow_de",
+        "hero_eyebrow_en",
+        "hero_title_de",
+        "hero_title_en",
+        "hero_lead_de",
+        "hero_lead_en",
+        "hero_point_1_de",
+        "hero_point_1_en",
+        "hero_point_2_de",
+        "hero_point_2_en",
+        "hero_point_3_de",
+        "hero_point_3_en",
+        "hero_cta_primary_de",
+        "hero_cta_primary_en",
+        "hero_cta_secondary_de",
+        "hero_cta_secondary_en",
+    ]:
+        value = (request.form.get(field_name) or "").strip()
+        if value:
+            setattr(settings, field_name, value)
+
+    image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
+    bg_uploaded = _save_uploaded_static_file(request.files.get("hero_background_file"), "uploads/home", image_ext)
+    if bg_uploaded:
+        settings.hero_background = bg_uploaded
+
+    main_uploaded = _save_uploaded_static_file(request.files.get("hero_image_main_file"), "uploads/home", image_ext)
+    if main_uploaded:
+        settings.hero_image_main = main_uploaded
+
+    secondary_uploaded = _save_uploaded_static_file(request.files.get("hero_image_secondary_file"), "uploads/home", image_ext)
+    if secondary_uploaded:
+        settings.hero_image_secondary = secondary_uploaded
+
+    active_tab = (request.form.get("active_tab") or "").strip()
+    safe_tab = active_tab if active_tab in HOME_HERO_TABS else "tab-media"
+    db.session.commit()
+    flash("Налаштування верхнього блоку головної сторінки збережено.", "success")
+    return redirect(url_for("admin.home_hero_settings", tab=safe_tab))
 
 
 @admin_bp.get("/analytics")

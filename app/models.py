@@ -184,6 +184,30 @@ class ServicePageSettings(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
+class HomePageHeroSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    hero_background = db.Column(db.String(1024), default="img/services_tz/image1.png", nullable=False)
+    hero_image_main = db.Column(db.String(1024), default="img/services_tz/image3.png", nullable=False)
+    hero_image_secondary = db.Column(db.String(1024), default="img/client-about.jpg", nullable=False)
+    hero_eyebrow_de = db.Column(db.Text, default="UNSERE LEISTUNGEN", nullable=False)
+    hero_eyebrow_en = db.Column(db.Text, default="OUR SERVICES", nullable=False)
+    hero_title_de = db.Column(db.Text, default="Kontrollierte KI-Video- & Mediasysteme für Unternehmen", nullable=False)
+    hero_title_en = db.Column(db.Text, default="Controlled AI video & media systems for business", nullable=False)
+    hero_lead_de = db.Column(db.Text, default="KI-Video-Produktion, Digital Humans, Content-Systeme und Automatisierung für klare Markenpräsenz, qualifizierte Nachfrage und wiederholbares Wachstum.", nullable=False)
+    hero_lead_en = db.Column(db.Text, default="AI video production, digital humans, content systems and automation designed to create clear brand presence, qualified demand and repeatable growth.", nullable=False)
+    hero_point_1_de = db.Column(db.Text, default="Strategie, Creative Direction und Umsetzung bleiben abgestimmt.", nullable=False)
+    hero_point_1_en = db.Column(db.Text, default="Strategy, creative direction and execution stay aligned.", nullable=False)
+    hero_point_2_de = db.Column(db.Text, default="Eine Marke, ein Content-Engine, mehrere Formate.", nullable=False)
+    hero_point_2_en = db.Column(db.Text, default="One brand, one content engine, multiple formats.", nullable=False)
+    hero_point_3_de = db.Column(db.Text, default="Jeder Block führt zum nächsten klaren Schritt.", nullable=False)
+    hero_point_3_en = db.Column(db.Text, default="Each block leads the visitor toward the next action.", nullable=False)
+    hero_cta_primary_de = db.Column(db.String(255), default="AI Discovery starten", nullable=False)
+    hero_cta_primary_en = db.Column(db.String(255), default="Start AI Discovery", nullable=False)
+    hero_cta_secondary_de = db.Column(db.String(255), default="Leistungen ansehen", nullable=False)
+    hero_cta_secondary_en = db.Column(db.String(255), default="Explore Services", nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 class AnalyticsEvent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_name = db.Column(db.String(120), nullable=False)

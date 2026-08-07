@@ -292,14 +292,19 @@ select {
 
 .home-hero {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 0.92fr) minmax(340px, 1.08fr);
+  gap: 1.25rem;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(135deg, rgba(17, 20, 24, 0.94), rgba(36, 41, 48, 0.82)), var(--home-hero-bg);
+  background-size: cover;
+  background-position: center;
 }
 
 .home-hero-copy h1 {
-  font-size: clamp(3rem, 6vw, 5.8rem);
-  max-width: 10ch;
+  font-size: clamp(2.35rem, 4.6vw, 4.35rem);
+  max-width: 11ch;
 }
 
 .home-hero-points {
@@ -333,6 +338,32 @@ select {
 .story-poster img {
   width: 100%;
   display: block;
+}
+
+.home-hero-media {
+  position: relative;
+  min-height: clamp(420px, 56vw, 760px);
+  padding: 0;
+}
+
+.home-hero-media > img:first-child {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  height: 100%;
+  border-radius: 24px;
+}
+
+.home-hero-media-secondary {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  width: min(38%, 220px);
+  aspect-ratio: 0.82;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.28);
 }
 
 .home-section-head {

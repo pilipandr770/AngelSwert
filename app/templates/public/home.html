@@ -3,36 +3,39 @@
 {% block meta_description %}{{ t('home.meta_description') }}{% endblock %}
 {% block content %}
 {% set is_de = lang == 'de' %}
-{% set hero_image = url_for('static', filename='img/services_tz/image3.png') %}
+{% set hero_image = hero_content.main_media %}
+{% set hero_secondary_image = hero_content.secondary_media %}
+{% set hero_background = hero_content.bg_media %}
 {% set about_image = url_for('static', filename='img/client-about.jpg') %}
 {% set consult_image = url_for('static', filename='img/client-consultation.jpg') %}
 
-<section class="hero home-hero">
+<section class="hero home-hero" style="--home-hero-bg: url('{{ hero_background }}');">
   <div class="home-hero-copy">
-    <p class="eyebrow">ASAI Studio</p>
-    <h1>{{ 'Controlled AI Video & Media Systems for Business' if not is_de else 'Kontrollierte KI-Video- & Mediasysteme für Unternehmen' }}</h1>
-    <p class="section-lead">{{ 'AI video production, digital humans, content systems and automation designed to create clear brand presence, qualified demand and repeatable growth.' if not is_de else 'KI-Video-Produktion, Digital Humans, Content-Systeme und Automatisierung für klare Markenpräsenz, qualifizierte Nachfrage und wiederholbares Wachstum.' }}</p>
+    <p class="eyebrow">{{ hero_content.eyebrow }}</p>
+    <h1>{{ hero_content.title }}</h1>
+    <p class="section-lead">{{ hero_content.lead }}</p>
     <div class="cta-row">
-      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Start AI Discovery' if not is_de else 'AI Discovery starten' }}</a>
-      <a class="btn btn-ghost" href="{{ url_for('public.services', lang=lang) }}">{{ 'Explore Services' if not is_de else 'Leistungen ansehen' }}</a>
+      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ hero_content.cta_primary }}</a>
+      <a class="btn btn-ghost" href="{{ url_for('public.services', lang=lang) }}">{{ hero_content.cta_secondary }}</a>
     </div>
     <div class="home-hero-points">
       <div>
-        <strong>{{ 'One human-led system' if not is_de else 'Ein menschlich geführtes System' }}</strong>
-        <span>{{ 'Strategy, creative direction and execution stay aligned.' if not is_de else 'Strategie, Creative Direction und Umsetzung bleiben abgestimmt.' }}</span>
+        <strong>{{ 'Strategy alignment' if not is_de else 'Strategische Abstimmung' }}</strong>
+        <span>{{ hero_content.point_1 }}</span>
       </div>
       <div>
-        <strong>{{ 'Unlimited storytelling possibilities' if not is_de else 'Unbegrenzte Storytelling-Möglichkeiten' }}</strong>
-        <span>{{ 'One brand, one content engine, multiple formats.' if not is_de else 'Eine Marke, ein Content-Engine, mehrere Formate.' }}</span>
+        <strong>{{ 'One content engine' if not is_de else 'Ein Content-System' }}</strong>
+        <span>{{ hero_content.point_2 }}</span>
       </div>
       <div>
-        <strong>{{ 'Clear conversion focus' if not is_de else 'Klare Conversion-Ausrichtung' }}</strong>
-        <span>{{ 'Each block leads the visitor toward the next action.' if not is_de else 'Jeder Block führt zum nächsten klaren Schritt.' }}</span>
+        <strong>{{ 'Clear next step' if not is_de else 'Nächster klarer Schritt' }}</strong>
+        <span>{{ hero_content.point_3 }}</span>
       </div>
     </div>
   </div>
-  <figure class="media-frame media-frame--hero media-frame--contain home-hero-media">
+  <figure class="media-frame media-frame--hero home-hero-media">
     <img src="{{ hero_image }}" alt="Stronger Than Yesterday hero visual" loading="eager">
+    <img class="home-hero-media-secondary" src="{{ hero_secondary_image }}" alt="Secondary hero visual" loading="eager">
   </figure>
 </section>
 

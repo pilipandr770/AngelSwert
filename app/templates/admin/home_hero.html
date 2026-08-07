@@ -1,0 +1,92 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Hero головної{% endblock %}
+{% block content %}
+<h1>CMS: Hero головної сторінки</h1>
+<p>Тут редагується найбільший верхній блок на головній: фон, два зображення та тексти DE/EN.</p>
+
+<div class="admin-tabs" data-tabs-root>
+  <div class="admin-tabs-nav" role="tablist" aria-label="Home Hero Tabs">
+    <button type="button" class="admin-tab-btn is-active" data-tab-target="tab-media" role="tab" aria-selected="true">Медіа</button>
+    <button type="button" class="admin-tab-btn" data-tab-target="tab-de" role="tab" aria-selected="false">Тексти DE</button>
+    <button type="button" class="admin-tab-btn" data-tab-target="tab-en" role="tab" aria-selected="false">Texts EN</button>
+  </div>
+
+  <form method="post" action="{{ url_for('admin.home_hero_settings_save') }}" class="admin-form" enctype="multipart/form-data">
+    <input type="hidden" name="active_tab" id="activeTabInput" value="{{ initial_tab }}">
+
+    <section id="tab-media" class="admin-tab-panel is-active" role="tabpanel">
+      <h2>Медіа</h2>
+      <label>Hero background</label>
+      <input name="hero_background" value="{{ settings.hero_background }}">
+      <label>Або завантажити background</label>
+      <input type="file" name="hero_background_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+
+      <label>Main hero image</label>
+      <input name="hero_image_main" value="{{ settings.hero_image_main }}">
+      <label>Або завантажити main image</label>
+      <input type="file" name="hero_image_main_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+
+      <label>Secondary hero image</label>
+      <input name="hero_image_secondary" value="{{ settings.hero_image_secondary }}">
+      <label>Або завантажити secondary image</label>
+      <input type="file" name="hero_image_secondary_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
+    </section>
+
+    {% for lang_code, lang_label in [('de', 'DE'), ('en', 'EN')] %}
+    <section id="tab-{{ lang_code }}" class="admin-tab-panel" role="tabpanel">
+      <h2>Тексти {{ lang_label }}</h2>
+      <label>Eyebrow</label>
+      <input name="hero_eyebrow_{{ lang_code }}" value="{{ settings.hero_eyebrow_de if lang_code == 'de' else settings.hero_eyebrow_en }}">
+      <label>Title</label>
+      <textarea name="hero_title_{{ lang_code }}" rows="3">{{ settings.hero_title_de if lang_code == 'de' else settings.hero_title_en }}</textarea>
+      <label>Lead</label>
+      <textarea name="hero_lead_{{ lang_code }}" rows="4">{{ settings.hero_lead_de if lang_code == 'de' else settings.hero_lead_en }}</textarea>
+      <label>Point 1</label>
+      <textarea name="hero_point_1_{{ lang_code }}" rows="2">{{ settings.hero_point_1_de if lang_code == 'de' else settings.hero_point_1_en }}</textarea>
+      <label>Point 2</label>
+      <textarea name="hero_point_2_{{ lang_code }}" rows="2">{{ settings.hero_point_2_de if lang_code == 'de' else settings.hero_point_2_en }}</textarea>
+      <label>Point 3</label>
+      <textarea name="hero_point_3_{{ lang_code }}" rows="2">{{ settings.hero_point_3_de if lang_code == 'de' else settings.hero_point_3_en }}</textarea>
+      <label>CTA primary</label>
+      <input name="hero_cta_primary_{{ lang_code }}" value="{{ settings.hero_cta_primary_de if lang_code == 'de' else settings.hero_cta_primary_en }}">
+      <label>CTA secondary</label>
+      <input name="hero_cta_secondary_{{ lang_code }}" value="{{ settings.hero_cta_secondary_de if lang_code == 'de' else settings.hero_cta_secondary_en }}">
+    </section>
+    {% endfor %}
+
+    <div class="services-form-actions">
+      <button class="btn" type="submit">Зберегти hero</button>
+    </div>
+  </form>
+</div>
+
+<script>
+(function () {
+  const root = document.querySelector('[data-tabs-root]');
+  if (!root) return;
+  const tabButtons = Array.from(root.querySelectorAll('[data-tab-target]'));
+  const panels = Array.from(root.querySelectorAll('.admin-tab-panel'));
+  const activeInput = document.getElementById('activeTabInput');
+
+  function activate(tabId) {
+    tabButtons.forEach((button) => {
+      const isActive = button.dataset.tabTarget === tabId;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    panels.forEach((panel) => {
+      panel.classList.toggle('is-active', panel.id === tabId);
+    });
+    if (activeInput) {
+      activeInput.value = tabId;
+    }
+  }
+
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => activate(button.dataset.tabTarget));
+  });
+
+  activate(activeInput && activeInput.value ? activeInput.value : 'tab-media');
+})();
+</script>
+{% endblock %}

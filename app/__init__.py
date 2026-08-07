@@ -9,6 +9,7 @@ from .extensions import db, login_manager
 from .models import (
     AssistantInstructionSettings,
     BlogAutomationSettings,
+    HomePageHeroSettings,
     InternalCalendarSettings,
     InternalCalendarSlot,
     ServicePageSettings,
@@ -153,6 +154,9 @@ def _seed_defaults(app: Flask) -> None:
             changed = True
         if changed:
             db.session.add(settings)
+
+    if not HomePageHeroSettings.query.first():
+        db.session.add(HomePageHeroSettings())
 
     settings = InternalCalendarSettings.query.first()
     if not settings:

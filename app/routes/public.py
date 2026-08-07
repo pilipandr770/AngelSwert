@@ -9,8 +9,9 @@ from werkzeug.routing import BuildError
 
 from ..extensions import db
 from ..i18n import translate
-from ..models import BlogPost, Lead, LeadMessage, ServicePageSettings, YouTubeLink
+from ..models import BlogPost, HomePageHeroSettings, Lead, LeadMessage, ServicePageSettings, YouTubeLink
 from ..services.seo import absolute_url, normalize_site_url, render_ai_txt, render_geo_txt, render_humans_txt, render_llms_txt, render_robots_txt, sitemap_xml
+from ..services.home_hero import resolve_home_hero_content
 from ..services.services_content import localized_services_copy
 
 
@@ -82,6 +83,12 @@ def inject_brand():
 
 @public_bp.get("/")
 def home():
+    hero_settings = HomePageHeroSettings.query.first()
+    if not hero_settings:
+        hero_settings = HomePageHeroSettings()
+        db.session.add(hero_settings)
+        db.session.commit()
+
     links = YouTubeLink.query.order_by(YouTubeLink.slot.asc()).all()
 
     def youtube_video_id(url: str) -> str:
@@ -183,7 +190,9 @@ def home():
             }
         )
 
-    return render_template("public/home.html", links=links, featured_videos=featured_videos)
+    hero_content = resolve_home_hero_content(hero_settings, getattr(g, "lang", "de"))
+
+    return render_template("public/home.html", links=links, featured_videos=featured_videos, hero_content=hero_content)
 
 
 @public_bp.get("/about")
