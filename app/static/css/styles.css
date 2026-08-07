@@ -349,16 +349,6 @@ select {
   clip-path: inset(0 round 28px);
 }
 
-.home-hero-media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 4;
-}
-
 .home-hero-media > img:first-child,
 .home-hero-media > video:first-child {
   position: absolute;
