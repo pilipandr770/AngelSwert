@@ -10,6 +10,7 @@ from werkzeug.routing import BuildError
 from ..extensions import db
 from ..i18n import translate
 from ..models import BlogPost, Lead, LeadMessage, ServicePageSettings, YouTubeLink
+from ..services.seo import absolute_url, normalize_site_url, render_ai_txt, render_geo_txt, render_humans_txt, render_llms_txt, render_robots_txt, sitemap_xml
 from ..services.services_content import localized_services_copy
 
 
@@ -62,11 +63,20 @@ def inject_brand():
         except BuildError:
             return f"{request.path}?lang={target_lang}"
 
+    def site_url(path_or_url: str = "") -> str:
+        base_url = normalize_site_url(current_app.config.get("PUBLIC_SITE_URL"))
+        return absolute_url(base_url, path_or_url)
+
+    def canonical_url() -> str:
+        return site_url(lang_url(getattr(g, "lang", "de")))
+
     return {
         "brand_name": current_app.config["PUBLIC_BRAND_NAME"],
         "lang": getattr(g, "lang", "de"),
         "t": t,
         "lang_url": lang_url,
+        "site_url": site_url,
+        "canonical_url": canonical_url(),
     }
 
 
@@ -420,3 +430,92 @@ def cookie_policy():
 @public_bp.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@public_bp.get("/robots.txt")
+def robots_txt():
+    response = current_app.response_class(render_robots_txt(current_app.config.get("PUBLIC_SITE_URL")), mimetype="text/plain")
+    return response
+
+
+@public_bp.get("/llms.txt")
+def llms_txt():
+    response = current_app.response_class(
+        render_llms_txt(current_app.config.get("PUBLIC_SITE_URL"), current_app.config.get("PUBLIC_BRAND_NAME", "AngelSwert")),
+        mimetype="text/plain",
+    )
+    return response
+
+
+@public_bp.get("/ai.txt")
+def ai_txt():
+    response = current_app.response_class(
+        render_ai_txt(current_app.config.get("PUBLIC_SITE_URL"), current_app.config.get("PUBLIC_BRAND_NAME", "AngelSwert")),
+        mimetype="text/plain",
+    )
+    return response
+
+
+@public_bp.get("/geo.txt")
+def geo_txt():
+    response = current_app.response_class(
+        render_geo_txt(current_app.config.get("PUBLIC_SITE_URL"), current_app.config.get("PUBLIC_BRAND_NAME", "AngelSwert")),
+        mimetype="text/plain",
+    )
+    return response
+
+
+@public_bp.get("/humans.txt")
+def humans_txt():
+    response = current_app.response_class(
+        render_humans_txt(current_app.config.get("PUBLIC_BRAND_NAME", "AngelSwert")),
+        mimetype="text/plain",
+    )
+    return response
+
+
+@public_bp.get("/sitemap.xml")
+def sitemap():
+    base_url = normalize_site_url(current_app.config.get("PUBLIC_SITE_URL"))
+    entries: list[dict[str, object]] = []
+
+    page_endpoints = [
+        ("public.home", "/", True),
+        ("public.about", "/about", True),
+        ("public.services", "/services", True),
+        ("public.programs", "/programs", True),
+        ("public.contact", "/contact", True),
+        ("public.blog_list", "/blog", True),
+        ("public.impressum", "/impressum", False),
+        ("public.privacy", "/privacy", False),
+        ("public.terms", "/terms", False),
+        ("public.withdrawal", "/withdrawal", False),
+        ("public.cookie_policy", "/cookie-policy", False),
+    ]
+
+    for endpoint, path, include_lang_variants in page_endpoints:
+        canonical_loc = absolute_url(base_url, path)
+        alternates = []
+        if include_lang_variants:
+            for lang_code in ("de", "en"):
+                href = absolute_url(base_url, url_for(endpoint, lang=lang_code))
+                alternates.append({"hreflang": lang_code, "href": href})
+        entries.append({"loc": canonical_loc, "alternates": alternates})
+
+    posts = BlogPost.query.filter_by(status="published").order_by(BlogPost.published_at.desc().nullslast(), BlogPost.created_at.desc()).all()
+    for post in posts:
+        loc = absolute_url(base_url, url_for("public.blog_post", slug=post.slug, lang="de"))
+        entries.append(
+            {
+                "loc": loc,
+                "lastmod": (post.published_at or post.created_at).date().isoformat(),
+                "alternates": [
+                    {"hreflang": "de", "href": absolute_url(base_url, url_for("public.blog_post", slug=post.slug, lang="de"))},
+                    {"hreflang": "en", "href": absolute_url(base_url, url_for("public.blog_post", slug=post.slug, lang="en"))},
+                ],
+            }
+        )
+
+    xml = sitemap_xml(entries)
+    response = current_app.response_class(xml, mimetype="application/xml")
+    return response

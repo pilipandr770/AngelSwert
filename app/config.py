@@ -99,6 +99,7 @@ class Config:
     ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@angelswert.de")
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "ChangeThisStrongPassword")
     PUBLIC_BRAND_NAME = os.getenv("PUBLIC_BRAND_NAME", "AngelSwert")
+    PUBLIC_SITE_URL = os.getenv("PUBLIC_SITE_URL", "https://www.angelswert.de").strip()
     ENABLE_BLOG_SCHEDULER = os.getenv("ENABLE_BLOG_SCHEDULER", "true").lower() == "true"
     S3_UPLOADS_ENABLED = os.getenv("S3_UPLOADS_ENABLED", "true").lower() == "true"
     S3_BUCKET = os.getenv("S3_BUCKET", "").strip()

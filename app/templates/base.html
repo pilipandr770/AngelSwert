@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ brand_name }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ brand_name }}{% endblock %}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ brand_name }}">
+  <meta property="og:title" content="{% block og_title %}{% block title %}{{ brand_name }}{% endblock %}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{% block meta_description %}{{ brand_name }}{% endblock %}{% endblock %}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:locale" content="{{ 'de_DE' if is_de else 'en_US' }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}{% block title %}{{ brand_name }}{% endblock %}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{% block meta_description %}{{ brand_name }}{% endblock %}{% endblock %}">
+  <link rel="canonical" href="{{ canonical_url }}">
   <link rel="alternate" hreflang="de" href="{{ lang_url('de') }}">
   <link rel="alternate" hreflang="en" href="{{ lang_url('en') }}">
   <link rel="alternate" hreflang="x-default" href="{{ lang_url('de') }}">
@@ -13,6 +24,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "{{ brand_name }}",
+      "url": "{{ canonical_url }}",
+      "logo": "{{ url_for('static', filename='img/brand-mark.png', _external=True) }}",
+      "sameAs": [
+        "https://www.instagram.com/angelswertvideoproduction?utm_source=qr",
+        "https://youtube.com/@angelswertnews?si=IcmUG9BheuLOraaX",
+        "https://www.linkedin.com/in/svitlana-lebedynska-379690168?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
+      ]
+    }
+  </script>
 </head>
 <body>
   {% set is_de = lang == 'de' %}

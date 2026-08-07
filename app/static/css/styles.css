@@ -290,6 +290,121 @@ select {
   justify-content: flex-start;
 }
 
+.home-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.home-hero-copy h1 {
+  font-size: clamp(3rem, 6vw, 5.8rem);
+  max-width: 10ch;
+}
+
+.home-hero-points {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+}
+
+.home-hero-points > div,
+.home-discovery-list > div {
+  border: 1px solid rgba(228, 204, 132, 0.18);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.home-hero-points strong,
+.home-discovery-list strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--accent-2);
+}
+
+.home-hero-points span {
+  display: block;
+  color: rgba(243, 236, 220, 0.82);
+}
+
+.home-hero-media img,
+.home-about img,
+.story-poster img {
+  width: 100%;
+  display: block;
+}
+
+.home-section-head {
+  max-width: 720px;
+}
+
+.home-offers-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.65fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.home-service-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home-packages-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.home-episodes-grid {
+  margin-top: 1rem;
+}
+
+.home-system-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.home-system-grid .card {
+  min-height: 100%;
+}
+
+.home-discovery-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0 1.1rem;
+}
+
+.home-about {
+  margin-top: 1rem;
+}
+
+@media (max-width: 960px) {
+  .home-hero,
+  .home-offers-grid,
+  .home-about,
+  .split--media {
+    grid-template-columns: 1fr;
+  }
+
+  .home-service-grid,
+  .home-system-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-service-grid,
+  .home-system-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-hero-copy h1 {
+    max-width: none;
+  }
+}
+
 .feature-list {
   margin: 0.8rem 0 1.1rem;
   padding-left: 1.15rem;

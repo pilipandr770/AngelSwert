@@ -2,78 +2,136 @@
 {% block title %}{{ brand_name }} | {{ t('home.page_title') }}{% endblock %}
 {% block meta_description %}{{ t('home.meta_description') }}{% endblock %}
 {% block content %}
-<section class="hero">
-  <div>
-    <p class="eyebrow">{{ t('home.mission_eyebrow') }}</p>
-    <h1>{{ t('home.title') }}</h1>
-    <p class="meta">{{ t('home.tagline') }}</p>
-    <p>{{ t('home.body') }}</p>
-    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ t('home.cta') }}</a>
-  </div>
-</section>
+{% set is_de = lang == 'de' %}
+{% set hero_image = url_for('static', filename='img/services_tz/image3.png') %}
+{% set about_image = url_for('static', filename='img/client-about.jpg') %}
+{% set consult_image = url_for('static', filename='img/client-consultation.jpg') %}
 
-<section class="page-block split">
-  <div>
-    <p class="eyebrow">{{ t('home.mission_eyebrow') }}</p>
-    <h2>{{ t('home.mission_title') }}</h2>
+<section class="hero home-hero">
+  <div class="home-hero-copy">
+    <p class="eyebrow">ASAI Studio</p>
+    <h1>{{ 'Controlled AI Video & Media Systems for Business' if not is_de else 'Kontrollierte KI-Video- & Mediasysteme für Unternehmen' }}</h1>
+    <p class="section-lead">{{ 'AI video production, digital humans, content systems and automation designed to create clear brand presence, qualified demand and repeatable growth.' if not is_de else 'KI-Video-Produktion, Digital Humans, Content-Systeme und Automatisierung für klare Markenpräsenz, qualifizierte Nachfrage und wiederholbares Wachstum.' }}</p>
+    <div class="cta-row">
+      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Start AI Discovery' if not is_de else 'AI Discovery starten' }}</a>
+      <a class="btn btn-ghost" href="{{ url_for('public.services', lang=lang) }}">{{ 'Explore Services' if not is_de else 'Leistungen ansehen' }}</a>
+    </div>
+    <div class="home-hero-points">
+      <div>
+        <strong>{{ 'One human-led system' if not is_de else 'Ein menschlich geführtes System' }}</strong>
+        <span>{{ 'Strategy, creative direction and execution stay aligned.' if not is_de else 'Strategie, Creative Direction und Umsetzung bleiben abgestimmt.' }}</span>
+      </div>
+      <div>
+        <strong>{{ 'Unlimited storytelling possibilities' if not is_de else 'Unbegrenzte Storytelling-Möglichkeiten' }}</strong>
+        <span>{{ 'One brand, one content engine, multiple formats.' if not is_de else 'Eine Marke, ein Content-Engine, mehrere Formate.' }}</span>
+      </div>
+      <div>
+        <strong>{{ 'Clear conversion focus' if not is_de else 'Klare Conversion-Ausrichtung' }}</strong>
+        <span>{{ 'Each block leads the visitor toward the next action.' if not is_de else 'Jeder Block führt zum nächsten klaren Schritt.' }}</span>
+      </div>
+    </div>
   </div>
-  <div>
-    <p>{{ t('home.mission_body') }}</p>
-    <p>{{ t('home.mission_body_2') }}</p>
-  </div>
-</section>
-
-<section class="page-block split split--media">
-  <figure class="media-frame media-frame--portrait">
-    <img src="{{ url_for('static', filename='img/client-consultation.jpg') }}" alt="{{ t('home.consult_image_alt') }}" loading="lazy">
+  <figure class="media-frame media-frame--hero media-frame--contain home-hero-media">
+    <img src="{{ hero_image }}" alt="Stronger Than Yesterday hero visual" loading="eager">
   </figure>
-  <div>
-    <p class="eyebrow">{{ t('home.consult_eyebrow') }}</p>
-    <h2>{{ t('home.consult_title') }}</h2>
-    <p>{{ t('home.consult_body') }}</p>
-    <ul class="feature-list">
-      <li>{{ t('home.consult_point_1') }}</li>
-      <li>{{ t('home.consult_point_2') }}</li>
-      <li>{{ t('home.consult_point_3') }}</li>
-    </ul>
-    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ t('home.consult_cta') }}</a>
+</section>
+
+<section class="page-block home-offers">
+  <div class="home-section-head">
+    <p class="eyebrow">{{ 'What We Do' if not is_de else 'Was wir tun' }}</p>
+    <h2>{{ 'Services & Packages built for sales' if not is_de else 'Leistungen & Pakete für Verkauf und Wachstum' }}</h2>
+    <p>{{ 'The homepage should immediately show what you sell, what the visitor gets and where to click next.' if not is_de else 'Die Startseite soll sofort zeigen, was verkauft wird, welchen Nutzen der Besucher bekommt und wohin der nächste Klick führt.' }}</p>
+  </div>
+
+  <div class="home-offers-grid">
+    <div class="home-service-grid cards-grid">
+      <article class="card home-service-card">
+        <h3>{{ 'AI Video Production' if not is_de else 'KI-Video-Produktion' }}</h3>
+        <p>{{ 'Cinematic videos with human creative direction, brand consistency and a clear business purpose.' if not is_de else 'Filmische Videos mit menschlicher Creative Direction, Marken-Konsistenz und klarem Geschäftszweck.' }}</p>
+      </article>
+      <article class="card home-service-card">
+        <h3>{{ 'Digital Humans & AI Avatars' if not is_de else 'Digital Humans & KI-Avatare' }}</h3>
+        <p>{{ 'Presenters, storytellers and fictional brand characters with approved voice and usage logic.' if not is_de else 'Presenter, Storyteller und fiktionale Markenfiguren mit freigegebener Stimme und Nutzungslogik.' }}</p>
+      </article>
+      <article class="card home-service-card">
+        <h3>{{ 'Content & YouTube Systems' if not is_de else 'Content- & YouTube-Systeme' }}</h3>
+        <p>{{ 'Editorial workflows, recurring formats and channel structures that grow visibility over time.' if not is_de else 'Redaktions-Workflows, wiederkehrende Formate und Kanalstrukturen für wachsende Sichtbarkeit.' }}</p>
+      </article>
+      <article class="card home-service-card">
+        <h3>{{ 'Automation & AI Agents' if not is_de else 'Automatisierung & KI-Agenten' }}</h3>
+        <p>{{ 'Assistant systems, routing, approvals and integrations that save time and reduce manual work.' if not is_de else 'Assistenzsysteme, Routing, Freigaben und Integrationen, die Zeit sparen und manuelle Arbeit senken.' }}</p>
+      </article>
+      <article class="card home-service-card">
+        <h3>{{ 'Strategy & Governance' if not is_de else 'Strategie & Governance' }}</h3>
+        <p>{{ 'Human-led planning, structure, priorities and implementation support for the full media setup.' if not is_de else 'Menschlich geführte Planung, Struktur, Prioritäten und Umsetzungsbegleitung für das gesamte Mediensystem.' }}</p>
+      </article>
+    </div>
+
+    <aside class="card home-packages-card">
+      <p class="eyebrow">{{ 'Packages' if not is_de else 'Pakete' }}</p>
+      <h3>{{ 'Starter / Growth / PRO' if not is_de else 'Starter / Growth / PRO' }}</h3>
+      <ul class="feature-list">
+        <li>{{ 'Starter: fast content foundation for one main channel' if not is_de else 'Starter: schnelle Content-Basis für einen Hauptkanal' }}</li>
+        <li>{{ 'Growth: recurring publishing system with more reach' if not is_de else 'Growth: wiederkehrendes Publishing-System mit mehr Reichweite' }}</li>
+        <li>{{ 'PRO: controlled system with automation and integrations' if not is_de else 'PRO: kontrolliertes System mit Automatisierung und Integrationen' }}</li>
+      </ul>
+      <a class="btn" href="{{ url_for('public.services', lang=lang) }}">{{ 'View Packages' if not is_de else 'Pakete ansehen' }}</a>
+    </aside>
   </div>
 </section>
 
-<section class="cards-section">
-  <h2>{{ t('home.featured_title') }}</h2>
-  <div class="cards-grid">
-    <article class="card"><h3>{{ t('home.featured_1') }}</h3></article>
-    <article class="card"><h3>{{ t('home.featured_2') }}</h3></article>
-    <article class="card"><h3>{{ t('home.featured_3') }}</h3></article>
-    <article class="card"><h3>{{ t('home.featured_4') }}</h3></article>
-    <article class="card"><h3>{{ t('home.featured_5') }}</h3></article>
-    <article class="card"><h3>{{ t('home.featured_6') }}</h3></article>
+<section id="story-showcase" class="cards-section story-section">
+  <p class="eyebrow">{{ 'Flagship Project' if not is_de else 'Flagship-Projekt' }}</p>
+  <h2>Stronger Than Yesterday</h2>
+  <p class="section-lead">{{ 'A flagship AI Influencer storytelling universe that makes the brand visible, memorable and commercially distinctive.' if not is_de else 'Ein Flagship-Universum für AI Influencer Storytelling, das die Marke sichtbar, merkbar und kommerziell unterscheidbar macht.' }}</p>
+
+  <div class="story-poster media-frame media-frame--contain">
+    <img src="{{ hero_image }}" alt="Stronger Than Yesterday poster" loading="lazy">
+  </div>
+
+  <div class="cards-grid home-episodes-grid">
+    <article class="card story-card">
+      <p class="eyebrow">EPISODE 01</p>
+      <h3>THE ARRIVAL</h3>
+      <p>{{ 'The journey begins.' if not is_de else 'Die Reise beginnt.' }}</p>
+      <button class="btn" type="button" disabled>{{ 'In Production' if not is_de else 'In Produktion' }}</button>
+    </article>
+    <article class="card story-card">
+      <p class="eyebrow">EPISODE 02</p>
+      <h3>THE MISSION</h3>
+      <p>{{ 'Different roles. Different audiences. One system.' if not is_de else 'Unterschiedliche Rollen. Unterschiedliche Zielgruppen. Ein System.' }}</p>
+      <button class="btn" type="button" disabled>{{ 'In Production' if not is_de else 'In Produktion' }}</button>
+    </article>
+    <article class="card story-card">
+      <p class="eyebrow">EPISODE 03</p>
+      <h3>STRONGER TOGETHER</h3>
+      <p>{{ 'One vision. One media ecosystem.' if not is_de else 'Eine Vision. Ein Medien-Ökosystem.' }}</p>
+      <button class="btn" type="button" disabled>{{ 'In Production' if not is_de else 'In Produktion' }}</button>
+    </article>
+  </div>
+
+  <div class="cta-row">
+    <a class="btn" href="{{ url_for('public.services', lang=lang) }}">{{ 'Explore AI Influencer Production' if not is_de else 'AI Influencer Production entdecken' }}</a>
+    <a class="btn btn-ghost" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Start AI Discovery' if not is_de else 'AI Discovery starten' }}</a>
   </div>
 </section>
 
 <section class="page-block">
-  <h2>{{ t('home.showcase_title') }}</h2>
-  <div class="cards-grid">
-    <article class="card">
-      <h3>{{ t('home.showcase_1_title') }}</h3>
-      <p>{{ t('home.showcase_1_body') }}</p>
-    </article>
-    <article class="card">
-      <h3>{{ t('home.showcase_2_title') }}</h3>
-      <p>{{ t('home.showcase_2_body') }}</p>
-    </article>
-    <article class="card">
-      <h3>{{ t('home.showcase_3_title') }}</h3>
-      <p>{{ t('home.showcase_3_body') }}</p>
-    </article>
+  <p class="eyebrow">{{ 'The ASAI Controlled System' if not is_de else 'Das ASAI Controlled System' }}</p>
+  <h2>{{ 'How the production machine works' if not is_de else 'So funktioniert die Produktionsmaschine' }}</h2>
+  <div class="home-system-grid">
+    <article class="card"><h3>{{ '1. Strategy & Discovery' if not is_de else '1. Strategie & Discovery' }}</h3><p>{{ 'We clarify goals, audience, offers and the commercial direction.' if not is_de else 'Wir klären Ziele, Zielgruppe, Angebote und die kommerzielle Richtung.' }}</p></article>
+    <article class="card"><h3>{{ '2. Character Design' if not is_de else '2. Character Design' }}</h3><p>{{ 'We define the voice, appearance and role of each digital personality.' if not is_de else 'Wir definieren Stimme, Erscheinung und Rolle jeder digitalen Persönlichkeit.' }}</p></article>
+    <article class="card"><h3>{{ '3. AI Video Production' if not is_de else '3. KI-Video-Produktion' }}</h3><p>{{ 'We produce videos with controlled human direction and consistent branding.' if not is_de else 'Wir produzieren Videos mit kontrollierter menschlicher Führung und konsistentem Branding.' }}</p></article>
+    <article class="card"><h3>{{ '4. Content Workflows' if not is_de else '4. Content-Workflows' }}</h3><p>{{ 'We build publishing routines that can be repeated without chaos.' if not is_de else 'Wir bauen Publishing-Routinen, die ohne Chaos wiederholbar sind.' }}</p></article>
+    <article class="card"><h3>{{ '5. Multilingual Adaptation' if not is_de else '5. Mehrsprachige Adaptation' }}</h3><p>{{ 'We adapt text, formats and output for DE/EN delivery.' if not is_de else 'Wir passen Texte, Formate und Ausgaben für DE/EN an.' }}</p></article>
   </div>
 </section>
 
 <section class="cards-section">
-  <p class="eyebrow">{{ t('home.youtube_eyebrow') }}</p>
-  <h2>{{ t('home.youtube_title') }}</h2>
-  <p class="section-lead">{{ t('home.youtube_body') }}</p>
+  <p class="eyebrow">{{ 'YouTube Media Ecosystem' if not is_de else 'YouTube-Medienökosystem' }}</p>
+  <h2>{{ 'Built through real media practice' if not is_de else 'Aufgebaut durch echte Medienpraxis' }}</h2>
+  <p class="section-lead">{{ 'The homepage shows real channels so visitors immediately understand that the brand already operates in live media environments.' if not is_de else 'Die Startseite zeigt echte Kanäle, damit Besucher sofort sehen, dass die Marke bereits in aktiven Medienumgebungen arbeitet.' }}</p>
   <div class="video-grid">
     {% for video in featured_videos %}
     <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener">
@@ -84,72 +142,52 @@
           alt="{{ video.title }}"
           loading="lazy"
           data-thumb-candidates="{{ video.thumbnail_candidates|join(',') }}"
-          data-fallback-src="{{ url_for('static', filename='img/client-consultation.jpg') }}"
+          data-fallback-src="{{ about_image }}"
         >
         {% else %}
-        <div class="video-card-placeholder">{{ t('home.video_placeholder') }}</div>
+        <img src="{{ about_image }}" alt="{{ video.title }}" loading="lazy">
         {% endif %}
-        <span class="video-card-glow" aria-hidden="true"></span>
-        <span class="video-card-play">▶</span>
       </div>
       <div class="video-card-body">
-        <p class="video-card-slot">{{ t('home.video_slot') }} {{ video.slot }}</p>
         <h3>{{ video.title }}</h3>
-        <p>{{ t('home.open_channel') }}</p>
+        <p>{{ 'Kanal besuchen' if is_de else 'Visit channel' }}</p>
       </div>
     </a>
     {% endfor %}
   </div>
 </section>
 
-<script>
-  (function () {
-    const images = document.querySelectorAll('.video-card-media img[data-thumb-candidates]');
-    images.forEach((img) => {
-      const candidates = (img.dataset.thumbCandidates || '')
-        .split(',')
-        .map((item) => item.trim())
-        .filter(Boolean);
-
-      if (!candidates.length) return;
-
-      let index = 0;
-      img.src = candidates[index];
-
-      img.addEventListener('error', () => {
-        index += 1;
-        if (index < candidates.length) {
-          img.src = candidates[index];
-          return;
-        }
-        img.src = img.dataset.fallbackSrc || img.src;
-      });
-    });
-  })();
-</script>
-
-<section class="split">
+<section class="page-block home-about split split--media">
+  <figure class="media-frame media-frame--portrait media-frame--contain">
+    <img src="{{ about_image }}" alt="About Angel Swert" loading="lazy">
+  </figure>
   <div>
-    <h2>{{ t('home.for_whom') }}</h2>
-    <ul>
-      <li>{{ t('home.for_whom_1') }}</li>
-      <li>{{ t('home.for_whom_2') }}</li>
-      <li>{{ t('home.for_whom_3') }}</li>
+    <p class="eyebrow">{{ 'About & Team' if not is_de else 'Über & Team' }}</p>
+    <h2>{{ 'Brand, strategy and execution under one roof' if not is_de else 'Marke, Strategie und Umsetzung unter einem Dach' }}</h2>
+    <p>{{ 'The project combines creative direction, video production, AI systems and digital communication so the client can buy one clear outcome instead of scattered services.' if not is_de else 'Das Projekt verbindet Creative Direction, Videoproduktion, KI-Systeme und digitale Kommunikation, damit Kundinnen und Kunden ein klares Ergebnis statt verstreuter Einzelleistungen kaufen.' }}</p>
+    <ul class="feature-list">
+      <li>{{ 'Clear brand direction and premium visual language' if not is_de else 'Klare Markenrichtung und hochwertige visuelle Sprache' }}</li>
+      <li>{{ 'Human oversight before anything goes public' if not is_de else 'Menschliche Kontrolle vor jeder Veröffentlichung' }}</li>
+      <li>{{ 'One content system for website, video and publishing' if not is_de else 'Ein Content-System für Website, Video und Publishing' }}</li>
     </ul>
-  </div>
-  <div class="accent-box">
-    <h3>{{ t('home.result_title') }}</h3>
-    <p>{{ t('home.result_body') }}</p>
+    <a class="btn" href="{{ url_for('public.about', lang=lang) }}">{{ 'Meet the team' if not is_de else 'Team kennenlernen' }}</a>
   </div>
 </section>
 
-<section class="page-block split">
+<section class="page-block split split--media">
+  <figure class="media-frame media-frame--portrait media-frame--contain">
+    <img src="{{ consult_image }}" alt="AI Discovery consultation" loading="lazy">
+  </figure>
   <div>
-    <h2>{{ t('home.story_title') }}</h2>
-    <p>{{ t('home.story_body') }}</p>
-  </div>
-  <div class="accent-box accent-box--compact">
-    <a class="btn" href="{{ url_for('public.services', lang=lang) }}">{{ t('home.story_cta') }}</a>
+    <p class="eyebrow">{{ 'AI Discovery / CTA' if not is_de else 'AI Discovery / CTA' }}</p>
+    <h2>{{ 'Not sure what you need yet?' if not is_de else 'Noch unsicher, was genau passt?' }}</h2>
+    <p>{{ 'Start with AI Discovery and get a clear preliminary assessment before choosing a package or project route.' if not is_de else 'Starte mit AI Discovery und erhalte eine klare erste Einschätzung, bevor du Paket oder Projektweg wählst.' }}</p>
+    <div class="home-discovery-list">
+      <div><strong>1.</strong> {{ 'Answer short questions' if not is_de else 'Kurze Fragen beantworten' }}</div>
+      <div><strong>2.</strong> {{ 'Get the preliminary recommendation' if not is_de else 'Erste Empfehlung erhalten' }}</div>
+      <div><strong>3.</strong> {{ 'Book the right next step' if not is_de else 'Den passenden nächsten Schritt buchen' }}</div>
+    </div>
+    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Start AI Discovery' if not is_de else 'AI Discovery starten' }}</a>
   </div>
 </section>
 
