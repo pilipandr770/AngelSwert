@@ -1,8 +1,12 @@
 import json
 from datetime import datetime
 from datetime import timedelta
+import re
 from pathlib import Path
 import uuid
+import zipfile
+from html import unescape
+from io import BytesIO
 
 from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
@@ -77,6 +81,54 @@ def _save_uploaded_static_file(file_storage, folder: str, allowed_ext: set[str])
 
 def _admin_required():
     return current_user.is_authenticated and current_user.is_admin
+
+
+def _strip_whitespace_lines(text: str) -> str:
+    cleaned_lines = [line.rstrip() for line in (text or "").replace("\r", "").split("\n")]
+    compact: list[str] = []
+    blank_pending = False
+    for line in cleaned_lines:
+        if line.strip():
+            compact.append(line.strip())
+            blank_pending = False
+        elif not blank_pending:
+            compact.append("")
+            blank_pending = True
+    return "\n".join(compact).strip()
+
+
+def _extract_docx_text(payload: bytes) -> str:
+    try:
+        with zipfile.ZipFile(BytesIO(payload)) as archive:
+            with archive.open("word/document.xml") as stream:
+                xml_raw = stream.read().decode("utf-8", errors="ignore")
+    except Exception:
+        return ""
+
+    text = re.sub(r"</w:p>", "\n", xml_raw)
+    text = re.sub(r"<[^>]+>", "", text)
+    text = unescape(text)
+    return _strip_whitespace_lines(text)
+
+
+def _extract_instruction_document_text(file_storage) -> tuple[str, str]:
+    if not file_storage or not getattr(file_storage, "filename", ""):
+        return "", ""
+
+    filename = secure_filename(file_storage.filename)
+    ext = Path(filename).suffix.lower()
+    payload = file_storage.read() or b""
+    if not payload:
+        return "", filename
+
+    if ext in {".txt", ".md", ".markdown"}:
+        text = payload.decode("utf-8", errors="ignore")
+        return _strip_whitespace_lines(text), filename
+
+    if ext == ".docx":
+        return _extract_docx_text(payload), filename
+
+    return "", filename
 
 
 def _lead_crm_context(lead: Lead, message_limit: int = 25) -> str:
@@ -583,6 +635,8 @@ def assistant_settings():
             widget_auto_open_enabled=True,
             widget_auto_open_delay_seconds=40,
             widget_greeting_text="Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.",
+            instruction_doc_text="",
+            instruction_doc_name="",
         )
         db.session.add(settings)
         db.session.commit()
@@ -597,6 +651,8 @@ def assistant_settings():
 @admin_bp.post("/assistant")
 @login_required
 def assistant_settings_save():
+    doc_file = request.files.get("instruction_doc_file")
+    clear_doc = (request.form.get("clear_instruction_doc") or "").strip().lower() in {"1", "on", "true", "yes"}
     raw_text = (request.form.get("custom_instructions") or "").strip()
     widget_auto_open_enabled = (request.form.get("widget_auto_open_enabled") or "").strip().lower() in {"1", "on", "true", "yes"}
     widget_greeting_text = (request.form.get("widget_greeting_text") or "").strip()
@@ -642,6 +698,8 @@ def assistant_settings_save():
             widget_auto_open_enabled=widget_auto_open_enabled,
             widget_auto_open_delay_seconds=widget_auto_open_delay_seconds,
             widget_greeting_text=widget_greeting_text,
+            instruction_doc_text="",
+            instruction_doc_name="",
         )
         db.session.add(settings)
     else:
@@ -649,6 +707,26 @@ def assistant_settings_save():
         settings.widget_auto_open_enabled = widget_auto_open_enabled
         settings.widget_auto_open_delay_seconds = widget_auto_open_delay_seconds
         settings.widget_greeting_text = widget_greeting_text
+
+    if clear_doc:
+        settings.instruction_doc_text = ""
+        settings.instruction_doc_name = ""
+
+    doc_text, doc_name = _extract_instruction_document_text(doc_file)
+    if doc_file and doc_name and not doc_text and Path(doc_name).suffix.lower() not in {".txt", ".md", ".markdown", ".docx"}:
+        flash("Підтримуються лише файли .txt, .md, .markdown, .docx", "error")
+        return redirect(url_for("admin.assistant_settings"))
+
+    if doc_file and doc_name and not doc_text and Path(doc_name).suffix.lower() in {".txt", ".md", ".markdown", ".docx"}:
+        flash("Не вдалося прочитати текст із файлу інструкцій.", "error")
+        return redirect(url_for("admin.assistant_settings"))
+
+    if doc_text:
+        if len(doc_text) > 120000:
+            flash("Документ інструкцій занадто великий. Максимум 120000 символів після імпорту.", "error")
+            return redirect(url_for("admin.assistant_settings"))
+        settings.instruction_doc_text = doc_text
+        settings.instruction_doc_name = doc_name[:255]
 
     db.session.commit()
     flash("Налаштування AI-асистента збережено.", "success")
@@ -881,6 +959,21 @@ def crm_add_message(lead_id):
     db.session.add(message)
     db.session.commit()
     flash("Повідомлення збережено.", "success")
+    return redirect(url_for("admin.crm_detail", lead_id=lead.id))
+
+
+@admin_bp.post("/crm/<int:lead_id>/profile")
+@login_required
+def crm_update_profile(lead_id):
+    lead = Lead.query.get_or_404(lead_id)
+    lead.profile_industry = (request.form.get("profile_industry") or "").strip()[:255]
+    lead.profile_work_scope = (request.form.get("profile_work_scope") or "").strip()[:255]
+    lead.profile_work_topic = (request.form.get("profile_work_topic") or "").strip()[:255]
+    lead.profile_desired_outcome = (request.form.get("profile_desired_outcome") or "").strip()[:1200]
+    lead.profile_timeline = (request.form.get("profile_timeline") or "").strip()[:120]
+    lead.profile_decision_maker = (request.form.get("profile_decision_maker") or "").strip()[:255]
+    db.session.commit()
+    flash("Картку клієнта оновлено.", "success")
     return redirect(url_for("admin.crm_detail", lead_id=lead.id))
 
 

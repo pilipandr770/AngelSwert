@@ -52,6 +52,23 @@
 </section>
 
 <section class="admin-grid">
+  <form method="post" action="{{ url_for('admin.crm_update_profile', lead_id=lead.id) }}" class="admin-form">
+    <h2>Картка клієнта (контекст для чатбота)</h2>
+    <label>Сфера діяльності</label>
+    <input name="profile_industry" value="{{ lead.profile_industry }}" placeholder="Напр. e-commerce, медицина, освіта">
+    <label>Обсяг роботи</label>
+    <input name="profile_work_scope" value="{{ lead.profile_work_scope }}" placeholder="Напр. 10 відео/місяць, 2 канали">
+    <label>Тема / напрям</label>
+    <input name="profile_work_topic" value="{{ lead.profile_work_topic }}" placeholder="Напр. контент-система, digital humans">
+    <label>Що потрібно клієнту (результат)</label>
+    <textarea name="profile_desired_outcome" rows="3" placeholder="Напр. більше лідів, структурований контент-план">{{ lead.profile_desired_outcome }}</textarea>
+    <label>Таймлайн</label>
+    <input name="profile_timeline" value="{{ lead.profile_timeline }}" placeholder="Напр. старт за 30 днів">
+    <label>Хто приймає рішення</label>
+    <input name="profile_decision_maker" value="{{ lead.profile_decision_maker }}" placeholder="CEO / Marketing Lead / Owner">
+    <button class="btn" type="submit">Зберегти картку</button>
+  </form>
+
   <form method="post" action="{{ url_for('admin.crm_add_discovery', lead_id=lead.id) }}" class="admin-form">
     <h2>Оцінка AI Дискавері</h2>
     <label>Статус</label>

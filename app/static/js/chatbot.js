@@ -128,6 +128,19 @@ function addMessage(role, text) {
   messages.scrollTop = messages.scrollHeight;
 }
 
+function recentHistoryPayload(limit = 12) {
+  if (!messages) return [];
+  const rows = Array.from(messages.querySelectorAll('.chat-row'));
+  return rows.slice(-limit).map((row) => {
+    const isUser = row.classList.contains('user');
+    const isBot = row.classList.contains('bot');
+    return {
+      role: isUser ? 'user' : (isBot ? 'bot' : 'bot'),
+      text: (row.textContent || '').trim(),
+    };
+  }).filter((item) => item.text);
+}
+
 function ensureBookingUi() {
   if (!panel) return;
   if (document.getElementById('chatCalendarControls')) return;
@@ -286,6 +299,7 @@ if (form) {
           timezone: userTimezone,
           lead_name: identity.name,
           lead_email: identity.email,
+          history: recentHistoryPayload(),
         })
       });
       const data = await response.json();

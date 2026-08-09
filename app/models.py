@@ -43,6 +43,8 @@ class AssistantInstructionSettings(db.Model):
         default="Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.",
         nullable=False,
     )
+    instruction_doc_text = db.Column(db.Text, default="", nullable=False)
+    instruction_doc_name = db.Column(db.String(255), default="", nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
@@ -99,6 +101,13 @@ class Lead(db.Model):
     stage = db.Column(db.String(100), default="new", nullable=False)
     source = db.Column(db.String(100), default="website", nullable=False)
     notes = db.Column(db.Text, default="")
+    profile_industry = db.Column(db.String(255), default="", nullable=False)
+    profile_work_scope = db.Column(db.String(255), default="", nullable=False)
+    profile_work_topic = db.Column(db.String(255), default="", nullable=False)
+    profile_desired_outcome = db.Column(db.Text, default="", nullable=False)
+    profile_timeline = db.Column(db.String(120), default="", nullable=False)
+    profile_decision_maker = db.Column(db.String(255), default="", nullable=False)
+    profile_updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

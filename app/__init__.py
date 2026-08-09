@@ -81,6 +81,8 @@ def _ensure_assistant_settings_columns() -> None:
         "widget_auto_open_enabled": "BOOLEAN NOT NULL DEFAULT TRUE",
         "widget_auto_open_delay_seconds": "INTEGER NOT NULL DEFAULT 40",
         "widget_greeting_text": "TEXT NOT NULL DEFAULT ''",
+        "instruction_doc_text": "TEXT NOT NULL DEFAULT ''",
+        "instruction_doc_name": "VARCHAR(255) NOT NULL DEFAULT ''",
     }
 
     inspector = inspect(db.engine)
@@ -94,6 +96,34 @@ def _ensure_assistant_settings_columns() -> None:
         if column in existing:
             continue
         db.session.execute(text(f"ALTER TABLE assistant_instruction_settings ADD COLUMN {column} {ddl}"))
+        changed = True
+
+    if changed:
+        db.session.commit()
+
+
+def _ensure_lead_profile_columns() -> None:
+    required_columns = {
+        "profile_industry": "VARCHAR(255) NOT NULL DEFAULT ''",
+        "profile_work_scope": "VARCHAR(255) NOT NULL DEFAULT ''",
+        "profile_work_topic": "VARCHAR(255) NOT NULL DEFAULT ''",
+        "profile_desired_outcome": "TEXT NOT NULL DEFAULT ''",
+        "profile_timeline": "VARCHAR(120) NOT NULL DEFAULT ''",
+        "profile_decision_maker": "VARCHAR(255) NOT NULL DEFAULT ''",
+        "profile_updated_at": "TIMESTAMP",
+    }
+
+    inspector = inspect(db.engine)
+    try:
+        existing = {col["name"] for col in inspector.get_columns("lead")}
+    except Exception:
+        return
+
+    changed = False
+    for column, ddl in required_columns.items():
+        if column in existing:
+            continue
+        db.session.execute(text(f"ALTER TABLE lead ADD COLUMN {column} {ddl}"))
         changed = True
 
     if changed:
@@ -126,6 +156,8 @@ def _seed_defaults(app: Flask) -> None:
                 widget_auto_open_enabled=True,
                 widget_auto_open_delay_seconds=40,
                 widget_greeting_text="Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.",
+                instruction_doc_text="",
+                instruction_doc_name="",
             )
         )
     else:
@@ -275,6 +307,7 @@ def create_app() -> Flask:
         _ensure_db_schema(app)
         db.create_all()
         _ensure_assistant_settings_columns()
+        _ensure_lead_profile_columns()
         _ensure_service_settings_columns()
         _seed_defaults(app)
 

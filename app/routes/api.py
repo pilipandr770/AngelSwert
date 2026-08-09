@@ -16,7 +16,7 @@ from ..models import (
     Lead,
     LeadMessage,
 )
-from ..services.ai_service import generate_chat_reply, generate_crm_hint
+from ..services.ai_service import extract_lead_profile_update, generate_chat_reply, generate_crm_hint
 
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
@@ -131,6 +131,134 @@ def _store_chat_messages(lead: Lead | None, user_message: str, bot_reply: str) -
                 body=incoming,
             )
         )
+
+
+PROFILE_FIELDS = [
+    "profile_industry",
+    "profile_work_scope",
+    "profile_work_topic",
+    "profile_desired_outcome",
+    "profile_timeline",
+    "profile_decision_maker",
+]
+
+
+def _lead_profile_dict(lead: Lead | None) -> dict:
+    if not lead:
+        return {}
+    return {
+        "profile_industry": (lead.profile_industry or "").strip(),
+        "profile_work_scope": (lead.profile_work_scope or "").strip(),
+        "profile_work_topic": (lead.profile_work_topic or "").strip(),
+        "profile_desired_outcome": (lead.profile_desired_outcome or "").strip(),
+        "profile_timeline": (lead.profile_timeline or "").strip(),
+        "profile_decision_maker": (lead.profile_decision_maker or "").strip(),
+    }
+
+
+def _missing_profile_fields(profile: dict) -> list[str]:
+    missing_map = {
+        "profile_industry": "industry",
+        "profile_work_scope": "work_scope",
+        "profile_work_topic": "work_topic",
+        "profile_desired_outcome": "desired_outcome",
+        "profile_timeline": "timeline",
+        "profile_decision_maker": "decision_maker",
+    }
+    result: list[str] = []
+    for field_name, label in missing_map.items():
+        if not (profile.get(field_name) or "").strip():
+            result.append(label)
+    return result
+
+
+def _autofill_lead_profile(lead: Lead | None, message: str, api_key: str, model: str) -> None:
+    if not lead:
+        return
+    if len((message or "").strip()) < 8:
+        return
+
+    current_profile = _lead_profile_dict(lead)
+    updates = extract_lead_profile_update(
+        api_key=api_key,
+        model=model,
+        message=message,
+        current_profile=current_profile,
+    )
+    if not updates:
+        return
+
+    changed = False
+    for field_name in PROFILE_FIELDS:
+        new_value = (updates.get(field_name) or "").strip()
+        if not new_value:
+            continue
+        old_value = (getattr(lead, field_name, "") or "").strip()
+        if old_value == new_value:
+            continue
+        setattr(lead, field_name, new_value[:1200] if field_name == "profile_desired_outcome" else new_value[:255])
+        changed = True
+
+    if changed:
+        db.session.add(lead)
+
+
+def _trim_text(value: str, max_chars: int) -> str:
+    text = (value or "").strip()
+    if len(text) <= max_chars:
+        return text
+    return text[-max_chars:]
+
+
+def _payload_history_block(payload: dict, max_items: int = 10) -> str:
+    items = payload.get("history") or []
+    if not isinstance(items, list):
+        return ""
+
+    safe_items = items[-max_items:]
+    lines: list[str] = []
+    for item in safe_items:
+        if not isinstance(item, dict):
+            continue
+        role = (item.get("role") or "").strip().lower()
+        text = _trim_text(str(item.get("text") or ""), 350)
+        if role not in {"user", "bot"} or not text:
+            continue
+        lines.append(f"- {role}: {text}")
+    return "\n".join(lines)
+
+
+def _lead_history_block(lead: Lead | None, max_items: int = 10) -> str:
+    if not lead:
+        return ""
+    items = (
+        LeadMessage.query.filter_by(lead_id=lead.id, channel="chatbot_widget")
+        .order_by(LeadMessage.created_at.desc())
+        .limit(max_items)
+        .all()
+    )
+    if not items:
+        return ""
+
+    lines: list[str] = []
+    for item in reversed(items):
+        role = "user" if item.direction == "incoming" else "bot"
+        lines.append(f"- {role}: {_trim_text(item.body, 350)}")
+    return "\n".join(lines)
+
+
+def _lead_profile_block(lead: Lead | None) -> str:
+    if not lead:
+        return ""
+    profile = _lead_profile_dict(lead)
+    missing = _missing_profile_fields(profile)
+    return (
+        f"Lead stage: {(lead.stage or '-').strip()}\n"
+        f"Lead source: {(lead.source or '-').strip()}\n"
+        f"Lead notes: {_trim_text(lead.notes or '-', 1200)}\n"
+        f"Client card: {json.dumps(profile, ensure_ascii=False)}\n"
+        f"Missing client-card fields: {', '.join(missing) if missing else 'none'}"
+    )
     if outgoing:
         db.session.add(
             LeadMessage(
@@ -152,8 +280,15 @@ def chat():
         return jsonify({"error": "Message is required."}), 400
 
     settings = AssistantInstructionSettings.query.first()
-    custom_instructions = settings.custom_instructions if settings else ""
+    custom_instructions = (settings.custom_instructions if settings else "") or ""
+    instruction_doc_text = (settings.instruction_doc_text if settings else "") or ""
     lead = _resolve_chat_lead(payload)
+    _autofill_lead_profile(
+        lead=lead,
+        message=message,
+        api_key=current_app.config["OPENAI_API_KEY"],
+        model=current_app.config["OPENAI_MODEL"],
+    )
 
     def _reply(reply_text: str):
         _store_chat_messages(lead, message, reply_text)
@@ -191,11 +326,36 @@ def chat():
         f"Current UTC time: {now_iso}\n"
         f"Current local time for user timezone ({tz.key}): {now_local.isoformat()}\n"
         "Use this current time reference in answers.\n"
+        "Do not ask again for facts already provided in recent dialogue or lead profile.\n"
+        "Acknowledge known facts and ask only for missing critical fields.\n"
+        "If any client-card fields are missing, ask at most ONE concise clarification question per reply.\n"
         "If user asks about appointment, suggest booking via internal calendar slots below.\n"
         "Available slots (next 14 days):\n"
         f"{slots_block or '- no free slots currently'}\n"
         "CRM glossary terms:\n"
         f"{terms_block or '- no glossary terms yet'}"
+    )
+
+    lead_profile_block = _lead_profile_block(lead)
+    lead_history_block = _lead_history_block(lead)
+    payload_history_block = _payload_history_block(payload)
+
+    history_block = "\n".join(
+        item
+        for item in [lead_history_block, payload_history_block]
+        if item
+    )
+
+    instructions_bundle = "\n\n".join(
+        item
+        for item in [
+            _trim_text(custom_instructions, 4000),
+            f"Instruction document context:\n{_trim_text(instruction_doc_text, 9000)}" if instruction_doc_text else "",
+            runtime_context,
+            f"Lead profile context:\n{lead_profile_block}" if lead_profile_block else "",
+            f"Recent dialogue context:\n{history_block}" if history_block else "",
+        ]
+        if item
     )
 
     if _looks_like_calendar_request(message):
@@ -245,7 +405,7 @@ def chat():
         api_key=current_app.config["OPENAI_API_KEY"],
         model=current_app.config["OPENAI_MODEL"],
         user_message=message,
-        custom_instructions=f"{custom_instructions}\n\n{runtime_context}",
+        custom_instructions=instructions_bundle,
     )
 
     if _is_no_access_disclaimer(reply):

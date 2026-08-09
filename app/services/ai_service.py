@@ -258,3 +258,55 @@ def generate_crm_hint(
     except Exception as exc:  # pragma: no cover - defensive runtime guard
         logger.exception("CRM hint generation failed for lead '%s': %s", lead_name, exc)
         return "AI hint is temporarily unavailable."
+
+
+def extract_lead_profile_update(api_key: str, model: str, message: str, current_profile: dict | None = None) -> dict:
+    client = _get_client(api_key)
+    if not client:
+        return {}
+
+    profile = current_profile or {}
+
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            temperature=0.1,
+            response_format={"type": "json_object"},
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Extract CRM lead profile updates from one user message. "
+                        "Return JSON with keys: profile_industry, profile_work_scope, profile_work_topic, "
+                        "profile_desired_outcome, profile_timeline, profile_decision_maker. "
+                        "For unknown values return empty string. Do not invent facts."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Current profile: {json.dumps(profile, ensure_ascii=False)}\n"
+                        f"User message: {message}"
+                    ),
+                },
+            ],
+        )
+        payload = json.loads(response.choices[0].message.content)
+    except Exception as exc:  # pragma: no cover - defensive runtime guard
+        logger.exception("Lead profile extraction failed: %s", exc)
+        return {}
+
+    allowed = {
+        "profile_industry",
+        "profile_work_scope",
+        "profile_work_topic",
+        "profile_desired_outcome",
+        "profile_timeline",
+        "profile_decision_maker",
+    }
+    cleaned: dict[str, str] = {}
+    for key in allowed:
+        value = payload.get(key, "")
+        if isinstance(value, str):
+            cleaned[key] = value.strip()
+    return cleaned
