@@ -1,11 +1,13 @@
 :root {
-  --bg-main: #101216;
-  --bg-soft: #1a1d22;
+  --bg-main: #060709;
+  --bg-soft: #0e1014;
   --ink: #f3ecdc;
-  --accent: #c4a25b;
-  --accent-2: #e4cc84;
-  --panel: #232831;
-  --line: #6f674f;
+  --accent: #c9900a;
+  --accent-2: #f2c93a;
+  --panel: #181b21;
+  --line: #7a6a2a;
+  --btn-green: #aaff00;
+  --btn-green-dark: #7acc00;
 }
 
 * {
@@ -19,8 +21,8 @@ body {
   font-family: "Manrope", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 8% 12%, rgba(196, 162, 91, 0.1), transparent 24%),
-    radial-gradient(circle at 90% 8%, rgba(228, 204, 132, 0.06), transparent 22%),
+    radial-gradient(circle at 8% 12%, rgba(201, 144, 10, 0.1), transparent 24%),
+    radial-gradient(circle at 90% 8%, rgba(242, 201, 58, 0.06), transparent 22%),
     linear-gradient(170deg, var(--bg-main), var(--bg-soft));
   min-height: 100vh;
 }
@@ -193,8 +195,8 @@ button {
   border: none;
   border-radius: 10px;
   padding: 0.65rem 1rem;
-  background: linear-gradient(135deg, var(--accent), #9f7a33);
-  color: #1f2329;
+  background: linear-gradient(135deg, var(--btn-green), var(--btn-green-dark));
+  color: #0a1a00;
   text-decoration: none;
   cursor: pointer;
 }
@@ -271,9 +273,9 @@ select {
 }
 
 .admin-tab-btn.is-active {
-  background: linear-gradient(135deg, var(--accent), #9f7a33);
-  color: #1f2329;
-  border-color: rgba(228, 204, 132, 0.6);
+  background: linear-gradient(135deg, var(--btn-green), var(--btn-green-dark));
+  color: #0a1a00;
+  border-color: rgba(170, 255, 0, 0.6);
 }
 
 .admin-tab-panel {
