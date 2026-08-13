@@ -153,7 +153,7 @@ def _seed_defaults(app: Flask) -> None:
         db.session.add(
             AssistantInstructionSettings(
                 custom_instructions="",
-                widget_auto_open_enabled=True,
+                widget_auto_open_enabled=False,
                 widget_auto_open_delay_seconds=40,
                 widget_greeting_text="Hallo und willkommen bei ASAI Studio. Ich kann Ihnen direkt freie Beratungstermine zeigen oder beim passenden Paket helfen.",
                 instruction_doc_text="",
@@ -170,6 +170,7 @@ def _seed_defaults(app: Flask) -> None:
                 )
             if assistant_settings.widget_auto_open_delay_seconds <= 0:
                 assistant_settings.widget_auto_open_delay_seconds = 40
+            assistant_settings.widget_auto_open_enabled = False
             db.session.add(assistant_settings)
 
     if not BlogAutomationSettings.query.first():

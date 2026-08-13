@@ -100,7 +100,8 @@ class Config:
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "ChangeThisStrongPassword")
     PUBLIC_BRAND_NAME = os.getenv("PUBLIC_BRAND_NAME", "AngelSwert")
     PUBLIC_SITE_URL = os.getenv("PUBLIC_SITE_URL", "https://www.angelswert.de").strip()
-    ENABLE_BLOG_SCHEDULER = os.getenv("ENABLE_BLOG_SCHEDULER", "true").lower() == "true"
+    ENABLE_BLOG_SCHEDULER = os.getenv("ENABLE_BLOG_SCHEDULER", "false").lower() == "true"
+    ENABLE_LEAD_PROFILE_AUTOFILL = os.getenv("ENABLE_LEAD_PROFILE_AUTOFILL", "false").lower() == "true"
     S3_UPLOADS_ENABLED = os.getenv("S3_UPLOADS_ENABLED", "true").lower() == "true"
     S3_BUCKET = os.getenv("S3_BUCKET", "").strip()
     S3_REGION = os.getenv("S3_REGION", "").strip()

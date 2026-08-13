@@ -24,8 +24,8 @@ function parseDelayMs(rawValue) {
   return boundedSeconds * 1000;
 }
 
-const CHAT_AUTO_OPEN_ENABLED = parseEnabled(chatbotRoot ? chatbotRoot.dataset.autoOpenEnabled : '1');
-const CHAT_AUTO_OPEN_DELAY_MS = parseDelayMs(chatbotRoot ? chatbotRoot.dataset.autoOpenDelay : '40');
+const CHAT_AUTO_OPEN_ENABLED = false;
+const CHAT_AUTO_OPEN_DELAY_MS = DEFAULT_AUTO_OPEN_DELAY_MS;
 const CHAT_GREETING_TEXT = (chatbotRoot && chatbotRoot.dataset.greetingText ? chatbotRoot.dataset.greetingText.trim() : '') || DEFAULT_GREETING_DE;
 
 let selectedSlot = null;
@@ -271,14 +271,6 @@ function bindBookingUi() {
 
 ensureBookingUi();
 bindBookingUi();
-
-if (CHAT_AUTO_OPEN_ENABLED && panel && panel.classList.contains('hidden')) {
-  window.setTimeout(() => {
-    if (!panel.classList.contains('hidden')) return;
-    if (shouldSuppressAutoOpen()) return;
-    openPanel({ isAuto: true });
-  }, CHAT_AUTO_OPEN_DELAY_MS);
-}
 
 if (form) {
   form.addEventListener('submit', async (e) => {

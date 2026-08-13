@@ -73,7 +73,7 @@ def inject_brand():
 
     assistant_settings = AssistantInstructionSettings.query.first()
     widget_settings = {
-        "auto_open_enabled": bool(getattr(assistant_settings, "widget_auto_open_enabled", True)),
+        "auto_open_enabled": bool(getattr(assistant_settings, "widget_auto_open_enabled", False)),
         "auto_open_delay_seconds": int(getattr(assistant_settings, "widget_auto_open_delay_seconds", 40) or 40),
         "greeting_text": (
             getattr(assistant_settings, "widget_greeting_text", "")

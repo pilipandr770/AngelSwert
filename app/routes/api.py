@@ -283,12 +283,13 @@ def chat():
     custom_instructions = (settings.custom_instructions if settings else "") or ""
     instruction_doc_text = (settings.instruction_doc_text if settings else "") or ""
     lead = _resolve_chat_lead(payload)
-    _autofill_lead_profile(
-        lead=lead,
-        message=message,
-        api_key=current_app.config["OPENAI_API_KEY"],
-        model=current_app.config["OPENAI_MODEL"],
-    )
+    if current_app.config.get("ENABLE_LEAD_PROFILE_AUTOFILL", False):
+        _autofill_lead_profile(
+            lead=lead,
+            message=message,
+            api_key=current_app.config["OPENAI_API_KEY"],
+            model=current_app.config["OPENAI_MODEL"],
+        )
 
     def _reply(reply_text: str):
         _store_chat_messages(lead, message, reply_text)
