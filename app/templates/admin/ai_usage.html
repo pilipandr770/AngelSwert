@@ -1,0 +1,55 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}AI usage{% endblock %}
+{% block content %}
+<h1>AI usage</h1>
+
+<div class="admin-stats">
+  <article><h3>Запити</h3><p>{{ totals.requests }}</p></article>
+  <article><h3>Prompt tokens</h3><p>{{ totals.prompt_tokens }}</p></article>
+  <article><h3>Completion tokens</h3><p>{{ totals.completion_tokens }}</p></article>
+  <article><h3>Всього токенів</h3><p>{{ totals.total_tokens }}</p></article>
+</div>
+
+<div class="admin-stats">
+  {% if by_model %}
+    <article style="grid-column: 1 / -1;"><h3>По моделях</h3>
+      <ul>
+        {% for model_name, token_total in by_model.items() %}
+          <li>{{ model_name }}: {{ token_total }}</li>
+        {% endfor %}
+      </ul>
+    </article>
+  {% endif %}
+  {% if by_source %}
+    <article style="grid-column: 1 / -1;"><h3>По джерелам</h3>
+      <ul>
+        {% for source_name, token_total in by_source.items() %}
+          <li>{{ source_name }}: {{ token_total }}</li>
+        {% endfor %}
+      </ul>
+    </article>
+  {% endif %}
+</div>
+
+<h2>Останні запити</h2>
+<table class="table">
+  <tr>
+    <th>Дата</th>
+    <th>Модель</th>
+    <th>Джерело</th>
+    <th>Prompt</th>
+    <th>Completion</th>
+    <th>Всього</th>
+  </tr>
+  {% for row in entries %}
+  <tr>
+    <td>{{ row.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+    <td>{{ row.model }}</td>
+    <td>{{ row.source }}</td>
+    <td>{{ row.prompt_tokens }}</td>
+    <td>{{ row.completion_tokens }}</td>
+    <td>{{ row.total_tokens }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

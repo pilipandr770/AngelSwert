@@ -15,6 +15,7 @@ from werkzeug.utils import secure_filename
 
 from ..extensions import db
 from ..models import (
+    AiUsageLog,
     AnalyticsEvent,
     AssistantInstructionSettings,
     BlogAutomationSettings,
@@ -229,6 +230,7 @@ def dashboard():
     if not current_user.is_admin:
         return redirect(url_for("auth.login"))
 
+    usage_30d = AiUsageLog.query.filter(AiUsageLog.created_at >= datetime.utcnow() - timedelta(days=30)).all()
     stats = {
         "leads": Lead.query.count(),
         "published_posts": BlogPost.query.filter_by(status="published").count(),
@@ -236,9 +238,44 @@ def dashboard():
         "topics": BlogTopic.query.filter_by(is_active=True).count(),
         "events": AnalyticsEvent.query.count(),
         "discoveries": DiscoveryAssessment.query.count(),
+        "ai_requests_30d": len(usage_30d),
+        "ai_tokens_30d": sum(item.total_tokens for item in usage_30d),
     }
     latest_leads = Lead.query.order_by(Lead.created_at.desc()).limit(5).all()
     return render_template("admin/dashboard.html", stats=stats, latest_leads=latest_leads)
+
+
+@admin_bp.get("/ai-usage")
+@login_required
+def ai_usage():
+    if not current_user.is_admin:
+        return redirect(url_for("auth.login"))
+
+    days = max(1, min(90, int((request.args.get("days") or "30").strip() or "30")))
+    cutoff = datetime.utcnow() - timedelta(days=days)
+    entries = AiUsageLog.query.filter(AiUsageLog.created_at >= cutoff).order_by(AiUsageLog.created_at.desc()).all()
+
+    totals = {
+        "requests": len(entries),
+        "prompt_tokens": sum(item.prompt_tokens for item in entries),
+        "completion_tokens": sum(item.completion_tokens for item in entries),
+        "total_tokens": sum(item.total_tokens for item in entries),
+    }
+
+    by_model = {}
+    by_source = {}
+    for item in entries:
+        by_model[item.model] = by_model.get(item.model, 0) + item.total_tokens
+        by_source[item.source] = by_source.get(item.source, 0) + item.total_tokens
+
+    return render_template(
+        "admin/ai_usage.html",
+        entries=entries,
+        days=days,
+        totals=totals,
+        by_model=dict(sorted(by_model.items(), key=lambda kv: kv[1], reverse=True)),
+        by_source=dict(sorted(by_source.items(), key=lambda kv: kv[1], reverse=True)),
+    )
 
 
 @admin_bp.get("/youtube")

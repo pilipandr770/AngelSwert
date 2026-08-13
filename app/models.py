@@ -234,6 +234,16 @@ class AnalyticsEvent(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
+class AiUsageLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    model = db.Column(db.String(120), default="", nullable=False)
+    source = db.Column(db.String(80), default="unknown", nullable=False)
+    prompt_tokens = db.Column(db.Integer, default=0, nullable=False)
+    completion_tokens = db.Column(db.Integer, default=0, nullable=False)
+    total_tokens = db.Column(db.Integer, default=0, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+
 class DiscoveryAssessment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     lead_id = db.Column(db.Integer, db.ForeignKey("lead.id"), nullable=False)

@@ -7,6 +7,9 @@ from typing import Optional
 
 from openai import OpenAI
 
+from ..extensions import db
+from ..models import AiUsageLog
+
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +106,35 @@ def _get_client(api_key: str) -> Optional[OpenAI]:
         return None
 
 
+def _record_usage(response, model: str, source: str) -> None:
+    usage = getattr(response, "usage", None)
+    if usage is None:
+        return
+
+    try:
+        prompt_tokens = int(getattr(usage, "prompt_tokens", 0) or 0)
+        completion_tokens = int(getattr(usage, "completion_tokens", 0) or 0)
+        total_tokens = int(getattr(usage, "total_tokens", 0) or 0)
+    except (TypeError, ValueError):
+        return
+
+    if prompt_tokens <= 0 and completion_tokens <= 0 and total_tokens <= 0:
+        return
+
+    try:
+        db.session.add(
+            AiUsageLog(
+                model=(model or "")[:120],
+                source=(source or "unknown")[:80],
+                prompt_tokens=prompt_tokens,
+                completion_tokens=completion_tokens,
+                total_tokens=total_tokens,
+            )
+        )
+    except Exception:  # pragma: no cover - defensive runtime guard
+        logger.exception("Failed to save AI usage log")
+
+
 def generate_chat_reply(api_key: str, model: str, user_message: str, custom_instructions: str = "") -> str:
     client = _get_client(api_key)
     if not client:
@@ -123,6 +155,7 @@ def generate_chat_reply(api_key: str, model: str, user_message: str, custom_inst
                 {"role": "user", "content": user_message},
             ],
         )
+        _record_usage(response, model=model, source="chat")
         return response.choices[0].message.content.strip()
     except Exception as exc:  # pragma: no cover - defensive runtime guard
         logger.exception("Chat generation failed: %s", exc)
@@ -204,6 +237,7 @@ def generate_blog_post(
                 {"role": "user", "content": prompt},
             ],
         )
+        _record_usage(response, model=model, source="blog")
         payload = json.loads(response.choices[0].message.content)
         return {
             "title": payload.get("title", topic),
@@ -254,6 +288,7 @@ def generate_crm_hint(
                 },
             ],
         )
+        _record_usage(response, model=model, source="crm")
         return response.choices[0].message.content.strip()
     except Exception as exc:  # pragma: no cover - defensive runtime guard
         logger.exception("CRM hint generation failed for lead '%s': %s", lead_name, exc)
@@ -291,6 +326,7 @@ def extract_lead_profile_update(api_key: str, model: str, message: str, current_
                 },
             ],
         )
+        _record_usage(response, model=model, source="lead_profile")
         payload = json.loads(response.choices[0].message.content)
     except Exception as exc:  # pragma: no cover - defensive runtime guard
         logger.exception("Lead profile extraction failed: %s", exc)
