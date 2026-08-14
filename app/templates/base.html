@@ -22,7 +22,7 @@
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <script type="application/ld+json">
     {
@@ -46,7 +46,10 @@
       <img class="brand-mark" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
       <span class="brand-name">{{ brand_name }}</span>
     </a>
-    <nav>
+    <button type="button" id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="siteNav">
       <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
       <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
       <a href="{{ url_for('public.programs', lang=lang) }}">{{ t('nav.programs') }}</a>
@@ -178,5 +181,6 @@
 
   <script src="{{ url_for('static', filename='js/cookie_consent.js', v='20260806a') }}"></script>
   <script src="{{ url_for('static', filename='js/chatbot.js', v='20260807d') }}"></script>
+  <script src="{{ url_for('static', filename='js/nav.js', v='20260814a') }}"></script>
 </body>
 </html>

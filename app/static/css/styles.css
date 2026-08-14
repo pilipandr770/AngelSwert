@@ -1,13 +1,13 @@
 :root {
-  --bg-main: #060709;
-  --bg-soft: #0e1014;
-  --ink: #f3ecdc;
-  --accent: #c9900a;
-  --accent-2: #f2c93a;
+  --bg-main: #0a0a0a;
+  --bg-soft: #101010;
+  --ink: #ffffff;
+  --accent: #b8912b;
+  --accent-2: #d4af37;
   --panel: #181b21;
-  --line: #7a6a2a;
-  --btn-green: #aaff00;
-  --btn-green-dark: #7acc00;
+  --line: #4a3d17;
+  --btn-green: #33ff14;
+  --btn-green-dark: #21b30c;
 }
 
 * {
@@ -18,11 +18,11 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  font-family: "Manrope", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 8% 12%, rgba(201, 144, 10, 0.1), transparent 24%),
-    radial-gradient(circle at 90% 8%, rgba(242, 201, 58, 0.06), transparent 22%),
+    radial-gradient(circle at 8% 12%, rgba(212, 175, 55, 0.1), transparent 24%),
+    radial-gradient(circle at 90% 8%, rgba(212, 175, 55, 0.06), transparent 22%),
     linear-gradient(170deg, var(--bg-main), var(--bg-soft));
   min-height: 100vh;
 }
@@ -61,6 +61,8 @@ h1, h2, h3 {
   color: var(--accent-2);
   text-decoration: none;
   font-weight: 600;
+  font-family: "Oswald", sans-serif;
+  letter-spacing: 0.03em;
 }
 
 .site-header nav a,
@@ -69,7 +71,7 @@ h1, h2, h3 {
   padding: 0.55rem 0.9rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(228, 204, 132, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.18);
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -77,8 +79,8 @@ h1, h2, h3 {
 .admin-header a:hover,
 .admin-header button:hover {
   transform: translateY(-1px);
-  background: rgba(228, 204, 132, 0.1);
-  border-color: rgba(228, 204, 132, 0.35);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.35);
 }
 
 .lang-switch {
@@ -91,6 +93,63 @@ h1, h2, h3 {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--accent-2);
+  border-radius: 2px;
+}
+
+@media (max-width: 760px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .site-header nav {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin: 0;
+    padding: 0.8rem 1.4rem 1.2rem;
+    background: rgba(10, 10, 10, 0.98);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-header nav.open {
+    display: flex;
+  }
+
+  .site-header nav a {
+    text-align: center;
+  }
+
+  .lang-switch {
+    margin-left: 0;
+    margin-top: 0.3rem;
+    align-self: center;
+  }
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -98,6 +157,8 @@ h1, h2, h3 {
   font-size: 1.25rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-family: "Oswald", sans-serif;
+  color: var(--accent-2);
 }
 
 .brand-name {
@@ -143,7 +204,7 @@ main,
   inset: auto -8% -28% auto;
   width: 260px;
   height: 260px;
-  background: radial-gradient(circle, rgba(228, 204, 132, 0.18), transparent 65%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.18), transparent 65%);
   pointer-events: none;
 }
 
@@ -153,6 +214,7 @@ main,
   font-size: 0.78rem;
   color: var(--accent-2);
   margin-bottom: 0.75rem;
+  font-family: "Oswald", sans-serif;
 }
 
 .cards-section,
@@ -186,7 +248,7 @@ main,
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(228, 204, 132, 0.45);
+  border-color: rgba(212, 175, 55, 0.45);
   box-shadow: 0 14px 30px rgba(15, 18, 23, 0.18);
 }
 
@@ -235,7 +297,7 @@ select {
   gap: 0.55rem;
   margin: 0.3rem 0 0.9rem;
   padding: 0.65rem 0.75rem;
-  border: 1px solid rgba(228, 204, 132, 0.22);
+  border: 1px solid rgba(212, 175, 55, 0.22);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.03);
   font-weight: 500;
@@ -275,7 +337,7 @@ select {
 .admin-tab-btn.is-active {
   background: linear-gradient(135deg, var(--btn-green), var(--btn-green-dark));
   color: #0a1a00;
-  border-color: rgba(170, 255, 0, 0.6);
+  border-color: rgba(51, 255, 20, 0.6);
 }
 
 .admin-tab-panel {
@@ -317,7 +379,7 @@ select {
 
 .home-hero-points > div,
 .home-discovery-list > div {
-  border: 1px solid rgba(228, 204, 132, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.18);
   border-radius: 14px;
   padding: 0.8rem 0.9rem;
   background: rgba(255, 255, 255, 0.03);
@@ -332,7 +394,7 @@ select {
 
 .home-hero-points span {
   display: block;
-  color: rgba(243, 236, 220, 0.82);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .home-hero-media img,
@@ -482,7 +544,7 @@ select {
 
 .video-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(228, 204, 132, 0.45);
+  border-color: rgba(212, 175, 55, 0.45);
 }
 
 .video-card-media {
@@ -543,13 +605,14 @@ select {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
-  color: rgba(228, 204, 132, 0.78);
+  color: rgba(212, 175, 55, 0.78);
+  font-family: "Oswald", sans-serif;
 }
 
 .video-card-placeholder {
   display: grid;
   place-items: center;
-  color: rgba(243, 236, 220, 0.72);
+  color: rgba(255, 255, 255, 0.72);
   background: linear-gradient(145deg, #222831, #171b21);
 }
 
@@ -663,7 +726,7 @@ select {
 }
 
 .site-footer-brand-copy p:nth-child(2) {
-  color: rgba(243, 236, 220, 0.92);
+  color: rgba(255, 255, 255, 0.92);
   max-width: 36ch;
 }
 
@@ -688,7 +751,8 @@ select {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.74rem;
-  color: rgba(240, 220, 135, 0.76);
+  color: rgba(212, 175, 55, 0.76);
+  font-family: "Oswald", sans-serif;
 }
 
 .site-footer-links {
@@ -714,7 +778,7 @@ select {
   justify-content: center;
   padding: 0.55rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid rgba(228, 204, 132, 0.22);
+  border: 1px solid rgba(212, 175, 55, 0.22);
   background: rgba(255, 255, 255, 0.04);
   text-decoration: none;
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
@@ -723,14 +787,14 @@ select {
 .footer-link-cloud a:hover,
 .footer-cta-link:hover {
   transform: translateY(-1px);
-  background: rgba(228, 204, 132, 0.08);
-  border-color: rgba(228, 204, 132, 0.42);
+  background: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.42);
 }
 
 .site-footer-meta {
   margin: 1rem 0 0;
   padding-top: 0.9rem;
-  border-top: 1px solid rgba(228, 204, 132, 0.14);
+  border-top: 1px solid rgba(212, 175, 55, 0.14);
 }
 
 .site-footer-brand p {
@@ -749,7 +813,7 @@ select {
   transform: translateX(-50%);
   width: min(980px, 94vw);
   z-index: 30;
-  border: 1px solid rgba(228, 204, 132, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 16px;
   background: rgba(26, 30, 37, 0.98);
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.38);
@@ -817,7 +881,7 @@ select {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  border: 1px solid rgba(228, 204, 132, 0.28);
+  border: 1px solid rgba(212, 175, 55, 0.28);
   color: var(--accent-2);
   background: rgba(255, 255, 255, 0.05);
   padding: 0;
@@ -835,7 +899,7 @@ select {
   gap: 0.6rem;
   padding: 0.55rem 0.65rem;
   border-radius: 10px;
-  border: 1px solid rgba(228, 204, 132, 0.2);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   background: #242b35;
 }
 
@@ -860,7 +924,7 @@ select {
   bottom: 1rem;
   z-index: 29;
   border-radius: 999px;
-  border: 1px solid rgba(228, 204, 132, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.3);
   background: rgba(24, 29, 36, 0.94);
   color: var(--accent-2);
   padding: 0.5rem 0.8rem;
@@ -884,9 +948,9 @@ select {
 .chatbot-toggle {
   position: relative;
   padding: 0.72rem 1.05rem;
-  border: 1px solid rgba(228, 204, 132, 0.45);
+  border: 1px solid rgba(212, 175, 55, 0.45);
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(228, 204, 132, 0.95), rgba(193, 150, 53, 0.95));
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(168, 132, 42, 0.95));
   color: #1d232b;
   font-weight: 800;
   letter-spacing: 0.01em;
@@ -916,15 +980,15 @@ select {
 @keyframes chatbotPulse {
   0% {
     transform: translateY(0) scale(1);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28), 0 0 0 0 rgba(228, 204, 132, 0.34);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28), 0 0 0 0 rgba(212, 175, 55, 0.34);
   }
   60% {
     transform: translateY(-1px) scale(1.01);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32), 0 0 0 12px rgba(228, 204, 132, 0);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32), 0 0 0 12px rgba(212, 175, 55, 0);
   }
   100% {
     transform: translateY(0) scale(1);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28), 0 0 0 0 rgba(228, 204, 132, 0);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28), 0 0 0 0 rgba(212, 175, 55, 0);
   }
 }
 
@@ -954,7 +1018,7 @@ select {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  border: 1px solid rgba(228, 204, 132, 0.32);
+  border: 1px solid rgba(212, 175, 55, 0.32);
   background: rgba(255, 255, 255, 0.05);
   color: var(--accent-2);
   font-size: 1.05rem;
@@ -983,11 +1047,11 @@ select {
 }
 
 .chat-row.user {
-  background: rgba(196, 162, 91, 0.25);
+  background: rgba(212, 175, 55, 0.25);
 }
 
 .chat-row.bot {
-  background: rgba(228, 204, 132, 0.18);
+  background: rgba(212, 175, 55, 0.18);
 }
 
 .chatbot-form {
@@ -1035,7 +1099,7 @@ select {
 }
 
 .chat-slot-btn:hover {
-  border-color: rgba(228, 204, 132, 0.45);
+  border-color: rgba(212, 175, 55, 0.45);
 }
 
 .chat-booking-form {
@@ -1109,7 +1173,7 @@ select {
   padding: 1rem;
   border-radius: 18px;
   background: linear-gradient(145deg, rgba(99, 113, 130, 0.85), rgba(76, 88, 101, 0.85));
-  border: 1px solid rgba(228, 204, 132, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.18);
 }
 
 .admin-stats p {
@@ -1202,7 +1266,7 @@ select {
 .btn-ghost {
   background: transparent;
   color: var(--accent-2);
-  border: 1px solid rgba(228, 204, 132, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.35);
 }
 
 .services-five-grid {
@@ -1316,7 +1380,7 @@ select {
   top: 0.5rem;
   background: rgba(0, 0, 0, 0.6);
   color: var(--accent-2);
-  border: 1px solid rgba(228, 204, 132, 0.4);
+  border: 1px solid rgba(212, 175, 55, 0.4);
   width: 34px;
   height: 34px;
   border-radius: 999px;
