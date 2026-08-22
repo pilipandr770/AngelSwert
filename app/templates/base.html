@@ -62,10 +62,6 @@
       </span>
     </nav>
 
-    <button type="button" id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="siteNavMobile" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-
     <nav id="siteNavMobile" class="site-nav-mobile" aria-label="Mobile navigation">
       <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
       <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
