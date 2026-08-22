@@ -64,8 +64,8 @@ h1, h2, h3 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.25rem 1.15rem;
+  gap: 0.45rem;
+  padding: 0.12rem 1.05rem;
   background: linear-gradient(180deg, #05080b 0%, #090d12 100%);
   border-bottom: 1px solid rgba(212, 175, 55, 0.35);
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
@@ -87,8 +87,8 @@ h1, h2, h3 {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.6rem;
-  min-height: 36px;
+  gap: 0.5rem;
+  min-height: 32px;
 }
 
 .site-nav-left {
@@ -111,7 +111,7 @@ h1, h2, h3 {
 .site-header nav a,
 .admin-header a,
 .admin-header button {
-  padding: 0.42rem 0.8rem;
+  padding: 0.36rem 0.72rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(212, 175, 55, 0.24);
@@ -149,13 +149,13 @@ h1, h2, h3 {
 @media (max-width: 760px) {
   .site-header {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    gap: 0.4rem;
-    padding: 0.4rem 0.8rem;
+    gap: 0.35rem;
+    padding: 0.3rem 0.7rem;
   }
 
   .site-nav-left,
   .site-nav-right {
-    gap: 0.38rem;
+    gap: 0.3rem;
     justify-content: center;
   }
 
@@ -164,11 +164,11 @@ h1, h2, h3 {
   .site-nav-left .lang-switch,
   .site-nav-right .lang-switch {
     font-size: 0.8rem;
-    padding: 0.38rem 0.68rem;
+    padding: 0.34rem 0.62rem;
   }
 
   .brand-logo {
-    width: min(170px, 48vw);
+    width: min(160px, 46vw);
   }
 }
 
@@ -181,7 +181,7 @@ h1, h2, h3 {
   justify-self: center;
   min-width: 0;
   line-height: 1;
-  margin: 0 0.35rem;
+  margin: 0 0.25rem;
 }
 
 .brand-name {
@@ -190,7 +190,7 @@ h1, h2, h3 {
 
 .brand-mark,
 .brand-logo {
-  width: clamp(180px, 15vw, 270px);
+  width: clamp(170px, 14vw, 250px);
   max-width: 100%;
   height: auto;
   display: block;
