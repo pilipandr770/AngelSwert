@@ -58,9 +58,9 @@ h1, h2, h3 {
 
 .site-header,
 .admin-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: relative;
+  top: auto;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
