@@ -42,14 +42,31 @@
 <body>
   {% set is_de = lang == 'de' %}
   <header class="site-header">
-    <a class="brand" href="{{ url_for('public.home', lang=lang) }}">
-      <img class="brand-mark" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
-      <span class="brand-name">{{ brand_name }}</span>
+    <nav id="siteNav" class="site-nav site-nav-left" aria-label="Primary navigation">
+      <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
+      <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
+      <a href="{{ url_for('public.programs', lang=lang) }}">{{ t('nav.programs') }}</a>
+    </nav>
+
+    <a class="brand" href="{{ url_for('public.home', lang=lang) }}" aria-label="{{ brand_name }} home">
+      <img class="brand-logo" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
     </a>
-    <button type="button" id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
+
+    <nav class="site-nav site-nav-right" aria-label="Secondary navigation">
+      <a href="{{ url_for('public.contact', lang=lang) }}">{{ t('nav.contact') }}</a>
+      <a href="{{ url_for('public.blog_list', lang=lang) }}">{{ t('nav.blog') }}</a>
+      <span class="lang-switch">
+        <a href="{{ lang_url('de') }}">{{ t('lang.de') }}</a>
+        <span>/</span>
+        <a href="{{ lang_url('en') }}">{{ t('lang.en') }}</a>
+      </span>
+    </nav>
+
+    <button type="button" id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="siteNavMobile" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
-    <nav id="siteNav">
+
+    <nav id="siteNavMobile" class="site-nav-mobile hidden" aria-label="Mobile navigation">
       <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
       <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
       <a href="{{ url_for('public.programs', lang=lang) }}">{{ t('nav.programs') }}</a>

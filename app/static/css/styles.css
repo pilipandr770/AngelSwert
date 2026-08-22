@@ -61,8 +61,8 @@ h1, h2, h3 {
   position: sticky;
   top: 0;
   z-index: 10;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.4rem;
@@ -88,6 +88,21 @@ h1, h2, h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.site-nav-left {
+  justify-self: start;
+}
+
+.site-nav-right {
+  justify-self: end;
 }
 
 .site-header a,
@@ -128,6 +143,10 @@ h1, h2, h3 {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.site-nav-mobile {
+  display: none;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -152,33 +171,50 @@ h1, h2, h3 {
 }
 
 @media (max-width: 760px) {
-  .nav-toggle {
-    display: flex;
+  .site-header {
+    grid-template-columns: 1fr auto;
+    gap: 0.8rem;
   }
 
-  .site-header nav {
+  .site-nav-left,
+  .site-nav-right {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+    justify-self: end;
+  }
+
+  .site-nav-mobile {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 1.2rem;
+    right: 1.2rem;
     display: none;
     flex-direction: column;
     align-items: stretch;
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
+    width: auto;
     margin: 0;
-    padding: 0.8rem 1.4rem 1.2rem;
+    padding: 0.8rem 1rem 1rem;
     background: rgba(10, 10, 10, 0.98);
-    border-bottom: 1px solid var(--line);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.28);
   }
 
-  .site-header nav.open {
+  .site-nav-mobile.open {
     display: flex;
   }
 
-  .site-header nav a {
+  .site-nav-mobile a,
+  .site-nav-mobile .lang-switch {
+    width: 100%;
     text-align: center;
+    justify-content: center;
   }
 
-  .lang-switch {
+  .site-nav-mobile .lang-switch {
     margin-left: 0;
     margin-top: 0.3rem;
     align-self: center;
@@ -188,23 +224,32 @@ h1, h2, h3 {
 .brand {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.7rem;
   font-size: 1.25rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-family: "Oswald", sans-serif;
   color: var(--accent-2);
+  background: transparent;
+  border: 0;
+  justify-self: center;
+  min-width: 0;
 }
 
 .brand-name {
   white-space: nowrap;
 }
 
-.brand-mark {
-  width: 48px;
-  height: 48px;
+.brand-mark,
+.brand-logo {
+  width: clamp(220px, 23vw, 420px);
+  max-width: 100%;
+  height: auto;
   flex: 0 0 auto;
   object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.18));
 }
 
 main,
@@ -1499,23 +1544,29 @@ select:focus {
 @media (max-width: 740px) {
   .site-header,
   .admin-header {
-    align-items: flex-start;
+    display: flex;
+    align-items: center;
     flex-direction: column;
-  }
-
-  .site-header {
     gap: 0.8rem;
   }
 
+  .site-header {
+    position: sticky;
+  }
+
   .brand {
+    order: 1;
+    width: 100%;
+    justify-content: center;
     gap: 0.55rem;
     font-size: 1rem;
     letter-spacing: 0.05em;
   }
 
-  .brand-mark {
-    width: 58px;
-    height: 58px;
+  .brand-mark,
+  .brand-logo {
+    width: min(260px, 72vw);
+    height: auto;
   }
 
   .brand-name {
@@ -1526,11 +1577,17 @@ select:focus {
   .site-header nav {
     width: 100%;
     gap: 0.5rem;
+    justify-content: center;
   }
 
   .site-header nav a,
   .site-header nav .lang-switch {
     padding: 0.45rem 0.7rem;
+  }
+
+  .site-nav-left,
+  .site-nav-right {
+    justify-self: auto;
   }
 
   .site-footer-grid {

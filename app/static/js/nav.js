@@ -1,15 +1,15 @@
 const navToggle = document.getElementById('navToggle');
-const siteNav = document.getElementById('siteNav');
+const mobileNav = document.getElementById('siteNavMobile');
 
-if (navToggle && siteNav) {
+if (navToggle && mobileNav) {
   navToggle.addEventListener('click', () => {
-    const isOpen = siteNav.classList.toggle('open');
+    const isOpen = mobileNav.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 
-  siteNav.querySelectorAll('a').forEach((link) => {
+  mobileNav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      siteNav.classList.remove('open');
+      mobileNav.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
     });
   });
