@@ -5,55 +5,164 @@
 <section class="page-block legal-copy">
   <h1>{{ t('legal.privacy_title') }}</h1>
   {% if lang == 'de' %}
-  <p>Diese Datenschutzerklärung informiert über die Verarbeitung personenbezogener Daten im Rahmen dieses Onlineangebots und der damit verbundenen Kommunikations- und Geschäftsvorgänge.</p>
-  <h2>Verantwortliche</h2>
-  <p>Svitlana Lebedynska, Angel Swert Videoproduktion, Waldstrasse 1, 63128 Dietzenbach, Deutschland</p>
-  <p>E-Mail: info@angelswert.de | Telefon: +49 (0) 173 294 21 23</p>
-  <h2>Verarbeitete Daten</h2>
-  <p>Wir verarbeiten insbesondere Kontaktdaten, Inhaltsdaten aus Formularen, Nutzungsdaten, technische Verbindungsdaten und Kommunikationsdaten.</p>
+  <p>Diese Datenschutzerklärung informiert über die Verarbeitung personenbezogener Daten im Rahmen der Website, der Kontaktaufnahme, der Angebots- und Projektabwicklung sowie der Nutzung von Cookies und vergleichbaren Technologien.</p>
+
+  <h2>Verantwortliche Stelle</h2>
+  <p>Verantwortlich für die Datenverarbeitung auf dieser Website ist:</p>
+  <p>Svitlana Lebedynska<br>
+  Angel Swert Videoproduktion<br>
+  Waldstrasse 1, 63128 Dietzenbach, Deutschland</p>
+  <p>E-Mail: info@angelswert.de<br>
+  Telefon: +49 (0) 173 294 21 23</p>
+
+  <h2>Welche Daten wir verarbeiten</h2>
+  <p>Wir verarbeiten personenbezogene Daten, soweit dies für den Betrieb der Website, die Beantwortung von Anfragen, die Projekt- und Beratungsabwicklung sowie die Einhaltung rechtlicher Pflichten erforderlich ist. Dazu gehören insbesondere:</p>
+  <ul>
+    <li>Kontaktdaten wie Name, E-Mail-Adresse, Telefonnummer und Postadresse;</li>
+    <li>Inhalte aus Kontaktformularen, Anfragen, E-Mails und Gesprächsnotizen;</li>
+    <li>Technische Verbindungsdaten, Logfiles, Browser- und Geräteeinstellungen;</li>
+    <li>Cookie- und Einwilligungsdaten sowie ggf. Analyse- und Nutzungsdaten, sofern Sie einer solchen Verarbeitung zugestimmt haben;</li>
+    <li>Informationen, die im Rahmen von Projekt- oder Beratungsprozessen von Ihnen bereitgestellt werden.</li>
+  </ul>
+
   <h2>Zwecke der Verarbeitung</h2>
-  <p>Die Verarbeitung erfolgt zur Bereitstellung des Onlineangebots, zur Beantwortung von Anfragen, zur Durchführung vorvertraglicher Maßnahmen, zur Erbringung vertraglicher Leistungen, zu Sicherheitszwecken sowie für Marketing, Reichweitenmessung und Optimierung, soweit rechtlich zulässig.</p>
-  <h2>Kontaktformular</h2>
-  <p>Wenn Sie uns über das Kontaktformular, per E-Mail oder telefonisch kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage und zur möglichen Anbahnung eines Vertragsverhältnisses.</p>
-  <h2>Hosting, Analyse und Einbindungen</h2>
-  <p>Unser Onlineangebot kann Hosting-, Analyse-, Cookie-, Social-Media- und eingebettete Inhaltsdienste einsetzen. Dazu können insbesondere Webhosting, Reichweitenmessung, Cookie-Management, soziale Netzwerke und eingebettete Medieninhalte gehören.</p>
-  <h2>Cookie-Einwilligungsmanagement</h2>
-  <p>Beim ersten Besuch wird ein Einwilligungsbanner angezeigt. Optionale Analytics-Ereignisse werden erst nach aktiver Zustimmung verarbeitet. Die Auswahl kann uber die Cookie-Einstellungen jederzeit geandert werden.</p>
+  <p>Wir verarbeiten Ihre Daten für die folgenden Zwecke:</p>
+  <ul>
+    <li>Bereitstellung und technische Sicherung der Website und ihrer Funktionen;</li>
+    <li>Bearbeitung Ihrer Anfragen, Anfragen zu Leistungen und Terminvereinbarungen;</li>
+    <li>Vorbereitung, Durchführung und Abwicklung von Beratungs- und Projektleistungen;</li>
+    <li>Kommunikation mit Ihnen per E-Mail, Telefon oder über das Kontaktformular;</li>
+    <li>Sicherheits- und Missbrauchsmaßnahmen, soweit erforderlich;</li>
+    <li>Verbesserung von Angebot, Inhalte und Nutzererfahrung, soweit rechtlich zulässig und mit Ihrer Einwilligung oder einem sonstigen gesetzlichen Rahmen abgestimmt.</li>
+  </ul>
+
+  <h2>Kontaktformular und Direktkommunikation</h2>
+  <p>Wenn Sie uns über das Kontaktformular, E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung Ihrer Anfrage und zur möglichen Anbahnung eines Vertragsverhältnisses. Die von Ihnen mitgeteilten Informationen werden nur für den jeweiligen Zweck verwendet und nicht ohne rechtlichen Grund weitergegeben.</p>
+
+  <h2>Cookies und Analyse</h2>
+  <p>Wir setzen essentielle Cookies ein, um die Website technisch betreiben zu können, etwa für Spracheinstellungen und die Speicherung Ihrer Cookie-Einstellungen. Optionale Analyse- und Tracking-Cookies werden nur verwendet, wenn Sie zuvor in unserem Cookie-Banner oder den Cookie-Einstellungen zugestimmt haben.</p>
+  <p>Die Details zu den genutzten Cookies, zur Rechtsgrundlage und zu den Einstellmöglichkeiten finden Sie in der <a href="{{ url_for('public.cookie_policy', lang=lang) }}">Cookie-Richtlinie</a>.</p>
+
+  <h2>Empfänger von Daten</h2>
+  <p>Wir können Ihre Daten im Rahmen der Betriebs- und Projektabwicklung an technisch notwendige Dienstleister weitergeben, insbesondere an:</p>
+  <ul>
+    <li>Hosting- und Infrastrukturprovider;</li>
+    <li>IT- und Support-Dienstleister;</li>
+    <li>Kommunikations- und Verwaltungstools, soweit für Anfragen, Terminmanagement oder Projektkoordination erforderlich;</li>
+    <li>ggf. externe Dienstleister für Analyse-, Tracking- oder Cookie-Management, sofern Sie eingewilligt haben.</li>
+  </ul>
+  <p>Eine Verwertung Ihrer personenbezogenen Daten zu Werbezwecken oder zum Verkauf an Dritte erfolgt nicht.</p>
+
   <h2>Rechtsgrundlagen</h2>
-  <p>Die Verarbeitung erfolgt je nach Kontext auf Grundlage von Einwilligung, Vertragserfüllung, vorvertraglichen Maßnahmen, rechtlichen Verpflichtungen oder berechtigten Interessen.</p>
+  <p>Die Verarbeitung erfolgt je nach Zweck auf Grundlage von:</p>
+  <ul>
+    <li>Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO;</li>
+    <li>Vertragserfüllung bzw. vorvertraglichen Maßnahmen gemäß Art. 6 Abs. 1 lit. b DSGVO;</li>
+    <li>rechtlichen Verpflichtungen gemäß Art. 6 Abs. 1 lit. c DSGVO;</li>
+    <li>berechtigten Interessen gemäß Art. 6 Abs. 1 lit. f DSGVO, etwa für den Betrieb, die Sicherheit und die Verbesserung unserer Dienstleistungen.</li>
+  </ul>
+
   <h2>Speicherdauer</h2>
-  <p>Wir speichern Daten nur so lange, wie dies für den jeweiligen Zweck, zur Vertragserfüllung, zur Einhaltung gesetzlicher Aufbewahrungsfristen oder zur Wahrung berechtigter Interessen erforderlich ist.</p>
+  <p>Wir speichern personenbezogene Daten nur so lange, wie es für den jeweiligen Zweck erforderlich ist, insbesondere zur Bearbeitung Ihrer Anfrage, zur Erfüllung vertraglicher und rechtlicher Verpflichtungen oder zur Wahrung berechtigter Interessen. Nach Wegfall des Zwecks werden Daten gelöscht oder anonymisiert, soweit keine gesetzlichen Aufbewahrungsfristen entgegenstehen.</p>
+
   <h2>Ihre Rechte</h2>
-  <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit, Widerruf erteilter Einwilligungen sowie Widerspruch gegen bestimmte Verarbeitungen. Zudem besteht ein Beschwerderecht bei einer Aufsichtsbehörde.</p>
-  <h2>Hinweis</h2>
-  <p>Vor dem finalen Go-live sollte diese Datenschutzerklärung zusammen mit dem endgültigen Tool- und Cookie-Setup des Produktionssystems nochmals rechtlich und technisch abgeglichen werden.</p>
-  <p>Informationen zum Verbraucher-Widerruf finden Sie in der Seite <a href="{{ url_for('public.withdrawal', lang=lang) }}">Widerrufsbelehrung</a>.</p>
-  <p>Details zu Cookies und Einwilligungen finden Sie in der <a href="{{ url_for('public.cookie_policy', lang=lang) }}">Cookie-Richtlinie</a>.</p>
+  <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch gegen bestimmte Verarbeitungen. Wenn wir Ihre Daten auf Grundlage Ihrer Einwilligung verarbeiten, können Sie diese Einwilligung jederzeit widerrufen. Bitte beachten Sie, dass ein Widerruf die Rechtmäßigkeit der bereits erfolgten Verarbeitung nicht berührt.</p>
+  <p>Sie haben zudem das Recht, sich bei einer zuständigen Aufsichtsbehörde zu beschweren, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten gegen geltendes Recht verstößt.</p>
+
+  <h2>Datensicherheit</h2>
+  <p>Wir verwenden geeignete technische und organisatorische Maßnahmen, um Ihre Daten vor Verlust, Missbrauch, unbefugtem Zugang und unbefugter Weitergabe zu schützen. Für das Internet gilt jedoch, dass keine Methode der Datenübertragung oder Speicherung absolut sicher ist.</p>
+
+  <h2>Weitergabe an Drittländer</h2>
+  <p>Soweit Dienstleister außerhalb des Europäischen Wirtschaftsraums tätig werden und personenbezogene Daten verarbeiten, stellen wir sicher, dass geeignete Schutzmaßnahmen nach den gesetzlichen Anforderungen, etwa durch EU-Standardvertragsklauseln, getroffen werden.</p>
+
+  <h2>Kontakt für Datenschutzanfragen</h2>
+  <p>Bei Fragen zum Datenschutz, zur Verarbeitung Ihrer Daten, zu Ihren Rechten oder zur Widerrufsbelehrung wenden Sie sich bitte an:</p>
+  <p>Svitlana Lebedynska<br>
+  Angel Swert Videoproduktion<br>
+  Waldstrasse 1, 63128 Dietzenbach, Deutschland<br>
+  E-Mail: info@angelswert.de<br>
+  Telefon: +49 (0) 173 294 21 23</p>
+  <p>Informationen zum Verbraucher-Widerruf finden Sie in der <a href="{{ url_for('public.withdrawal', lang=lang) }}">Widerrufsbelehrung</a>.</p>
+
   {% else %}
-  <p>This privacy policy explains how personal data is processed in connection with this website and related communication and business activities.</p>
+  <p>This privacy policy explains how personal data is processed in connection with the website, the handling of inquiries, project and consulting work, and the use of cookies and similar technologies.</p>
+
   <h2>Controller</h2>
-  <p>Svitlana Lebedynska, Angel Swert Videoproduction, Waldstrasse 1, 63128 Dietzenbach, Germany</p>
-  <p>Email: info@angelswert.de | Phone: +49 (0) 173 294 21 23</p>
-  <h2>Data processed</h2>
-  <p>We may process contact data, form content, usage data, technical connection data and communication data.</p>
+  <p>The controller responsible for data processing on this website is:</p>
+  <p>Svitlana Lebedynska<br>
+  Angel Swert Videoproduction<br>
+  Waldstrasse 1, 63128 Dietzenbach, Germany</p>
+  <p>Email: info@angelswert.de<br>
+  Phone: +49 (0) 173 294 21 23</p>
+
+  <h2>Data we process</h2>
+  <p>We process personal data wherever this is necessary for the operation of the website, the handling of inquiries, consulting and project work, and compliance with legal obligations. This may include:</p>
+  <ul>
+    <li>Contact data such as name, email address, phone number and postal address;</li>
+    <li>Contents of contact forms, inquiries, emails and notes from communications;</li>
+    <li>Technical connection data, log files, browser and device information;</li>
+    <li>Cookie and consent data as well as analytics and usage data if you have given consent;</li>
+    <li>Information provided in the context of projects, consulting services or other business communications.</li>
+  </ul>
+
   <h2>Purposes of processing</h2>
-  <p>Data is processed to provide the online offer, respond to inquiries, handle pre-contractual requests, deliver contractual services, maintain security, and support marketing, analytics and optimization where legally permitted.</p>
-  <h2>Contact form</h2>
-  <p>If you contact us via contact form, email or phone, we process the information you provide in order to respond to your inquiry and potentially initiate a business relationship.</p>
-  <h2>Hosting, analytics and integrations</h2>
-  <p>Our online offer may use hosting, analytics, cookie management, social media and embedded content services. This may include web hosting, traffic measurement, cookie tools, social networks and embedded media.</p>
-  <h2>Cookie consent management</h2>
-  <p>On first visit, a consent banner is shown. Optional analytics events are processed only after explicit consent. Consent choices can be changed at any time via cookie settings.</p>
-  <h2>Legal bases</h2>
-  <p>Depending on context, processing is based on consent, contract performance, pre-contractual measures, legal obligations or legitimate interests.</p>
-  <h2>Retention</h2>
-  <p>We retain data only as long as necessary for the relevant purpose, contract fulfillment, legal retention duties or legitimate interests.</p>
+  <p>We process your data for the following purposes:</p>
+  <ul>
+    <li>Providing and securing the website and its functions;</li>
+    <li>Responding to inquiries, service requests and appointment scheduling;</li>
+    <li>Preparing, performing and completing consulting and project services;</li>
+    <li>Communicating with you by email, phone or through the contact form;</li>
+    <li>Security and abuse prevention where required;</li>
+    <li>Improving the offer, content and user experience where legally permitted and aligned with consent or another lawful basis.</li>
+  </ul>
+
+  <h2>Contact form and direct communication</h2>
+  <p>If you contact us via the contact form, email or telephone, we process the information you provide to respond to your inquiry and potentially initiate a business relationship. The data is used only for the specific purpose and is not disclosed without a valid legal basis.</p>
+
+  <h2>Cookies and analytics</h2>
+  <p>We use essential cookies to operate the website, such as language preferences and storage of cookie settings. Optional analytics and tracking cookies are used only if you have consented through the cookie banner or cookie settings.</p>
+  <p>For details on the cookies used, the legal basis and available options, see the <a href="{{ url_for('public.cookie_policy', lang=lang) }}">Cookie Policy</a>.</p>
+
+  <h2>Recipients of data</h2>
+  <p>We may share your data with technically necessary service providers where required for website operations and business processes, including:</p>
+  <ul>
+    <li>Hosting and infrastructure providers;</li>
+    <li>IT and support service providers;</li>
+    <li>Communication and administration tools required for inquiries, scheduling or project coordination;</li>
+    <li>External providers for analytics or cookie management if you have consented.</li>
+  </ul>
+  <p>We do not sell personal data or use it for advertising purposes without a valid legal basis.</p>
+
+  <h2>Legal basis</h2>
+  <p>Processing depends on the purpose and may be based on:</p>
+  <ul>
+    <li>Consent under Article 6(1)(a) GDPR;</li>
+    <li>Contract performance or pre-contractual measures under Article 6(1)(b) GDPR;</li>
+    <li>Legal obligations under Article 6(1)(c) GDPR;</li>
+    <li>Legitimate interests under Article 6(1)(f) GDPR, such as for operation, security and service improvement.</li>
+  </ul>
+
+  <h2>Retention period</h2>
+  <p>We retain personal data only as long as necessary for the relevant purpose, including the handling of your inquiry, the performance of contractual and legal obligations, or the safeguarding of legitimate interests. After the purpose has ended, data is deleted or anonymized unless statutory retention periods require otherwise.</p>
+
   <h2>Your rights</h2>
-  <p>You have the right to access, rectify, erase, restrict processing, receive data portability, withdraw consent and object to certain processing activities. You also have the right to lodge a complaint with a supervisory authority.</p>
-  <h2>Note</h2>
-  <p>Before final production launch, this privacy policy should be reviewed again against the final tool stack, cookie setup and legal requirements.</p>
+  <p>You have the right to access, correct, delete, restrict processing, receive data portability, and object to certain processing activities. If we process your data on the basis of consent, you may withdraw that consent at any time. Please note that the withdrawal does not affect the lawfulness of processing that already occurred.</p>
+  <p>You also have the right to lodge a complaint with a competent supervisory authority if you believe that the processing of your personal data violates applicable law.</p>
+
+  <h2>Data security</h2>
+  <p>We use suitable technical and organizational measures to protect your data from loss, misuse, unauthorized access and accidental disclosure. However, no method of electronic transmission or storage is completely secure.</p>
+
+  <h2>Transfers to third countries</h2>
+  <p>If a service provider processes personal data outside the European Economic Area, we ensure that appropriate safeguards are in place in accordance with applicable legal requirements, such as EU standard contractual clauses.</p>
+
+  <h2>Contact for privacy inquiries</h2>
+  <p>If you have questions about privacy, the processing of your data, your rights, or the withdrawal information, please contact:</p>
+  <p>Svitlana Lebedynska<br>
+  Angel Swert Videoproduction<br>
+  Waldstrasse 1, 63128 Dietzenbach, Germany<br>
+  Email: info@angelswert.de<br>
+  Phone: +49 (0) 173 294 21 23</p>
   <p>Consumer withdrawal information is available on the <a href="{{ url_for('public.withdrawal', lang=lang) }}">Withdrawal Policy</a> page.</p>
-  <p>Details about cookie usage and consent are available in the <a href="{{ url_for('public.cookie_policy', lang=lang) }}">Cookie Policy</a>.</p>
   {% endif %}
 </section>
 {% endblock %}
