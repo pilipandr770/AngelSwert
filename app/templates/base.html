@@ -42,7 +42,13 @@
 <body>
   {% set is_de = lang == 'de' %}
   <header class="site-header">
-    <nav id="siteNav" class="site-nav" aria-label="Primary navigation">
+    <nav id="siteNavLeft" class="site-nav site-nav-left" aria-label="Empty left navigation"></nav>
+
+    <a class="brand" href="{{ url_for('public.home', lang=lang) }}" aria-label="{{ brand_name }} home">
+      <img class="brand-logo" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
+    </a>
+
+    <nav id="siteNav" class="site-nav site-nav-right" aria-label="Primary navigation">
       <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
       <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
       <a href="{{ url_for('public.programs', lang=lang) }}">{{ t('nav.programs') }}</a>
@@ -55,10 +61,6 @@
       </span>
     </nav>
 
-    <a class="brand" href="{{ url_for('public.home', lang=lang) }}" aria-label="{{ brand_name }} home">
-      <img class="brand-logo" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
-    </a>
-
     <nav id="siteNavMobile" class="site-nav-mobile" aria-label="Mobile navigation">
       <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
       <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
@@ -68,7 +70,7 @@
       <span class="lang-switch">
         <a href="{{ lang_url('de') }}">{{ t('lang.de') }}</a>
         <span>/</span>
-        <a href="{{ lang_url('en') }}">{{ t('lang.en') }}</a>
+        <a href="{{ url_for('public.home', lang=lang) }}">{{ t('lang.en') }}</a>
       </span>
     </nav>
   </header>
