@@ -62,22 +62,6 @@
       </span>
     </nav>
 
-    <button type="button" id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="siteNavMobile" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav id="siteNavMobile" class="site-nav-mobile hidden" aria-label="Mobile navigation">
-      <a href="{{ url_for('public.about', lang=lang) }}">{{ t('nav.about') }}</a>
-      <a href="{{ url_for('public.services', lang=lang) }}">{{ t('nav.services') }}</a>
-      <a href="{{ url_for('public.programs', lang=lang) }}">{{ t('nav.programs') }}</a>
-      <a href="{{ url_for('public.contact', lang=lang) }}">{{ t('nav.contact') }}</a>
-      <a href="{{ url_for('public.blog_list', lang=lang) }}">{{ t('nav.blog') }}</a>
-      <span class="lang-switch">
-        <a href="{{ lang_url('de') }}">{{ t('lang.de') }}</a>
-        <span>/</span>
-        <a href="{{ lang_url('en') }}">{{ t('lang.en') }}</a>
-      </span>
-    </nav>
   </header>
 
   <main>
