@@ -148,27 +148,73 @@ h1, h2, h3 {
 
 @media (max-width: 760px) {
   .site-header {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    gap: 0.35rem;
-    padding: 0.3rem 0.7rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.4rem;
+    padding: 0.32rem 0.7rem;
   }
 
   .site-nav-left,
   .site-nav-right {
-    gap: 0.3rem;
-    justify-content: center;
+    display: none;
   }
 
-  .site-nav-left a,
-  .site-nav-right a,
-  .site-nav-left .lang-switch,
-  .site-nav-right .lang-switch {
-    font-size: 0.8rem;
-    padding: 0.34rem 0.62rem;
+  .brand {
+    order: 2;
+    margin: 0;
   }
 
   .brand-logo {
     width: min(160px, 46vw);
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    order: 1;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    background: rgba(255, 255, 255, 0.02);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-2);
+  }
+
+  .site-nav-mobile {
+    position: absolute;
+    left: 0.7rem;
+    right: 0.7rem;
+    top: calc(100% + 0.3rem);
+    display: none;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.7rem 0.8rem;
+    background: rgba(7, 9, 11, 0.98);
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    border-radius: 14px;
+    box-shadow: 0 18px 26px rgba(0, 0, 0, 0.25);
+  }
+
+  .site-nav-mobile.open {
+    display: flex;
+  }
+
+  .site-nav-mobile a,
+  .site-nav-mobile .lang-switch {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
   }
 }
 
