@@ -2,50 +2,76 @@
 {% block title %}{{ t('contact.page_title') }} | {{ brand_name }}{% endblock %}
 {% block meta_description %}{{ t('contact.meta_description') }}{% endblock %}
 {% block content %}
+{% set is_de = lang == 'de' %}
+
 <section class="page-block">
-  <h1>{{ t('contact.h1') }}</h1>
-  <p>{{ t('contact.p1') }}</p>
-  <p>{{ t('contact.email') }}: info@angelswert.de</p>
-  <p>{{ t('contact.phone') }}: +49 (0) 173 294 21 23</p>
-  <p>{{ t('contact.address') }}: Waldstrasse 1, 63128 Dietzenbach</p>
-  <p>{{ t('contact.response') }}: {{ t('contact.response_value') }}</p>
+  <p class="eyebrow">{{ 'Contact' if not is_de else 'Kontakt' }}</p>
+  <h1>{{ 'Start a qualification session or send your project request.' if not is_de else 'Starten Sie ein Qualifikationsgespräch oder senden Sie Ihre Projektanfrage.' }}</h1>
+  <p>
+    {% if is_de %}
+    Wir besprechen Ziel, Zielgruppe, Kanäle, Umfang und die passende Paket- oder Pilot-Route. Eine kurze Anfrage reicht oft schon, um die nächste passende Stufe zu bestimmen.
+    {% else %}
+    We can discuss the goal, audience, channels, scope and the best package or pilot route. A short inquiry is often enough to determine the right next step.
+    {% endif %}
+  </p>
+  <div class="cards-grid">
+    <article class="card">
+      <h3>{{ 'Email' if not is_de else 'E-Mail' }}</h3>
+      <p>info@angelswert.de</p>
+    </article>
+    <article class="card">
+      <h3>{{ 'Phone' if not is_de else 'Telefon' }}</h3>
+      <p>+49 (0) 173 294 21 23</p>
+    </article>
+    <article class="card">
+      <h3>{{ 'Response time' if not is_de else 'Antwortzeit' }}</h3>
+      <p>{{ 'Usually within 24–48 hours' if not is_de else 'In der Regel innerhalb von 24–48 Stunden' }}</p>
+    </article>
+  </div>
 </section>
 
 <section class="page-block">
-  <h2>{{ t('contact.form_title') }}</h2>
+  <h2>{{ 'Project request' if not is_de else 'Projektanfrage' }}</h2>
   <form class="contact-form" method="post" action="{{ url_for('public.contact_submit', lang=lang) }}">
     <label>{{ t('contact.form_name') }}</label>
     <input type="text" name="name" required>
+
     <label>{{ t('contact.form_company') }}</label>
     <input type="text" name="company">
+
     <label>{{ t('contact.form_email') }}</label>
     <input type="email" name="email" required>
+
     <label>{{ t('contact.form_phone') }}</label>
     <input type="text" name="phone">
-    <label>{{ t('contact.form_interest') }}</label>
+
+    <label>{{ 'Primary need' if not is_de else 'Primäres Interesse' }}</label>
     <select name="service_interest">
-      <option value="">{{ t('contact.form_interest_placeholder') }}</option>
-      <option value="{{ t('contact.form_interest_video') }}">{{ t('contact.form_interest_video') }}</option>
-      <option value="{{ t('contact.form_interest_content') }}">{{ t('contact.form_interest_content') }}</option>
-      <option value="{{ t('contact.form_interest_ai') }}">{{ t('contact.form_interest_ai') }}</option>
-      <option value="{{ t('contact.form_interest_marketing') }}">{{ t('contact.form_interest_marketing') }}</option>
-      <option value="{{ t('contact.form_interest_consulting') }}">{{ t('contact.form_interest_consulting') }}</option>
+      <option value="">{{ 'Please choose' if not is_de else 'Bitte wählen' }}</option>
+      <option value="{{ 'Video production' if not is_de else 'Videoproduktion' }}">{{ 'Video production' if not is_de else 'Videoproduktion' }}</option>
+      <option value="{{ 'Content & YouTube systems' if not is_de else 'Content- und YouTube-Systeme' }}">{{ 'Content & YouTube systems' if not is_de else 'Content- und YouTube-Systeme' }}</option>
+      <option value="{{ 'Automation & AI' if not is_de else 'Automatisierung & KI' }}">{{ 'Automation & AI' if not is_de else 'Automatisierung & KI' }}</option>
+      <option value="{{ 'Growth layer' if not is_de else 'Growth Layer' }}">{{ 'Growth layer' if not is_de else 'Growth Layer' }}</option>
+      <option value="{{ 'Strategy consult' if not is_de else 'Strategieberatung' }}">{{ 'Strategy consult' if not is_de else 'Strategieberatung' }}</option>
     </select>
-    <label>{{ t('contact.form_language') }}</label>
+
+    <label>{{ 'Project timeline' if not is_de else 'Projektzeitraum' }}</label>
+    <input type="text" name="timeline" placeholder="{{ 'For example: immediately / in 30 days / this quarter' if not is_de else 'z. B. sofort / in 30 Tagen / dieses Quartal' }}">
+
+    <label>{{ 'Preferred language' if not is_de else 'Bevorzugte Sprache' }}</label>
     <select name="preferred_language">
       <option value="de">{{ t('contact.form_language_de') }}</option>
       <option value="en">{{ t('contact.form_language_en') }}</option>
     </select>
-    <label>{{ t('contact.form_timeline') }}</label>
-    <input type="text" name="timeline" placeholder="{{ t('contact.form_timeline_placeholder') }}">
+
     <label>{{ t('contact.form_message') }}</label>
-    <textarea name="message" rows="7" placeholder="{{ t('contact.form_placeholder') }}" required></textarea>
+    <textarea name="message" rows="7" placeholder="{{ 'Tell us about your objective, channels, available budget and the decision timeline.' if not is_de else 'Beschreiben Sie Ihr Ziel, Ihre Kanäle, Ihr Budget und den Entscheidungszeitpunkt.' }}" required></textarea>
 
     <label class="contact-consent">
       <input type="checkbox" name="privacy_consent" value="1" required>
       <span>
         {% if lang == 'de' %}
-        Ich habe die <a href="{{ url_for('public.privacy', lang=lang) }}" target="_blank" rel="noopener">Datenschutzerklarung</a>,
+        Ich habe die <a href="{{ url_for('public.privacy', lang=lang) }}" target="_blank" rel="noopener">Datenschutzerklärung</a>,
         die <a href="{{ url_for('public.terms', lang=lang) }}" target="_blank" rel="noopener">AGB</a> und die
         <a href="{{ url_for('public.withdrawal', lang=lang) }}" target="_blank" rel="noopener">Widerrufsbelehrung</a> gelesen und akzeptiere die Verarbeitung meiner Daten zur Anfragebearbeitung.
         {% else %}
@@ -56,7 +82,7 @@
       </span>
     </label>
 
-    <button class="btn" type="submit">{{ t('contact.form_submit') }}</button>
+    <button class="btn" type="submit">{{ 'Send request' if not is_de else 'Anfrage senden' }}</button>
   </form>
 </section>
 {% endblock %}

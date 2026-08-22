@@ -2,17 +2,23 @@
 {% block title %}{{ t('services.page_title') }} | {{ brand_name }}{% endblock %}
 {% block meta_description %}{{ t('services.meta_description') }}{% endblock %}
 {% block content %}
-{% set copy = services_copy %}
+{% set is_de = lang == 'de' %}
 
 <section class="hero services-hero">
   <div class="split split--media">
     <div>
-      <p class="eyebrow">{{ copy.hero.eyebrow }}</p>
-      <h1>{{ copy.hero.title }}</h1>
-      <p class="section-lead">{{ copy.hero.lead }}</p>
+      <p class="eyebrow">{{ 'Services & systems' if not is_de else 'Leistungen & Systeme' }}</p>
+      <h1>{{ 'Structured content, media production and AI workflows for companies that want a repeatable growth system.' if not is_de else 'Strukturierte Content-, Medien- und KI-Workflows für Unternehmen mit Wachstumssystem.' }}</h1>
+      <p class="section-lead">
+        {% if is_de %}
+        Wir unterstützen Unternehmen bei der Erstellung von Videoinhalten, Content-Systemen, digitalen Avataren und Automations, damit Mehrwert, Sichtbarkeit und Prozesse zusammenwachsen.
+        {% else %}
+        We help companies create video content, content systems, digital avatars and automation so visibility, value and operational clarity grow together.
+        {% endif %}
+      </p>
       <div class="cta-row">
-        <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="hero_primary">{{ copy.hero.cta_primary }}</a>
-        <a class="btn btn-ghost" href="#packages" data-track-event="package_cta_click" data-track-label="hero_packages">{{ copy.hero.cta_secondary }}</a>
+        <a class="btn" href="{{ discovery_href }}">{{ 'Book AI Discovery' if not is_de else 'AI Discovery buchen' }}</a>
+        <a class="btn btn-ghost" href="#packages">{{ 'Compare packages' if not is_de else 'Pakete vergleichen' }}</a>
       </div>
     </div>
     <figure class="media-frame media-frame--hero media-frame--contain services-hero-media">
@@ -22,15 +28,28 @@
 </section>
 
 <section class="page-block">
-  <h2>{{ copy.five_core.title }}</h2>
-  {% set five_labels = ['videoproduction', 'digital_humans', 'content_youtube', 'ai_automation', 'strategy_implementation'] %}
+  <h2>{{ 'The core service blocks' if not is_de else 'Die Kernleistungen' }}</h2>
   <div class="services-five-grid">
-    {% for card in copy.five_core.cards %}
-    <details class="card service-card" data-track-event="service_card_click" data-track-label="{{ five_labels[loop.index0] }}">
-      <summary>{{ card.summary }}</summary>
-      <p>{{ card.body }}</p>
+    <details class="card service-card" open>
+      <summary>{{ 'Video production' if not is_de else 'Videoproduktion' }}</summary>
+      <p>{{ 'Concept, shooting, edit, localization and content formats designed for reach, trust and conversion.' if not is_de else 'Konzept, Produktion, Schnitt, Lokalisierung und Formate für Reichweite, Vertrauen und Conversion.' }}</p>
     </details>
-    {% endfor %}
+    <details class="card service-card" open>
+      <summary>{{ 'Content systems' if not is_de else 'Content-Systeme' }}</summary>
+      <p>{{ 'Editorial planning, recurring production, publishing structures and channel consistency for brand growth.' if not is_de else 'Redaktionsplanung, wiederkehrende Produktion, Publishing-Strukturen und Kanal-Konsistenz für Markenwachstum.' }}</p>
+    </details>
+    <details class="card service-card" open>
+      <summary>{{ 'Digital humans & avatars' if not is_de else 'Digitale Menschen & Avatare' }}</summary>
+      <p>{{ 'Approved digital personalities for explainers, multilingual repetition and scalable communication.' if not is_de else 'Freigegebene digitale Persönlichkeiten für Erklärvideos, mehrsprachige Wiederholungen und skalierbare Kommunikation.' }}</p>
+    </details>
+    <details class="card service-card" open>
+      <summary>{{ 'Automation & AI agents' if not is_de else 'Automatisierung & KI-Agenten' }}</summary>
+      <p>{{ 'Research, drafting, scheduling, routing and performance optimization based on real operational needs.' if not is_de else 'Recherche, Entwurf, Scheduling, Routing und Performance-Optimierung anhand realer Betriebsbedarfe.' }}</p>
+    </details>
+    <details class="card service-card" open>
+      <summary>{{ 'Strategy & governance' if not is_de else 'Strategie & Governance' }}</summary>
+      <p>{{ 'Decision-making frameworks, review flow, approvals and operational clarity for a sustainable system.' if not is_de else 'Entscheidungsrahmen, Review-Fluss, Freigaben und operative Klarheit für ein nachhaltiges System.' }}</p>
+    </details>
   </div>
 </section>
 
@@ -39,126 +58,79 @@
     <img src="{{ digital_human_media_url }}" alt="Digital Human visual" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">{{ copy.digital_humans.eyebrow }}</p>
-    <h2>{{ copy.digital_humans.title }}</h2>
-    <p>{{ copy.digital_humans.body }}</p>
+    <p class="eyebrow">{{ 'Digital formats' if not is_de else 'Digitale Formate' }}</p>
+    <h2>{{ 'Digital humans increase the efficiency of recurring communication.' if not is_de else 'Digitale Menschen erhöhen die Effizienz wiederkehrender Kommunikation.' }}</h2>
+    <p>{{ 'This is helpful for product explainers, training, onboarding, localization, multilingual presentation and continuous publishing without repeating the same manual work.' if not is_de else 'Das ist besonders nützlich für Produkteklärungen, Trainings, Onboarding, Lokalisierung, mehrsprachige Präsentationen und kontinuierliches Publishing ohne dieselben manuellen Aufgaben wiederholt zu machen.' }}</p>
     <ul class="feature-list">
-      {% for item in copy.digital_humans.features %}
-      <li>{{ item }}</li>
-      {% endfor %}
+      <li>{{ 'Voice and visual consistency' if not is_de else 'Stimm- und visuelle Konsistenz' }}</li>
+      <li>{{ 'Multilingual use with controlled approval' if not is_de else 'Mehrsprachige Nutzung mit kontrollierter Freigabe' }}</li>
+      <li>{{ 'Reusable communication assets' if not is_de else 'Wiederverwendbare Kommunikations-Assets' }}</li>
     </ul>
-    <p class="meta">{{ copy.digital_humans.meta }}</p>
     <div class="cta-row">
-      <a class="btn" href="{{ discovery_href }}" data-track-event="digital_human_cta_click" data-track-label="digital_human_project">{{ copy.digital_humans.cta_primary }}</a>
-      <a class="btn btn-ghost" href="#story-showcase" data-track-event="digital_human_cta_click" data-track-label="to_story">{{ copy.digital_humans.cta_secondary }}</a>
+      <a class="btn" href="{{ discovery_href }}">{{ 'Plan a pilot' if not is_de else 'Pilot planen' }}</a>
+      <a class="btn btn-ghost" href="#packages">{{ 'See packages' if not is_de else 'Pakete ansehen' }}</a>
     </div>
   </div>
 </section>
 
-<section id="story-showcase" class="cards-section story-section">
-  <p class="eyebrow">{{ copy.story.eyebrow }}</p>
-  <h2>{{ copy.story.title }}</h2>
-  <p class="section-lead">{{ copy.story.lead }}</p>
-
-  <div class="story-poster media-frame media-frame--contain">
-    <img src="{{ story_poster_url }}" alt="Stronger Than Yesterday poster" loading="lazy">
-  </div>
-
-  {% set story_videos = [story_video_01_url, story_video_02_url, story_video_03_url] %}
-  {% set story_labels = ['episode_01', 'episode_02', 'episode_03'] %}
-  <div class="cards-grid">
-    {% for episode in copy.story.episodes %}
-    <article class="card story-card">
-      <p class="eyebrow">{{ episode.eyebrow }}</p>
-      <h3>{{ episode.title }}</h3>
-      <p>{{ episode.status }}</p>
-      <button class="btn open-story-video" data-video-src="{{ story_videos[loop.index0] }}" data-story-label="{{ story_labels[loop.index0] }}">{{ episode.button }}</button>
-    </article>
-    {% endfor %}
-  </div>
-
-  <div class="cta-row">
-    <button class="btn open-story-video" data-video-src="{{ story_video_01_url }}" data-story-label="episode_01" data-track-event="story_cta_click" data-track-label="watch_story">{{ copy.story.cta_watch }}</button>
-    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="story_cta_click" data-track-label="influencer_production">{{ copy.story.cta_explore }}</a>
-    <a class="btn btn-ghost" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="story_block">{{ copy.story.cta_discovery }}</a>
-  </div>
-
-  <p class="meta">{{ copy.story.meta }}</p>
-</section>
-
-<section class="cards-section">
-  <p class="eyebrow">{{ copy.youtube.eyebrow }}</p>
-  <h2>{{ copy.youtube.title }}</h2>
-  <p class="section-lead">{{ copy.youtube.lead }}</p>
-  <div class="video-grid">
-    {% for video in featured_channels %}
-    <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener" data-track-event="youtube_channel_click" data-track-label="channel_{{ video.slot }}">
-      <div class="video-card-media">
-        {% if video.thumbnail_candidates %}
-        <img
-          src="{{ video.thumbnail_candidates[0] }}"
-          alt="{{ video.title }}"
-          loading="lazy"
-          data-thumb-candidates="{{ video.thumbnail_candidates|join(',') }}"
-          data-fallback-src="{{ story_poster_url }}"
-        >
-        {% else %}
-        <img src="{{ story_poster_url }}" alt="{{ video.title }}" loading="lazy">
-        {% endif %}
-      </div>
-      <div class="video-card-body">
-        <h3>{{ video.title }}</h3>
-        <p>{{ copy.youtube.visit_label }}</p>
-      </div>
-    </a>
-    {% endfor %}
-  </div>
-</section>
-
 <section id="packages" class="cards-section">
-  <p class="eyebrow">{{ copy.packages.eyebrow }}</p>
-  <h2>{{ copy.packages.title }}</h2>
-  {% set package_labels = ['starter', 'growth', 'pro'] %}
-  {% set package_classes = ['card package-card', 'card package-card', 'card package-card package-card--pro'] %}
+  <p class="eyebrow">{{ 'Package logic' if not is_de else 'Paketlogik' }}</p>
+  <h2>{{ 'Choose the structure that matches the current maturity of your business.' if not is_de else 'Wählen Sie die Struktur, die zum aktuellen Reifegrad Ihres Business passt.' }}</h2>
   <div class="packages-grid">
-    {% for item in copy.packages['items'] %}
-    <article class="{{ package_classes[loop.index0] }}">
-      <h3>{{ item.name }}</h3>
-      <p class="package-price">{{ item.price }}</p>
+    <article class="card package-card">
+      <h3>Starter</h3>
+      <p class="package-price">{{ 'Content foundation' if not is_de else 'Content-Basis' }}</p>
       <ul class="feature-list">
-        {% for feature in item.features %}
-        <li>{{ feature }}</li>
-        {% endfor %}
+        <li>{{ '10 videos/month' if not is_de else '10 Videos/Monat' }}</li>
+        <li>{{ '1 primary channel' if not is_de else '1 Hauptkanal' }}</li>
+        <li>{{ 'Manual publishing' if not is_de else 'Manuelles Publishing' }}</li>
+        <li>{{ 'No automation' if not is_de else 'Keine Automatisierung' }}</li>
       </ul>
-      <a class="btn" href="{{ discovery_href }}" data-track-event="package_cta_click" data-track-label="{{ package_labels[loop.index0] }}">{{ item.cta }}</a>
+      <a class="btn" href="{{ discovery_href }}">{{ 'Book Starter' if not is_de else 'Starter buchen' }}</a>
     </article>
-    {% endfor %}
+    <article class="card package-card">
+      <h3>Growth</h3>
+      <p class="package-price">{{ 'Recurring publishing' if not is_de else 'Wiederkehrendes Publishing' }}</p>
+      <ul class="feature-list">
+        <li>{{ '20 videos/month' if not is_de else '20 Videos/Monat' }}</li>
+        <li>{{ 'Multiple channels' if not is_de else 'Mehrere Kanäle' }}</li>
+        <li>{{ 'Up to 2 languages' if not is_de else 'Bis zu 2 Sprachen' }}</li>
+        <li>{{ 'Structured approval flow' if not is_de else 'Strukturierter Freigabeprozess' }}</li>
+      </ul>
+      <a class="btn" href="{{ discovery_href }}">{{ 'Book Growth' if not is_de else 'Growth buchen' }}</a>
+    </article>
+    <article class="card package-card package-card--pro">
+      <h3>Pro</h3>
+      <p class="package-price">{{ 'Controlled system' if not is_de else 'Kontrolliertes System' }}</p>
+      <ul class="feature-list">
+        <li>{{ 'Custom volume' if not is_de else 'Individuelle Kapazität' }}</li>
+        <li>{{ 'Automation + AI agents' if not is_de else 'Automatisierung + KI-Agenten' }}</li>
+        <li>{{ 'Roles, logs, approval gates' if not is_de else 'Rollen, Logs, Freigaben' }}</li>
+        <li>{{ 'Multi-channel integration' if not is_de else 'Mehrkanal-Integration' }}</li>
+      </ul>
+      <a class="btn" href="{{ discovery_href }}">{{ 'Book Pro' if not is_de else 'Pro buchen' }}</a>
+    </article>
   </div>
-  <p class="meta">{{ copy.packages.meta }}</p>
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">{{ copy.optional_growth.eyebrow }}</p>
-  <h2>{{ copy.optional_growth.title }}</h2>
+  <p class="eyebrow">{{ 'Growth layer' if not is_de else 'Growth Layer' }}</p>
+  <h2>{{ 'Traffic, landing pages, CRM and conversion optimisation are planned as a dedicated add-on.' if not is_de else 'Traffic, Landingpages, CRM und Conversion-Optimierung werden als separater Add-on-Bereich geplant.' }}</h2>
   <div class="cards-grid">
-    {% for card in copy.optional_growth.cards %}
-    <article class="card">
-      <h3>{{ card.title }}</h3>
-      <p>{{ card.body }}</p>
-    </article>
-    {% endfor %}
+    <article class="card"><h3>{{ 'Reach optimisation' if not is_de else 'Reichweitenoptimierung' }}</h3><p>{{ 'Audience growth, paid traffic and content amplification.' if not is_de else 'Zielgruppenwachstum, bezahlter Traffic und Content-Verstärkung.' }}</p></article>
+    <article class="card"><h3>{{ 'Lead generation' if not is_de else 'Lead-Generierung' }}</h3><p>{{ 'Landing pages, CTAs and lead routing to the sales process.' if not is_de else 'Landingpages, CTA und Lead-Routing in den Sales-Prozess.' }}</p></article>
+    <article class="card"><h3>{{ 'CRM & tracking' if not is_de else 'CRM & Tracking' }}</h3><p>{{ 'UTM, conversion events and operational reporting for better decisions.' if not is_de else 'UTM, Conversion-Events und Reporting für bessere Entscheidungen.' }}</p></article>
   </div>
-  <p class="meta">{{ copy.optional_growth.meta }}</p>
 </section>
 
 <section class="page-block">
-  <h2>{{ copy.workflow.title }}</h2>
+  <h2>{{ 'How collaboration works' if not is_de else 'So läuft die Zusammenarbeit' }}</h2>
   <ol class="work-timeline">
-    {% for step in copy.workflow.steps %}
-    <li><strong>{{ step.label }}:</strong> {{ step.body }}</li>
-    {% endfor %}
+    <li><strong>{{ '01' if not is_de else '01' }}:</strong> {{ 'We clarify goals, KPIs and business context.' if not is_de else 'Ziele, KPI und Business-Kontext klären.' }}</li>
+    <li><strong>{{ '02' if not is_de else '02' }}:</strong> {{ 'We define channels, format hierarchy and approval flow.' if not is_de else 'Kanäle, Format-Hierarchie und Freigabeprozess definieren.' }}</li>
+    <li><strong>{{ '03' if not is_de else '03' }}:</strong> {{ 'We produce the first content cycle and publishing system.' if not is_de else 'Ersten Content-Zyklus und Publishing-System produzieren.' }}</li>
+    <li><strong>{{ '04' if not is_de else '04' }}:</strong> {{ 'We review performance and decide whether to stay manual or scale automation.' if not is_de else 'Performance prüfen und entscheiden, ob manuell oder automatisiert skaliert wird.' }}</li>
   </ol>
-  <p class="meta">{{ copy.workflow.meta }}</p>
 </section>
 
 <section class="page-block split split--media">
@@ -166,99 +138,13 @@
     <img src="{{ strategy_photo_url }}" alt="Strategy session portrait" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">{{ copy.strategy.eyebrow }}</p>
-    <h2>{{ copy.strategy.title }}</h2>
-    <p>{{ copy.strategy.body }}</p>
-    <p class="package-price">{{ copy.strategy.price }}</p>
-    <ul class="feature-list">
-      {% for feature in copy.strategy.features %}
-      <li>{{ feature }}</li>
-      {% endfor %}
-    </ul>
-    <a class="btn" href="{{ discovery_href }}" data-track-event="ai_discovery_click" data-track-label="strategy_session">{{ copy.strategy.cta }}</a>
-    <p class="meta">{{ copy.strategy.meta }}</p>
+    <p class="eyebrow">{{ 'Strategy session' if not is_de else 'Strategie-Session' }}</p>
+    <h2>{{ 'Start with a short discovery session and get a clear recommendation.' if not is_de else 'Starten Sie mit einer kurzen Discovery-Session und erhalten klaren Rat.' }}</h2>
+    <p>{{ 'The goal is to decide whether the right step is a pilot, a package or a custom system before production begins.' if not is_de else 'Das Ziel ist, zu entscheiden, ob der richtige nächste Schritt ein Pilot, ein Paket oder ein individuelles System vor der Produktion ist.' }}</p>
+    <a class="btn" href="{{ discovery_href }}">{{ 'Book AI Discovery' if not is_de else 'AI Discovery buchen' }}</a>
   </div>
 </section>
-
-<div id="storyModal" class="story-modal hidden" aria-hidden="true">
-  <div class="story-modal-backdrop" data-close-modal="1"></div>
-  <div class="story-modal-card" role="dialog" aria-modal="true" aria-label="Story video modal">
-    <button class="story-modal-close" type="button" data-close-modal="1">x</button>
-    <video id="storyVideoPlayer" controls preload="metadata" playsinline>
-      <source id="storyVideoSource" src="" type="video/mp4">
-    </video>
-  </div>
-</div>
-
-<script>
-  (function () {
-    const lang = '{{ lang }}';
-    const page = 'services';
-    const hasAnalyticsConsent = function() {
-      if (window.ASConsent && typeof window.ASConsent.canTrackAnalytics === 'function') {
-        return window.ASConsent.canTrackAnalytics();
-      }
-      return document.cookie.indexOf('as_cookie_consent=all') !== -1;
-    };
-
-    const track = function(eventName, label, meta) {
-      if (!hasAnalyticsConsent()) {
-        return;
-      }
-      const payload = {
-        event: eventName,
-        label: label || '',
-        page,
-        lang,
-        meta: meta || {}
-      };
-      fetch('/api/track', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Consent-Analytics': 'true'
-        },
-        body: JSON.stringify(payload),
-        keepalive: true
-      }).catch(function () {});
-    };
-
-    document.querySelectorAll('[data-track-event]').forEach(function(el) {
-      el.addEventListener('click', function() {
-        track(el.dataset.trackEvent, el.dataset.trackLabel || '', {});
-      });
-    });
-
-    const thumbs = document.querySelectorAll('.video-card-media img[data-thumb-candidates]');
-    thumbs.forEach(function(img) {
-      const candidates = (img.dataset.thumbCandidates || '')
-        .split(',')
-        .map(function(item) { return item.trim(); })
-        .filter(Boolean);
-      let index = 0;
-      if (candidates.length) {
-        img.src = candidates[index];
-      }
-      img.addEventListener('error', function() {
-        index += 1;
-        if (index < candidates.length) {
-          img.src = candidates[index];
-          return;
-        }
-        img.src = img.dataset.fallbackSrc || img.src;
-      });
-    });
-
-    document.querySelectorAll('.service-card').forEach(function(card) {
-      card.addEventListener('toggle', function() {
-        if (card.open) {
-          track(card.dataset.trackEvent || 'service_card_click', card.dataset.trackLabel || '', { state: 'open' });
-        }
-      });
-    });
-
-    const modal = document.getElementById('storyModal');
-    const player = document.getElementById('storyVideoPlayer');
+{% endblock %}    const player = document.getElementById('storyVideoPlayer');
     const source = document.getElementById('storyVideoSource');
     let currentStory = '';
     const sentMilestones = {};
