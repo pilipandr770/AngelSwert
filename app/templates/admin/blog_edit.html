@@ -3,15 +3,46 @@
 {% block content %}
 <h1>Редагування статті</h1>
 
-<form method="post" action="{{ url_for('admin.blog_edit_save', post_id=post.id) }}" class="admin-form">
+<form method="post" action="{{ url_for('admin.blog_edit_save', post_id=post.id) }}" class="admin-form" enctype="multipart/form-data">
   <label>Заголовок</label>
   <input name="title" value="{{ post.title }}" required>
+
+  <label>Підзаголовок</label>
+  <input name="subtitle" value="{{ post.subtitle or '' }}">
 
   <label>Slug</label>
   <input name="slug" value="{{ post.slug }}" required>
 
   <label>Короткий опис</label>
   <textarea name="excerpt" rows="4">{{ post.excerpt }}</textarea>
+
+  <label>Обкладинка (Cover Image)</label>
+  {% if post.cover_image %}
+  <p><img src="{{ post.cover_image if post.cover_image.startswith('http') else url_for('static', filename=post.cover_image) }}" alt="" style="width:120px;height:120px;object-fit:cover;border-radius:8px;"></p>
+  {% endif %}
+  <input type="file" name="cover_image_file" accept="image/*">
+
+  <label>Відео або YouTube URL</label>
+  <input name="video_url" value="{{ post.video_url or '' }}">
+
+  <label>Категорія</label>
+  <select name="category">
+    {% for choice in blog_categories %}
+    <option value="{{ choice }}" {% if post.category == choice %}selected{% endif %}>{{ choice }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Мова</label>
+  <select name="language">
+    <option value="de" {% if post.language == 'de' %}selected{% endif %}>Deutsch (DE)</option>
+    <option value="en" {% if post.language == 'en' %}selected{% endif %}>English (EN)</option>
+  </select>
+
+  <label>SEO Title</label>
+  <input name="seo_title" value="{{ post.seo_title or '' }}">
+
+  <label>Meta Description</label>
+  <textarea name="meta_description" rows="2">{{ post.meta_description or '' }}</textarea>
 
   <label>SEO keywords</label>
   <input name="seo_keywords" value="{{ post.seo_keywords or '' }}">

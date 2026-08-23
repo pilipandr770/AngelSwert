@@ -4,14 +4,35 @@
 <h1>Блог та SEO</h1>
 
 <section class="admin-grid">
-  <form method="post" action="{{ url_for('admin.blog_create_manual') }}" class="admin-form">
+  <form method="post" action="{{ url_for('admin.blog_create_manual') }}" class="admin-form" enctype="multipart/form-data">
     <h2>Створити статтю вручну</h2>
     <label>Заголовок</label>
     <input name="title" required>
+    <label>Підзаголовок</label>
+    <input name="subtitle">
     <label>Короткий опис</label>
     <textarea name="excerpt"></textarea>
     <label>Контент (Markdown)</label>
     <textarea name="content" rows="8" required></textarea>
+    <label>Обкладинка (Cover Image)</label>
+    <input type="file" name="cover_image_file" accept="image/*">
+    <label>Відео або YouTube URL</label>
+    <input name="video_url">
+    <label>Категорія</label>
+    <select name="category">
+      {% for choice in blog_categories %}
+      <option value="{{ choice }}">{{ choice }}</option>
+      {% endfor %}
+    </select>
+    <label>Мова</label>
+    <select name="language">
+      <option value="de">Deutsch (DE)</option>
+      <option value="en">English (EN)</option>
+    </select>
+    <label>SEO Title</label>
+    <input name="seo_title">
+    <label>Meta Description</label>
+    <textarea name="meta_description" rows="2"></textarea>
     <label>Статус</label>
     <select name="status"><option value="draft">чернетка</option><option value="published">опубліковано</option></select>
     <button class="btn" type="submit">Зберегти</button>
@@ -91,10 +112,19 @@
 
 <h2>Усі статті</h2>
 <table class="table">
-  <tr><th>Заголовок</th><th>Статус</th><th>Дата</th><th>Slug</th><th>Дії</th></tr>
+  <tr><th>Обкладинка</th><th>Заголовок</th><th>Категорія</th><th>Мова</th><th>Статус</th><th>Дата</th><th>Slug</th><th>Дії</th></tr>
   {% for post in posts %}
   <tr>
+    <td>
+      {% if post.cover_image %}
+      <img src="{{ post.cover_image if post.cover_image.startswith('http') else url_for('static', filename=post.cover_image) }}" alt="" style="width:56px;height:56px;object-fit:cover;border-radius:8px;">
+      {% else %}
+      —
+      {% endif %}
+    </td>
     <td>{{ post.title }}</td>
+    <td>{{ post.category }}</td>
+    <td>{{ post.language }}</td>
     <td>{{ post.status }}</td>
     <td>{{ post.created_at.strftime('%d.%m.%Y') }}</td>
     <td>{{ post.slug }}</td>

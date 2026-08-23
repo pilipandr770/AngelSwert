@@ -132,6 +132,34 @@ def _ensure_lead_profile_columns() -> None:
         db.session.commit()
 
 
+def _ensure_blog_post_columns() -> None:
+    required_columns = {
+        "subtitle": "VARCHAR(500) NOT NULL DEFAULT ''",
+        "cover_image": "VARCHAR(1024) NOT NULL DEFAULT ''",
+        "category": "VARCHAR(100) NOT NULL DEFAULT 'ASAI Updates'",
+        "language": "VARCHAR(10) NOT NULL DEFAULT 'de'",
+        "video_url": "VARCHAR(1024) NOT NULL DEFAULT ''",
+        "seo_title": "VARCHAR(255) NOT NULL DEFAULT ''",
+        "meta_description": "VARCHAR(500) NOT NULL DEFAULT ''",
+    }
+
+    inspector = inspect(db.engine)
+    try:
+        existing = {col["name"] for col in inspector.get_columns("blog_post")}
+    except Exception:
+        return
+
+    changed = False
+    for column, ddl in required_columns.items():
+        if column in existing:
+            continue
+        db.session.execute(text(f"ALTER TABLE blog_post ADD COLUMN {column} {ddl}"))
+        changed = True
+
+    if changed:
+        db.session.commit()
+
+
 def _seed_defaults(app: Flask) -> None:
     admin_email = app.config["ADMIN_EMAIL"]
     admin_password = app.config["ADMIN_PASSWORD"]
@@ -340,6 +368,7 @@ def create_app() -> Flask:
         _ensure_assistant_settings_columns()
         _ensure_lead_profile_columns()
         _ensure_service_settings_columns()
+        _ensure_blog_post_columns()
         _seed_defaults(app)
 
     init_scheduler(app)

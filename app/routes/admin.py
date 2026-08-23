@@ -18,6 +18,7 @@ from ..models import (
     AiUsageLog,
     AnalyticsEvent,
     AssistantInstructionSettings,
+    BLOG_CATEGORY_CHOICES,
     BlogAutomationSettings,
     BlogPost,
     BlogTopic,
@@ -614,6 +615,7 @@ def blog_admin_list():
         topics=topics,
         blog_settings=settings,
         blog_policy_text=BLOG_AI_ACT_POLICY,
+        blog_categories=BLOG_CATEGORY_CHOICES,
     )
 
 
@@ -636,11 +638,21 @@ def blog_create_manual():
         idx += 1
         slug = f"{base_slug}-{idx}"
 
+    image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
+    cover_image = _save_uploaded_static_file(request.files.get("cover_image_file"), "uploads/blog", image_ext)
+
     post = BlogPost(
         title=title,
-        slug=slug,
+        subtitle=(request.form.get("subtitle") or "").strip(),
         excerpt=excerpt or content[:180],
         content=content,
+        slug=slug,
+        cover_image=cover_image,
+        category=(request.form.get("category") or "ASAI Updates").strip(),
+        language=(request.form.get("language") or "de").strip(),
+        video_url=(request.form.get("video_url") or "").strip(),
+        seo_title=(request.form.get("seo_title") or "").strip(),
+        meta_description=(request.form.get("meta_description") or "").strip(),
         status=status,
         published_at=datetime.utcnow() if status == "published" else None,
     )
@@ -654,7 +666,7 @@ def blog_create_manual():
 @login_required
 def blog_edit(post_id):
     post = BlogPost.query.get_or_404(post_id)
-    return render_template("admin/blog_edit.html", post=post)
+    return render_template("admin/blog_edit.html", post=post, blog_categories=BLOG_CATEGORY_CHOICES)
 
 
 @admin_bp.post("/blog/<int:post_id>/edit")
@@ -680,11 +692,22 @@ def blog_edit_save(post_id):
         idx += 1
         slug = f"{base_slug}-{idx}"
 
+    image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
+    cover_image = _save_uploaded_static_file(request.files.get("cover_image_file"), "uploads/blog", image_ext)
+
     post.title = title
+    post.subtitle = (request.form.get("subtitle") or "").strip()
     post.slug = slug
     post.excerpt = excerpt or content[:180]
     post.content = content
     post.seo_keywords = seo_keywords[:500]
+    post.category = (request.form.get("category") or post.category or "ASAI Updates").strip()
+    post.language = (request.form.get("language") or post.language or "de").strip()
+    post.video_url = (request.form.get("video_url") or "").strip()
+    post.seo_title = (request.form.get("seo_title") or "").strip()
+    post.meta_description = (request.form.get("meta_description") or "").strip()
+    if cover_image:
+        post.cover_image = cover_image
     post.status = status
 
     if status == "published":

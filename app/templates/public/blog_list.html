@@ -10,9 +10,12 @@
   <div class="cards-grid">
     {% for post in posts %}
     <article class="card">
+      {% if post.cover_image %}
+      <img class="blog-card-cover" src="{{ post.cover_image if post.cover_image.startswith('http') else url_for('static', filename=post.cover_image) }}" alt="{{ post.title }}" loading="lazy">
+      {% endif %}
+      <p class="meta">{{ post.category }} · {{ post.published_at.strftime('%d.%m.%Y') if post.published_at else post.created_at.strftime('%d.%m.%Y') }}</p>
       <h3><a href="{{ url_for('public.blog_post', slug=post.slug, lang=lang) }}">{{ post.title }}</a></h3>
       <p>{{ post.excerpt }}</p>
-      <p class="meta">{{ post.published_at.strftime('%d.%m.%Y') if post.published_at else post.created_at.strftime('%d.%m.%Y') }}</p>
     </article>
     {% endfor %}
   </div>

@@ -63,13 +63,23 @@ class AssistantInstructionSettings(db.Model):
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
+    subtitle = db.Column(db.String(500), default="", nullable=False)
     slug = db.Column(db.String(255), unique=True, nullable=False)
     excerpt = db.Column(db.Text, nullable=False)
     content = db.Column(db.Text, nullable=False)
+    cover_image = db.Column(db.String(1024), default="", nullable=False)
+    category = db.Column(db.String(100), default="ASAI Updates", nullable=False)
+    language = db.Column(db.String(10), default="de", nullable=False)
+    video_url = db.Column(db.String(1024), default="", nullable=False)
+    seo_title = db.Column(db.String(255), default="", nullable=False)
+    meta_description = db.Column(db.String(500), default="", nullable=False)
     seo_keywords = db.Column(db.String(500), default="")
     status = db.Column(db.String(50), default="draft", nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     published_at = db.Column(db.DateTime)
+
+
+BLOG_CATEGORY_CHOICES = ["AI & Digital Humans", "Projects", "Events", "ASAI Updates"]
 
 
 class BlogTopic(db.Model):

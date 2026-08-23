@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
-{% block title %}{{ post.title }} | {{ brand_name }}{% endblock %}
-{% block meta_description %}{{ post.excerpt }}{% endblock %}
+{% block title %}{{ post.seo_title or post.title }} | {{ brand_name }}{% endblock %}
+{% block meta_description %}{{ post.meta_description or post.excerpt }}{% endblock %}
 {% block content %}
 <article class="page-block">
+  {% if post.cover_image %}
+  <figure class="media-frame media-frame--hero media-frame--contain">
+    <img src="{{ post.cover_image if post.cover_image.startswith('http') else url_for('static', filename=post.cover_image) }}" alt="{{ post.title }}" loading="eager">
+  </figure>
+  {% endif %}
+  <p class="meta">{{ post.category }} · {{ post.published_at.strftime('%d.%m.%Y') if post.published_at else post.created_at.strftime('%d.%m.%Y') }}</p>
   <h1>{{ post.title }}</h1>
-  <p class="meta">{{ post.published_at.strftime('%d.%m.%Y') if post.published_at else post.created_at.strftime('%d.%m.%Y') }}</p>
+  {% if post.subtitle %}
+  <p class="section-lead">{{ post.subtitle }}</p>
+  {% endif %}
+  {% if post.video_url %}
+  <p><a class="btn btn-ghost" href="{{ post.video_url }}" target="_blank" rel="noopener">{{ 'Watch video' if lang != 'de' else 'Video ansehen' }}</a></p>
+  {% endif %}
   {% if post.seo_keywords %}
   <p class="meta">{{ t('blog.seo') }}: {{ post.seo_keywords }}</p>
   {% endif %}
