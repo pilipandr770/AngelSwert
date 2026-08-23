@@ -33,6 +33,18 @@ class YouTubeLink(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
+class TeamMember(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    role_de = db.Column(db.String(255), default="", nullable=False)
+    role_en = db.Column(db.String(255), default="", nullable=False)
+    photo = db.Column(db.String(1024), default="", nullable=False)
+    sort_order = db.Column(db.Integer, default=0, nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 class AssistantInstructionSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     custom_instructions = db.Column(db.Text, default="", nullable=False)

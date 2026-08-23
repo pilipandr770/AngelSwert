@@ -315,6 +315,14 @@ main,
   color: #f8e8be;
 }
 
+.team-card-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 0.7rem;
+}
+
 .btn,
 button {
   border: none;

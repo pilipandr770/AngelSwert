@@ -47,9 +47,15 @@
   <h2>{{ t('about.team_title') }}</h2>
   <p class="section-lead">{{ t('about.team_subtitle') }}</p>
   <div class="cards-grid">
-    <article class="card"><h3>{{ t('about.team_1_name') }}</h3><p>{{ t('about.team_1_role') }}</p></article>
-    <article class="card"><h3>{{ t('about.team_2_name') }}</h3><p>{{ t('about.team_2_role') }}</p></article>
-    <article class="card"><h3>{{ t('about.team_3_name') }}</h3><p>{{ t('about.team_3_role') }}</p></article>
+    {% for member in team_members %}
+    <article class="card team-card">
+      {% if member.photo %}
+      <img class="team-card-photo" src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy">
+      {% endif %}
+      <h3>{{ member.name }}</h3>
+      <p>{{ member.role }}</p>
+    </article>
+    {% endfor %}
   </div>
 </section>
 

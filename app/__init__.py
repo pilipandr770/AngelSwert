@@ -14,6 +14,7 @@ from .models import (
     InternalCalendarSettings,
     InternalCalendarSlot,
     ServicePageSettings,
+    TeamMember,
     User,
     YouTubeLink,
 )
@@ -149,6 +150,24 @@ def _seed_defaults(app: Flask) -> None:
     for slot, title, url in defaults:
         if not YouTubeLink.query.filter_by(slot=slot).first():
             db.session.add(YouTubeLink(slot=slot, title=title, url=url))
+
+    if not TeamMember.query.first():
+        team_defaults = [
+            ("Svitlana Lebedynska", "Founder · Creative Direction · Media Systems Strategy", "Founder · Creative Direction · Media Systems Strategy", "img/client-about.jpg"),
+            ("Andrey", "Technical Systems · Automation · Development", "Technical Systems · Automation · Development", ""),
+            ("Santosh", "Brand · Photo · Video Production", "Brand · Photo · Video Production", ""),
+        ]
+        for index, (name, role_en, role_de, photo) in enumerate(team_defaults):
+            db.session.add(
+                TeamMember(
+                    name=name,
+                    role_en=role_en,
+                    role_de=role_de,
+                    photo=photo,
+                    sort_order=index,
+                    is_active=True,
+                )
+            )
 
     if not AssistantInstructionSettings.query.first():
         db.session.add(

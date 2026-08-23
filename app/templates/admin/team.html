@@ -1,0 +1,72 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Команда{% endblock %}
+{% block content %}
+<h1>Команда (сторінка About)</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Фото</th>
+      <th>Ім'я / Ролі</th>
+      <th>Активний</th>
+      <th>Порядок</th>
+      <th>Дії</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for member in members %}
+    <tr>
+      <td>
+        {% if member.photo %}
+        <img src="{{ member.photo if member.photo.startswith('http') else url_for('static', filename=member.photo) }}" alt="{{ member.name }}" style="width:64px;height:64px;object-fit:cover;border-radius:10px;">
+        {% else %}
+        —
+        {% endif %}
+      </td>
+      <td>
+        <form method="post" action="{{ url_for('admin.team_edit', member_id=member.id) }}" enctype="multipart/form-data" class="admin-form">
+          <input name="name" value="{{ member.name }}" required>
+          <label>Роль (EN)</label>
+          <input name="role_en" value="{{ member.role_en }}">
+          <label>Роль (DE)</label>
+          <input name="role_de" value="{{ member.role_de }}">
+          <label>Замінити фото</label>
+          <input type="file" name="photo_file" accept="image/*">
+          <label><input type="checkbox" name="is_active" value="1" {{ 'checked' if member.is_active else '' }}> Показувати на сайті</label>
+          <button class="btn" type="submit">Зберегти</button>
+        </form>
+      </td>
+      <td>{{ 'так' if member.is_active else 'ні' }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin.team_move', member_id=member.id) }}">
+          <input type="hidden" name="direction" value="up">
+          <button type="submit">↑</button>
+        </form>
+        <form method="post" action="{{ url_for('admin.team_move', member_id=member.id) }}">
+          <input type="hidden" name="direction" value="down">
+          <button type="submit">↓</button>
+        </form>
+      </td>
+      <td>
+        <form method="post" action="{{ url_for('admin.team_delete', member_id=member.id) }}" onsubmit="return confirm('Видалити учасника?');">
+          <button type="submit">Видалити</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Додати учасника</h2>
+<form method="post" action="{{ url_for('admin.team_create') }}" enctype="multipart/form-data" class="admin-form">
+  <label>Ім'я</label>
+  <input name="name" required>
+  <label>Роль (EN)</label>
+  <input name="role_en" placeholder="Founder · Creative Direction · Media Systems Strategy">
+  <label>Роль (DE)</label>
+  <input name="role_de" placeholder="Founder · Creative Direction · Media Systems Strategy">
+  <label>Фото</label>
+  <input type="file" name="photo_file" accept="image/*">
+  <button class="btn" type="submit">Додати</button>
+</form>
+{% endblock %}

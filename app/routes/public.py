@@ -9,7 +9,7 @@ from werkzeug.routing import BuildError
 
 from ..extensions import db
 from ..i18n import translate
-from ..models import AssistantInstructionSettings, BlogPost, HomePageHeroSettings, Lead, LeadMessage, ServicePageSettings, YouTubeLink
+from ..models import AssistantInstructionSettings, BlogPost, HomePageHeroSettings, Lead, LeadMessage, ServicePageSettings, TeamMember, YouTubeLink
 from ..services.seo import absolute_url, normalize_site_url, render_ai_txt, render_geo_txt, render_humans_txt, render_llms_txt, render_robots_txt, sitemap_xml
 from ..services.home_hero import resolve_home_hero_content
 from ..services.services_content import localized_services_copy
@@ -210,7 +210,26 @@ def home():
 
 @public_bp.get("/about")
 def about():
-    return render_template("public/about.html")
+    lang = getattr(g, "lang", "de")
+    members = TeamMember.query.filter_by(is_active=True).order_by(TeamMember.sort_order.asc(), TeamMember.id.asc()).all()
+
+    def photo_url(value: str) -> str:
+        clean = (value or "").strip()
+        if not clean:
+            return ""
+        if clean.startswith("http://") or clean.startswith("https://"):
+            return clean
+        return url_for("static", filename=clean.lstrip("/"))
+
+    team_members = [
+        {
+            "name": member.name,
+            "role": member.role_de if lang == "de" else member.role_en,
+            "photo": photo_url(member.photo),
+        }
+        for member in members
+    ]
+    return render_template("public/about.html", team_members=team_members)
 
 
 @public_bp.get("/services")

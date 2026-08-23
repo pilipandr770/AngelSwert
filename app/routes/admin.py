@@ -30,6 +30,7 @@ from ..models import (
     Lead,
     LeadMessage,
     ServicePageSettings,
+    TeamMember,
     YouTubeLink,
 )
 from ..services.ai_service import (
@@ -298,6 +299,94 @@ def youtube_settings_save():
     db.session.commit()
     flash("YouTube-посилання оновлено.", "success")
     return redirect(url_for("admin.youtube_settings"))
+
+
+@admin_bp.get("/team")
+@login_required
+def team_list():
+    members = TeamMember.query.order_by(TeamMember.sort_order.asc(), TeamMember.id.asc()).all()
+    return render_template("admin/team.html", members=members)
+
+
+@admin_bp.post("/team/create")
+@login_required
+def team_create():
+    name = (request.form.get("name") or "").strip()
+    if not name:
+        flash("Потрібно вказати ім'я.", "error")
+        return redirect(url_for("admin.team_list"))
+
+    image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
+    photo = _save_uploaded_static_file(request.files.get("photo_file"), "uploads/team", image_ext)
+
+    max_order = db.session.query(db.func.max(TeamMember.sort_order)).scalar() or 0
+    member = TeamMember(
+        name=name,
+        role_en=(request.form.get("role_en") or "").strip(),
+        role_de=(request.form.get("role_de") or "").strip(),
+        photo=photo,
+        sort_order=max_order + 1,
+        is_active=True,
+    )
+    db.session.add(member)
+    db.session.commit()
+    flash("Учасника команди додано.", "success")
+    return redirect(url_for("admin.team_list"))
+
+
+@admin_bp.post("/team/<int:member_id>/edit")
+@login_required
+def team_edit(member_id):
+    member = TeamMember.query.get_or_404(member_id)
+
+    name = (request.form.get("name") or "").strip()
+    if not name:
+        flash("Потрібно вказати ім'я.", "error")
+        return redirect(url_for("admin.team_list"))
+
+    member.name = name
+    member.role_en = (request.form.get("role_en") or "").strip()
+    member.role_de = (request.form.get("role_de") or "").strip()
+    member.is_active = request.form.get("is_active") == "1"
+
+    image_ext = {".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"}
+    photo = _save_uploaded_static_file(request.files.get("photo_file"), "uploads/team", image_ext)
+    if photo:
+        member.photo = photo
+
+    db.session.commit()
+    flash("Учасника команди оновлено.", "success")
+    return redirect(url_for("admin.team_list"))
+
+
+@admin_bp.post("/team/<int:member_id>/delete")
+@login_required
+def team_delete(member_id):
+    member = TeamMember.query.get_or_404(member_id)
+    db.session.delete(member)
+    db.session.commit()
+    flash("Учасника команди видалено.", "success")
+    return redirect(url_for("admin.team_list"))
+
+
+@admin_bp.post("/team/<int:member_id>/move")
+@login_required
+def team_move(member_id):
+    direction = (request.form.get("direction") or "").strip()
+    members = TeamMember.query.order_by(TeamMember.sort_order.asc(), TeamMember.id.asc()).all()
+    index = next((i for i, m in enumerate(members) if m.id == member_id), None)
+    if index is None:
+        return redirect(url_for("admin.team_list"))
+
+    swap_index = index - 1 if direction == "up" else index + 1
+    if 0 <= swap_index < len(members):
+        members[index].sort_order, members[swap_index].sort_order = (
+            members[swap_index].sort_order,
+            members[index].sort_order,
+        )
+        db.session.commit()
+
+    return redirect(url_for("admin.team_list"))
 
 
 @admin_bp.get("/services-content")
