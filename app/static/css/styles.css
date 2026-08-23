@@ -516,8 +516,9 @@ select:focus {
 
 .home-hero-media-secondary {
   position: absolute;
-  right: 1rem;
+  left: 50%;
   bottom: 1rem;
+  transform: translateX(-50%);
   width: min(34%, 200px);
   aspect-ratio: 0.82;
   object-fit: cover;
