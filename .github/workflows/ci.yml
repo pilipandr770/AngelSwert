@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ci-test-secret
+      DATABASE_URL: sqlite:///ci_test.db
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: ci-test-password-123
+      PUBLIC_SITE_URL: http://localhost
+      S3_UPLOADS_ENABLED: "false"
+      ENABLE_BLOG_SCHEDULER: "false"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Byte-compile all Python files
+        run: python -m compileall -q app run.py scripts
+
+      - name: Boot Flask app and smoke-test every route (DE/EN)
+        run: python scripts/ci_smoke_test.py
