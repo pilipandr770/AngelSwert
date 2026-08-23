@@ -307,18 +307,26 @@ def services():
         separator = "&" if "?" in discovery_url else "?"
         discovery_href = f"{discovery_url}{separator}lang={getattr(g, 'lang', 'de')}"
 
+    story_video_urls = [
+        media_url(settings.story_video_01),
+        media_url(settings.story_video_02),
+        media_url(settings.story_video_03),
+    ]
+    story_episodes = [
+        {**episode, "video": story_video_urls[index] if index < len(story_video_urls) else ""}
+        for index, episode in enumerate(services_copy.get("story", {}).get("episodes", []))
+    ]
+
     return render_template(
         "public/services.html",
         services_settings=settings,
         services_copy=services_copy,
         featured_channels=featured_channels,
+        story_episodes=story_episodes,
         discovery_href=discovery_href,
         hero_media_url=media_url(settings.hero_media),
         digital_human_media_url=media_url(settings.digital_human_media),
         story_poster_url=media_url(settings.story_poster),
-        story_video_01_url=media_url(settings.story_video_01),
-        story_video_02_url=media_url(settings.story_video_02),
-        story_video_03_url=media_url(settings.story_video_03),
         strategy_photo_url=media_url(settings.strategy_photo),
     )
 

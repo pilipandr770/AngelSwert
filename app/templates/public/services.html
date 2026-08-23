@@ -3,22 +3,18 @@
 {% block meta_description %}{{ t('services.meta_description') }}{% endblock %}
 {% block content %}
 {% set is_de = lang == 'de' %}
+{% set c = services_copy %}
 
 <section class="hero services-hero">
   <div class="split split--media">
     <div>
-      <p class="eyebrow">{{ 'Services & systems' if not is_de else 'Leistungen & Systeme' }}</p>
-      <h1>{{ 'Structured content, media production and AI workflows for companies that want a repeatable growth system.' if not is_de else 'Strukturierte Content-, Medien- und KI-Workflows für Unternehmen mit Wachstumssystem.' }}</h1>
-      <p class="section-lead">
-        {% if is_de %}
-        Wir unterstützen Unternehmen bei der Erstellung von Videoinhalten, Content-Systemen, digitalen Avataren und Automations, damit Mehrwert, Sichtbarkeit und Prozesse zusammenwachsen.
-        {% else %}
-        We help companies create video content, content systems, digital avatars and automation so visibility, value and operational clarity grow together.
-        {% endif %}
-      </p>
+      <p class="eyebrow">{{ c.hero.eyebrow }}</p>
+      <h1>{{ c.hero.title }}</h1>
+      <p class="section-lead">{{ c.hero.subtitle }}</p>
+      <p>{{ c.hero.lead }}</p>
       <div class="cta-row">
-        <a class="btn" href="{{ discovery_href }}">{{ 'Book AI Discovery' if not is_de else 'AI Discovery buchen' }}</a>
-        <a class="btn btn-ghost" href="#packages">{{ 'Compare packages' if not is_de else 'Pakete vergleichen' }}</a>
+        <a class="btn" href="{{ discovery_href }}">{{ c.hero.cta_primary }}</a>
+        <a class="btn btn-ghost" href="#packages">{{ c.hero.cta_secondary }}</a>
       </div>
     </div>
     <figure class="media-frame media-frame--hero media-frame--contain services-hero-media">
@@ -28,28 +24,14 @@
 </section>
 
 <section class="page-block">
-  <h2>{{ 'The core service blocks' if not is_de else 'Die Kernleistungen' }}</h2>
+  <h2>{{ c.five_core.title }}</h2>
   <div class="services-five-grid">
+    {% for card in c.five_core.cards %}
     <details class="card service-card" open>
-      <summary>{{ 'Video production' if not is_de else 'Videoproduktion' }}</summary>
-      <p>{{ 'Concept, shooting, edit, localization and content formats designed for reach, trust and conversion.' if not is_de else 'Konzept, Produktion, Schnitt, Lokalisierung und Formate für Reichweite, Vertrauen und Conversion.' }}</p>
+      <summary>{{ card.summary }}</summary>
+      <p>{{ card.body }}</p>
     </details>
-    <details class="card service-card" open>
-      <summary>{{ 'Content systems' if not is_de else 'Content-Systeme' }}</summary>
-      <p>{{ 'Editorial planning, recurring production, publishing structures and channel consistency for brand growth.' if not is_de else 'Redaktionsplanung, wiederkehrende Produktion, Publishing-Strukturen und Kanal-Konsistenz für Markenwachstum.' }}</p>
-    </details>
-    <details class="card service-card" open>
-      <summary>{{ 'Digital humans & avatars' if not is_de else 'Digitale Menschen & Avatare' }}</summary>
-      <p>{{ 'Approved digital personalities for explainers, multilingual repetition and scalable communication.' if not is_de else 'Freigegebene digitale Persönlichkeiten für Erklärvideos, mehrsprachige Wiederholungen und skalierbare Kommunikation.' }}</p>
-    </details>
-    <details class="card service-card" open>
-      <summary>{{ 'Automation & AI agents' if not is_de else 'Automatisierung & KI-Agenten' }}</summary>
-      <p>{{ 'Research, drafting, scheduling, routing and performance optimization based on real operational needs.' if not is_de else 'Recherche, Entwurf, Scheduling, Routing und Performance-Optimierung anhand realer Betriebsbedarfe.' }}</p>
-    </details>
-    <details class="card service-card" open>
-      <summary>{{ 'Strategy & governance' if not is_de else 'Strategie & Governance' }}</summary>
-      <p>{{ 'Decision-making frameworks, review flow, approvals and operational clarity for a sustainable system.' if not is_de else 'Entscheidungsrahmen, Review-Fluss, Freigaben und operative Klarheit für ein nachhaltiges System.' }}</p>
-    </details>
+    {% endfor %}
   </div>
 </section>
 
@@ -58,81 +40,112 @@
     <img src="{{ digital_human_media_url }}" alt="Digital Human visual" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">{{ 'Digital formats' if not is_de else 'Digitale Formate' }}</p>
-    <h2>{{ 'Digital humans increase the efficiency of recurring communication.' if not is_de else 'Digitale Menschen erhöhen die Effizienz wiederkehrender Kommunikation.' }}</h2>
-    <p>{{ 'This is helpful for product explainers, training, onboarding, localization, multilingual presentation and continuous publishing without repeating the same manual work.' if not is_de else 'Das ist besonders nützlich für Produkteklärungen, Trainings, Onboarding, Lokalisierung, mehrsprachige Präsentationen und kontinuierliches Publishing ohne dieselben manuellen Aufgaben wiederholt zu machen.' }}</p>
+    <p class="eyebrow">{{ c.digital_humans.eyebrow }}</p>
+    <h2>{{ c.digital_humans.title }}</h2>
+    <p class="section-lead">{{ c.digital_humans.subtitle }}</p>
+    <p>{{ c.digital_humans.body }}</p>
     <ul class="feature-list">
-      <li>{{ 'Voice and visual consistency' if not is_de else 'Stimm- und visuelle Konsistenz' }}</li>
-      <li>{{ 'Multilingual use with controlled approval' if not is_de else 'Mehrsprachige Nutzung mit kontrollierter Freigabe' }}</li>
-      <li>{{ 'Reusable communication assets' if not is_de else 'Wiederverwendbare Kommunikations-Assets' }}</li>
+      {% for feature in c.digital_humans.features %}
+      <li>{{ feature }}</li>
+      {% endfor %}
     </ul>
     <div class="cta-row">
-      <a class="btn" href="{{ discovery_href }}">{{ 'Plan a pilot' if not is_de else 'Pilot planen' }}</a>
-      <a class="btn btn-ghost" href="#packages">{{ 'See packages' if not is_de else 'Pakete ansehen' }}</a>
+      <a class="btn" href="{{ discovery_href }}">{{ c.digital_humans.cta_primary }}</a>
+      <a class="btn btn-ghost" href="#story">{{ c.digital_humans.cta_secondary }}</a>
     </div>
   </div>
 </section>
 
-<section id="packages" class="cards-section">
-  <p class="eyebrow">{{ 'Package logic' if not is_de else 'Paketlogik' }}</p>
-  <h2>{{ 'Choose the structure that matches the current maturity of your business.' if not is_de else 'Wählen Sie die Struktur, die zum aktuellen Reifegrad Ihres Business passt.' }}</h2>
-  <div class="packages-grid">
-    <article class="card package-card">
-      <h3>Starter</h3>
-      <p class="package-price">{{ 'Content foundation' if not is_de else 'Content-Basis' }}</p>
-      <ul class="feature-list">
-        <li>{{ '10 videos/month' if not is_de else '10 Videos/Monat' }}</li>
-        <li>{{ '1 primary channel' if not is_de else '1 Hauptkanal' }}</li>
-        <li>{{ 'Manual publishing' if not is_de else 'Manuelles Publishing' }}</li>
-        <li>{{ 'No automation' if not is_de else 'Keine Automatisierung' }}</li>
-      </ul>
-      <a class="btn" href="{{ discovery_href }}">{{ 'Book Starter' if not is_de else 'Starter buchen' }}</a>
+<section id="story" class="page-block story-section">
+  <p class="eyebrow">{{ c.story.eyebrow }}</p>
+  <h2>{{ c.story.title }}</h2>
+  <p class="section-lead">{{ c.story.subtitle }}</p>
+  <p>{{ c.story.lead }}</p>
+  <figure class="media-frame media-frame--hero media-frame--contain story-poster">
+    {% if story_episodes and story_episodes[0].video %}
+    <video src="{{ story_episodes[0].video }}" poster="{{ story_poster_url }}" controls preload="none"></video>
+    {% else %}
+    <img src="{{ story_poster_url }}" alt="{{ c.story.title }}" loading="lazy">
+    {% endif %}
+  </figure>
+  <div class="cards-grid">
+    {% for episode in story_episodes %}
+    <article class="card story-card">
+      <p class="eyebrow">{{ episode.eyebrow }}</p>
+      <h3>{{ episode.title }}</h3>
+      <p class="meta">{{ episode.status }}</p>
+      {% if episode.video %}
+      <a class="btn btn-ghost" href="{{ episode.video }}" target="_blank" rel="noopener">{{ episode.button }}</a>
+      {% endif %}
     </article>
-    <article class="card package-card">
-      <h3>Growth</h3>
-      <p class="package-price">{{ 'Recurring publishing' if not is_de else 'Wiederkehrendes Publishing' }}</p>
-      <ul class="feature-list">
-        <li>{{ '20 videos/month' if not is_de else '20 Videos/Monat' }}</li>
-        <li>{{ 'Multiple channels' if not is_de else 'Mehrere Kanäle' }}</li>
-        <li>{{ 'Up to 2 languages' if not is_de else 'Bis zu 2 Sprachen' }}</li>
-        <li>{{ 'Structured approval flow' if not is_de else 'Strukturierter Freigabeprozess' }}</li>
-      </ul>
-      <a class="btn" href="{{ discovery_href }}">{{ 'Book Growth' if not is_de else 'Growth buchen' }}</a>
-    </article>
-    <article class="card package-card package-card--pro">
-      <h3>Pro</h3>
-      <p class="package-price">{{ 'Controlled system' if not is_de else 'Kontrolliertes System' }}</p>
-      <ul class="feature-list">
-        <li>{{ 'Custom volume' if not is_de else 'Individuelle Kapazität' }}</li>
-        <li>{{ 'Automation + AI agents' if not is_de else 'Automatisierung + KI-Agenten' }}</li>
-        <li>{{ 'Roles, logs, approval gates' if not is_de else 'Rollen, Logs, Freigaben' }}</li>
-        <li>{{ 'Multi-channel integration' if not is_de else 'Mehrkanal-Integration' }}</li>
-      </ul>
-      <a class="btn" href="{{ discovery_href }}">{{ 'Book Pro' if not is_de else 'Pro buchen' }}</a>
-    </article>
+    {% endfor %}
+  </div>
+  <div class="cta-row">
+    <a class="btn" href="{{ discovery_href }}">{{ c.story.cta_discovery }}</a>
   </div>
 </section>
 
-<section class="page-block">
-  <h2>{{ 'Growth Layer' if not is_de else 'Growth Layer' }}</h2>
-  <p class="section-lead">{{ 'Extend the media system when the foundation is ready.' if not is_de else 'Erweitern Sie das Mediensystem, sobald die Grundlage steht.' }}</p>
-  <p>
-    {% if is_de %}
-    Website- und Landingpage-Support, SEO/SEA, Tracking, CRM-Integration, bezahlte Kampagnen und Growth-Aktivitäten können als eigene Erweiterungsebene ergänzt werden, sobald es für das Projekt relevant ist.
-    {% else %}
-    Website and landing-page support, SEO/SEA, tracking, CRM integration, paid campaigns and growth activities can be added as a dedicated expansion layer when relevant to the project.
-    {% endif %}
-  </p>
+<section class="cards-section">
+  <p class="eyebrow">{{ c.youtube.eyebrow }}</p>
+  <h2>{{ c.youtube.title }}</h2>
+  <p class="section-lead">{{ c.youtube.subtitle }}</p>
+  <p>{{ c.youtube.lead }}</p>
+  <div class="video-grid">
+    {% for video in featured_channels %}
+    <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener">
+      <div class="video-card-media">
+        {% if video.thumbnail %}
+        <img src="{{ video.thumbnail }}" alt="{{ video.title }}" loading="lazy" data-thumb-candidates="{{ video.thumbnail_candidates|join(',') }}">
+        {% else %}
+        <div class="video-card-placeholder">{{ video.title }}</div>
+        {% endif %}
+      </div>
+      <div class="video-card-body">
+        <h3>{{ video.title }}</h3>
+        <p>{{ c.youtube.visit_label }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="packages" class="cards-section">
+  <p class="eyebrow">{{ c.packages.eyebrow }}</p>
+  <h2>{{ c.packages.title }}</h2>
+  <div class="packages-grid">
+    {% for item in c.packages['items'] %}
+    <article class="card package-card{{ ' package-card--pro' if item.name == 'PRO' else '' }}">
+      <h3>{{ item.name }}</h3>
+      <p class="package-price">{{ item.price }}</p>
+      <ul class="feature-list">
+        {% for feature in item.features %}
+        <li>{{ feature }}</li>
+        {% endfor %}
+      </ul>
+      <a class="btn" href="{{ discovery_href }}">{{ item.cta }}</a>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="meta">{{ c.packages.meta }}</p>
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">{{ 'How We Work' if not is_de else 'So arbeiten wir' }}</p>
+  <h2>{{ c.optional_growth.title }}</h2>
+  <p class="section-lead">{{ c.optional_growth.subtitle }}</p>
+  <div class="cards-grid">
+    {% for card in c.optional_growth.cards %}
+    <article class="card"><h3>{{ card.title }}</h3><p>{{ card.body }}</p></article>
+    {% endfor %}
+  </div>
+  <p class="meta">{{ c.optional_growth.meta }}</p>
+</section>
+
+<section class="page-block">
+  <p class="eyebrow">{{ c.workflow.title }}</p>
   <ol class="work-timeline">
-    <li><strong>01 {{ 'Discovery' if not is_de else 'Discovery' }}:</strong> {{ 'Goals, audience, current setup and constraints.' if not is_de else 'Ziele, Zielgruppe, aktuelles Setup und Rahmenbedingungen.' }}</li>
-    <li><strong>02 {{ 'System Design' if not is_de else 'System Design' }}:</strong> {{ 'Content model, Digital Humans, workflow and production logic.' if not is_de else 'Content-Modell, Digital Humans, Workflow und Produktionslogik.' }}</li>
-    <li><strong>03 {{ 'Production' if not is_de else 'Produktion' }}:</strong> {{ 'Scripts, assets, AI generation, review and delivery.' if not is_de else 'Skripte, Assets, KI-Generierung, Review und Lieferung.' }}</li>
-    <li><strong>04 {{ 'Automation' if not is_de else 'Automatisierung' }}:</strong> {{ 'Approvals, integrations, monitoring and repeatable workflows.' if not is_de else 'Freigaben, Integrationen, Monitoring und wiederholbare Workflows.' }}</li>
-    <li><strong>05 {{ 'Scale' if not is_de else 'Scale' }}:</strong> {{ 'More content, languages, channels and growth layers when the system is ready.' if not is_de else 'Mehr Content, Sprachen, Kanäle und Growth-Layer, sobald das System bereit ist.' }}</li>
+    {% for step in c.workflow.steps %}
+    <li><strong>{{ step.label }}:</strong> {{ step.body }}</li>
+    {% endfor %}
   </ol>
 </section>
 

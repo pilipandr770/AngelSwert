@@ -69,6 +69,8 @@
       <input name="{{ lang_code }}__hero__eyebrow" value="{{ c.hero.eyebrow }}">
       <label>Hero: Title ({{ lang_label }})</label>
       <textarea name="{{ lang_code }}__hero__title" rows="2">{{ c.hero.title }}</textarea>
+      <label>Hero: Subtitle ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__hero__subtitle" rows="2">{{ c.hero.subtitle }}</textarea>
       <label>Hero: Lead ({{ lang_label }})</label>
       <textarea name="{{ lang_code }}__hero__lead" rows="3">{{ c.hero.lead }}</textarea>
       <label>Hero: CTA primary ({{ lang_label }})</label>
@@ -89,6 +91,8 @@
       <input name="{{ lang_code }}__digital_humans__eyebrow" value="{{ c.digital_humans.eyebrow }}">
       <label>Digital Humans: Title ({{ lang_label }})</label>
       <textarea name="{{ lang_code }}__digital_humans__title" rows="2">{{ c.digital_humans.title }}</textarea>
+      <label>Digital Humans: Subtitle ({{ lang_label }})</label>
+      <textarea name="{{ lang_code }}__digital_humans__subtitle" rows="2">{{ c.digital_humans.subtitle }}</textarea>
       <label>Digital Humans: Body ({{ lang_label }})</label>
       <textarea name="{{ lang_code }}__digital_humans__body" rows="3">{{ c.digital_humans.body }}</textarea>
       {% for item in c.digital_humans.features %}
@@ -106,6 +110,8 @@
       <input name="{{ lang_code }}__story__eyebrow" value="{{ c.story.eyebrow }}">
       <label>Story: Title ({{ lang_label }})</label>
       <input name="{{ lang_code }}__story__title" value="{{ c.story.title }}">
+      <label>Story: Subtitle ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__story__subtitle" value="{{ c.story.subtitle }}">
       <label>Story: Lead ({{ lang_label }})</label>
       <textarea name="{{ lang_code }}__story__lead" rows="3">{{ c.story.lead }}</textarea>
       {% for episode in c.story.episodes %}
@@ -131,6 +137,8 @@
       <input name="{{ lang_code }}__youtube__eyebrow" value="{{ c.youtube.eyebrow }}">
       <label>YouTube: Title ({{ lang_label }})</label>
       <input name="{{ lang_code }}__youtube__title" value="{{ c.youtube.title }}">
+      <label>YouTube: Subtitle ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__youtube__subtitle" value="{{ c.youtube.subtitle }}">
       <label>YouTube: Lead ({{ lang_label }})</label>
       <textarea name="{{ lang_code }}__youtube__lead" rows="3">{{ c.youtube.lead }}</textarea>
       <label>YouTube: Visit label ({{ lang_label }})</label>
@@ -161,6 +169,8 @@
       <input name="{{ lang_code }}__optional_growth__eyebrow" value="{{ c.optional_growth.eyebrow }}">
       <label>Optional Growth: Title ({{ lang_label }})</label>
       <input name="{{ lang_code }}__optional_growth__title" value="{{ c.optional_growth.title }}">
+      <label>Optional Growth: Subtitle ({{ lang_label }})</label>
+      <input name="{{ lang_code }}__optional_growth__subtitle" value="{{ c.optional_growth.subtitle }}">
       {% for card in c.optional_growth.cards %}
       <label>Optional Growth Card {{ loop.index }}: Title ({{ lang_label }})</label>
       <input name="{{ lang_code }}__optional_growth__cards__{{ loop.index0 }}__title" value="{{ card.title }}">

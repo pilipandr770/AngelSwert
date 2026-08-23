@@ -6,9 +6,10 @@ from typing import Any
 DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
     "de": {
         "hero": {
-            "eyebrow": "UNSERE LEISTUNGEN",
-            "title": "Strukturierte KI-Video-, Digital-Human- und Content-Systeme für wiederkehrende Unternehmenskommunikation.",
-            "lead": "ASAI Studio verbindet Videoproduktion, Creative Direction, Digital Humans, Content-Systeme, KI-Agenten und kontrollierte Automatisierung zu einer skalierbaren Kommunikationslösung.",
+            "eyebrow": "Services & Systeme",
+            "title": "KI-Video, Digital Humans & Mediensysteme",
+            "subtitle": "Von einzelner Content-Produktion zu einem kontrollierten, wiederkehrenden Kommunikationssystem.",
+            "lead": "ASAI verbindet kreative Leitung, KI-Videoproduktion, Digital Humans, mehrsprachigen Content, KI-Agenten und Automatisierung zu strukturierten Workflows für den echten Unternehmenseinsatz.",
             "cta_primary": "AI Discovery starten",
             "cta_secondary": "Pakete ansehen",
         },
@@ -39,8 +40,9 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
         },
         "digital_humans": {
             "eyebrow": "Digital Humans",
-            "title": "Digital Humans für Marken, Unternehmen und Medien",
-            "body": "Konsistente digitale Persönlichkeiten für wiederkehrende, mehrsprachige und skalierbare Kommunikation mit klarer Nutzungslogik.",
+            "title": "Digital Humans",
+            "subtitle": "Konsistente digitale Präsenz für Marken, Expert:innen und Medien.",
+            "body": "Wir entwickeln kontrollierte Digital-Human-Workflows für wiederkehrende Kommunikation, mehrsprachiges Video, Markenkonsistenz und skalierbare Content-Produktion.",
             "features": [
                 "Business Presenter für Erklärvideos und interne Kommunikation",
                 "Multilingual Host für Länder und Zielgruppen",
@@ -48,13 +50,14 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
                 "Fictional AI Influencer für Storytelling und Kampagnen",
             ],
             "meta": "Transparenz: Bei sprechenden Avataren wird klar gekennzeichnet, dass es sich um einen KI-Assistenten handelt.",
-            "cta_primary": "Digital Human Projekt prüfen",
+            "cta_primary": "Digital Human Projekt bewerten",
             "cta_secondary": "Stronger Than Yesterday ansehen",
         },
         "story": {
             "eyebrow": "AI Influencer Storytelling",
             "title": "Stronger Than Yesterday",
-            "lead": "Eine visuelle Storytelling-Serie mit fiktionalen KI-Influencern, filmischer KI-Produktion und menschlicher Creative Direction.",
+            "subtitle": "Ein originales ASAI AI Influencer Storytelling Universum.",
+            "lead": "Ein menschlich geleitetes Storytelling-Projekt mit fiktionalen Digital Humans, Charakter-Konsistenz, filmischer KI-Produktion, kreativer Leitung und episodischer Content-Entwicklung.",
             "episodes": [
                 {"eyebrow": "EPISODE 01", "title": "THE ARRIVAL", "status": "In Produktion", "button": "Story ansehen"},
                 {"eyebrow": "EPISODE 02", "title": "THE MISSION", "status": "In Produktion", "button": "Story ansehen"},
@@ -68,6 +71,7 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
         "youtube": {
             "eyebrow": "YouTube Media Ecosystem",
             "title": "Built Through Real Media Practice",
+            "subtitle": "Wir bauen Systeme, die wir selbst nutzen.",
             "lead": "ASAI Studio wird durch praktische Produktion in vier Medienumgebungen geformt: Technologie, mehrsprachiger Experten-Content, Finance und Kinder-Storytelling.",
             "visit_label": "Kanal besuchen",
         },
@@ -112,8 +116,9 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
             "meta": "Alle Preise sind Nettopreise. Die gesetzliche Mehrwertsteuer, Integrationen und Zusatzanforderungen werden nach der Discovery bestätigt.",
         },
         "optional_growth": {
-            "eyebrow": "Optional Growth",
-            "title": "Optionale Growth-, Marketing- und Markenleistungen",
+            "eyebrow": "Growth Layer",
+            "title": "Growth Layer",
+            "subtitle": "Erweitern Sie das Mediensystem, sobald die Grundlage steht.",
             "cards": [
                 {
                     "title": "Content & Growth",
@@ -128,55 +133,58 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
                     "body": "Sponsoring, Affiliate- und Referral-Projekte sowie Ambassador-Kooperationen.",
                 },
             ],
-            "meta": "Diese Leistungen und externe Werbebudgets sind kein automatischer Bestandteil der monatlichen Video-Pakete.",
+            "meta": "Website- und Landingpage-Support, SEO/SEA, Tracking, CRM-Integration, bezahlte Kampagnen und Growth-Aktivitäten können als eigene Erweiterungsebene ergänzt werden, sobald es für das Projekt relevant ist.",
         },
         "workflow": {
             "title": "So arbeiten wir",
             "steps": [
                 {
-                    "label": "01 - Discovery & Strategie",
-                    "body": "Business-Review, Zielgruppen- und Angebotsanalyse, erste Empfehlung.",
+                    "label": "01 Discovery",
+                    "body": "Ziele, Zielgruppe, aktuelles Setup und Rahmenbedingungen.",
                 },
                 {
-                    "label": "02 - Konzeption & Systemdesign",
-                    "body": "Content-Modell, Digital Human, visuelles System, Produktionslogik.",
+                    "label": "02 System Design",
+                    "body": "Content-Modell, Digital Humans, Workflow und Produktionslogik.",
                 },
                 {
-                    "label": "03 - Produktion & Launch",
-                    "body": "Skripte, Produktion, Lokalisierung, Review, Auslieferung.",
+                    "label": "03 Produktion",
+                    "body": "Skripte, Assets, KI-Generierung, Review und Lieferung.",
                 },
                 {
-                    "label": "04 - Stabilisierung & Automatisierung",
-                    "body": "Workflow-Optimierung, Rollen, Monitoring, Integrationen.",
+                    "label": "04 Automatisierung",
+                    "body": "Freigaben, Integrationen, Monitoring und wiederholbare Workflows.",
                 },
                 {
-                    "label": "05 - Wachstum & Skalierung",
-                    "body": "Mehr Content und Sprachen, zusätzliche Kanäle, Growth-Kampagnen.",
+                    "label": "05 Scale",
+                    "body": "Mehr Content, Sprachen, Kanäle und Growth-Layer, sobald das System bereit ist.",
                 },
             ],
             "meta": "Aufbauen. Produzieren. Stabilisieren. Automatisieren. Dann skalieren.",
         },
         "strategy": {
             "eyebrow": "Strategy Session",
-            "title": "Starten Sie mit einer 1:1-Strategie-Session",
-            "body": "In einer fokussierten 90-Minuten-Session analysieren wir Geschäftsmodell, Kommunikation, Zielgruppe und den Implementierungsweg.",
-            "price": "90 Minuten · EUR 250 + MwSt.",
+            "title": "Start With Strategy",
+            "body": "In einer fokussierten 90-minütigen Strategy Session prüfen wir Ihr Geschäftsmodell, Ihre Kommunikationsziele, Ihr aktuelles Media-Setup und den realistischsten Weg zur KI-Umsetzung.",
+            "price": "",
             "features": [
-                "Business- und Kommunikations-Review",
-                "Content-Ziele, Zielgruppe und Kanäle",
-                "Empfohlene Paket- oder Pilot-Empfehlung",
+                "Business- & Kommunikations-Review",
+                "Content-Prioritäten",
+                "Digital-Human-Potenziale",
+                "Automatisierungs-Potenziale",
+                "Empfohlener nächster Schritt",
             ],
-            "cta": "AI Discovery starten",
+            "cta": "Strategy Session buchen",
             "meta": "Kalenderbuchung wird nach Discovery und Eignungsprüfung freigeschaltet.",
         },
     },
     "en": {
         "hero": {
-            "eyebrow": "OUR SERVICES",
-            "title": "Structured AI video, digital human and content systems for recurring business communication.",
-            "lead": "ASAI Studio combines video production, creative direction, digital humans, content systems, AI agents and controlled automation into one scalable communication solution.",
+            "eyebrow": "Services & Systems",
+            "title": "AI Video, Digital Humans & Media Systems",
+            "subtitle": "From individual content production to controlled recurring communication systems.",
+            "lead": "ASAI combines creative direction, AI video production, Digital Humans, multilingual content, AI agents and automation into structured workflows designed for real business use.",
             "cta_primary": "Start AI Discovery",
-            "cta_secondary": "See packages",
+            "cta_secondary": "See Packages",
         },
         "five_core": {
             "title": "Five core services",
@@ -205,8 +213,9 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
         },
         "digital_humans": {
             "eyebrow": "Digital Humans",
-            "title": "Digital humans for brands, companies and media",
-            "body": "Consistent digital personalities for recurring, multilingual and scalable communication with clear usage logic.",
+            "title": "Digital Humans",
+            "subtitle": "Consistent digital presence for brands, experts and media.",
+            "body": "We design controlled Digital Human workflows for recurring communication, multilingual video, brand consistency and scalable content production.",
             "features": [
                 "Business presenter for explainers and internal communication",
                 "Multilingual host for countries and audiences",
@@ -214,13 +223,14 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
                 "Fictional AI influencer for storytelling and campaigns",
             ],
             "meta": "Transparency: speaking avatars are clearly disclosed as AI assistants.",
-            "cta_primary": "Evaluate digital human project",
+            "cta_primary": "Evaluate a Digital Human Project",
             "cta_secondary": "View Stronger Than Yesterday",
         },
         "story": {
             "eyebrow": "AI Influencer Storytelling",
             "title": "Stronger Than Yesterday",
-            "lead": "A visual storytelling series with fictional AI influencers, cinematic AI production and human creative direction.",
+            "subtitle": "An original ASAI AI Influencer Storytelling Universe.",
+            "lead": "A human-led storytelling project combining fictional Digital Humans, character consistency, cinematic AI production, creative direction and episodic content development.",
             "episodes": [
                 {"eyebrow": "EPISODE 01", "title": "THE ARRIVAL", "status": "In production", "button": "Watch the story"},
                 {"eyebrow": "EPISODE 02", "title": "THE MISSION", "status": "In production", "button": "Watch the story"},
@@ -234,7 +244,8 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
         "youtube": {
             "eyebrow": "YouTube Media Ecosystem",
             "title": "Built Through Real Media Practice",
-            "lead": "ASAI Studio is informed by hands-on production across four media environments: technology, multilingual expert content, finance and children's storytelling.",
+            "subtitle": "We build systems we also use ourselves.",
+            "lead": "ASAI is developed through real multilingual media environments across AI, news, finance and storytelling. This gives us a practical testing ground for formats, workflows, production and automation.",
             "visit_label": "Visit channel",
         },
         "packages": {
@@ -278,8 +289,9 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
             "meta": "All prices are net prices. VAT, integrations and additional requirements are confirmed after discovery.",
         },
         "optional_growth": {
-            "eyebrow": "Optional Growth",
-            "title": "Optional growth, marketing and brand services",
+            "eyebrow": "Growth Layer",
+            "title": "Growth Layer",
+            "subtitle": "Extend the media system when the foundation is ready.",
             "cards": [
                 {
                     "title": "Content & Growth",
@@ -294,45 +306,47 @@ DEFAULT_SERVICES_COPY: dict[str, dict[str, Any]] = {
                     "body": "Sponsorships, affiliate and referral projects, plus ambassador collaborations.",
                 },
             ],
-            "meta": "These services and external ad budgets are not automatically included in monthly video packages.",
+            "meta": "Website and landing-page support, SEO/SEA, tracking, CRM integration, paid campaigns and growth activities can be added as a dedicated expansion layer when relevant to the project.",
         },
         "workflow": {
-            "title": "How we work",
+            "title": "How We Work",
             "steps": [
                 {
-                    "label": "01 - Discovery & strategy",
-                    "body": "Business review, audience and offer analysis, first recommendation.",
+                    "label": "01 Discovery",
+                    "body": "Goals, audience, current setup and constraints.",
                 },
                 {
-                    "label": "02 - Concept & system design",
-                    "body": "Content model, digital human, visual system and production logic.",
+                    "label": "02 System Design",
+                    "body": "Content model, Digital Humans, workflow and production logic.",
                 },
                 {
-                    "label": "03 - Production & launch",
-                    "body": "Scripts, production, localization, review and delivery.",
+                    "label": "03 Production",
+                    "body": "Scripts, assets, AI generation, review and delivery.",
                 },
                 {
-                    "label": "04 - Stabilization & automation",
-                    "body": "Workflow optimization, roles, monitoring and integrations.",
+                    "label": "04 Automation",
+                    "body": "Approvals, integrations, monitoring and repeatable workflows.",
                 },
                 {
-                    "label": "05 - Growth & scaling",
-                    "body": "More content and languages, additional channels, growth campaigns.",
+                    "label": "05 Scale",
+                    "body": "More content, languages, channels and growth layers when the system is ready.",
                 },
             ],
             "meta": "Build. Produce. Stabilize. Automate. Then scale.",
         },
         "strategy": {
             "eyebrow": "Strategy Session",
-            "title": "Start with a 1:1 strategy session",
-            "body": "In a focused 90-minute session we analyze your business model, communication, audience and implementation path.",
-            "price": "90 minutes · EUR 250 + VAT",
+            "title": "Start With Strategy",
+            "body": "In a focused 90-minute strategy session, we review your business model, communication goals, current media setup and the most realistic AI implementation path.",
+            "price": "",
             "features": [
-                "Business and communication review",
-                "Content goals, audience and channels",
-                "Recommended package or pilot path",
+                "Business & communication review",
+                "Content priorities",
+                "Digital Human opportunities",
+                "Automation opportunities",
+                "Recommended next step",
             ],
-            "cta": "Start AI Discovery",
+            "cta": "Book a Strategy Session",
             "meta": "Calendar booking is unlocked after discovery and qualification.",
         },
     },
