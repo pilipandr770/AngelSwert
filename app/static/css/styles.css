@@ -917,6 +917,10 @@ select:focus {
   border-top: 1px solid rgba(212, 175, 55, 0.14);
 }
 
+.site-footer-meta--center {
+  text-align: center;
+}
+
 .site-footer-brand p {
   max-width: none;
   margin: 0;

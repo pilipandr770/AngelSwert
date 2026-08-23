@@ -75,9 +75,8 @@
     <div class="site-footer-inner">
       <div class="site-footer-grid">
         <div class="site-footer-brand">
-          <img class="site-footer-mark" src="{{ url_for('static', filename='img/brand-mark.png') }}" alt="{{ brand_name }} logo">
+          <img class="site-footer-mark" src="{{ url_for('static', filename='img/brand-mark-icon.png') }}" alt="{{ brand_name }} logo">
           <div class="site-footer-brand-copy">
-            <p class="site-footer-title">{{ brand_name }}</p>
             <p>{{ t('footer.cta') }}</p>
             <p><a class="footer-cta-link" href="{{ url_for('public.contact', lang=lang) }}">{{ t('footer.talk') }}</a></p>
           </div>
@@ -101,7 +100,7 @@
           </div>
         </div>
       </div>
-      <p class="meta site-footer-meta">© {{ brand_name }}. {{ t('footer.rights') }}</p>
+      <p class="meta site-footer-meta site-footer-meta--center">© {{ brand_name }}. {{ t('footer.rights') }}</p>
     </div>
   </footer>
 
