@@ -182,7 +182,7 @@ def _seed_defaults(app: Flask) -> None:
     if not TeamMember.query.first():
         team_defaults = [
             ("Svitlana Lebedynska", "Founder · Creative Direction · Media Systems Strategy", "Founder · Creative Direction · Media Systems Strategy", "img/client-about.jpg"),
-            ("Andrey", "Technical Systems · Automation · Development", "Technical Systems · Automation · Development", ""),
+            ("Andrii", "Technical Systems · Automation · Development", "Technical Systems · Automation · Development", "img/andrii.jpg"),
             ("Santosh", "Brand · Photo · Video Production", "Brand · Photo · Video Production", ""),
         ]
         for index, (name, role_en, role_de, photo) in enumerate(team_defaults):
@@ -196,6 +196,15 @@ def _seed_defaults(app: Flask) -> None:
                     is_active=True,
                 )
             )
+
+    # One-time name-spelling fix for an already-seeded production record.
+    legacy_andrey = TeamMember.query.filter_by(name="Andrey").first()
+    if legacy_andrey:
+        legacy_andrey.name = "Andrii"
+
+    andrii_member = TeamMember.query.filter_by(name="Andrii").first()
+    if andrii_member and not andrii_member.photo:
+        andrii_member.photo = "img/andrii.jpg"
 
     if not AssistantInstructionSettings.query.first():
         db.session.add(
