@@ -5,66 +5,65 @@
 {% set is_de = lang == 'de' %}
 
 <section class="page-block">
-  <p class="eyebrow">{{ 'Packages' if not is_de else 'Pakete' }}</p>
-  <h1>{{ 'Choose the right package for the current stage of your media system.' if not is_de else 'Wählen Sie das passende Paket für den aktuellen Reifegrad Ihres Mediensystems.' }}</h1>
+  <h1>{{ 'Ways to Work with ASAI' if not is_de else 'So arbeiten Sie mit ASAI' }}</h1>
+  <p class="section-lead">{{ 'Choose the type of collaboration that matches what you need now.' if not is_de else 'Wählen Sie die Art der Zusammenarbeit, die zu Ihrem aktuellen Bedarf passt.' }}</p>
   <p>
     {% if is_de %}
-    Die richtige Frage ist nicht „Wie viele Videos brauchen wir?“, sondern „Wie reif ist unser Kommunikationssystem und welche Aufgaben müssen strukturiert und wiederkehrend laufen?“
+    Von strategischer Ausrichtung über KI-Produktion bis zu kontrollierten Mediensystemen kann ASAI an unterschiedlichen Punkten in Ihrem Unternehmen ansetzen.
     {% else %}
-    The right question is not “How many videos do we need?” but “How mature is our communication system and which tasks need to run in a structured and repeatable way?”
+    From strategic direction to AI production and controlled media systems, ASAI can enter at different stages of your business.
     {% endif %}
   </p>
 </section>
 
 <section class="cards-section">
-  <h2>{{ 'Package comparison' if not is_de else 'Paketvergleich' }}</h2>
   <div class="cards-grid">
-    <article class="card package-card">
-      <h3>Starter</h3>
-      <p>{{ 'Best for content foundation and one primary channel.' if not is_de else 'Ideal für eine solide Content-Basis und einen Hauptkanal.' }}</p>
+    <article class="card">
+      <h3>{{ 'Strategy & Consulting' if not is_de else 'Strategie & Beratung' }}</h3>
+      <p>{{ 'For businesses that need clarity before implementation.' if not is_de else 'Für Unternehmen, die vor der Umsetzung Klarheit brauchen.' }}</p>
       <ul class="feature-list">
-        <li>{{ '10 videos/month' if not is_de else '10 Videos/Monat' }}</li>
-        <li>{{ '1 primary channel' if not is_de else '1 Hauptkanal' }}</li>
-        <li>{{ 'Client-side publishing' if not is_de else 'Publishing beim Kunden' }}</li>
-        <li>{{ 'No automation' if not is_de else 'Keine Automatisierung' }}</li>
+        <li>{{ 'AI media strategy' if not is_de else 'KI-Medienstrategie' }}</li>
+        <li>{{ 'Business & content review' if not is_de else 'Business- & Content-Review' }}</li>
+        <li>{{ 'Digital Human assessment' if not is_de else 'Digital-Human-Bewertung' }}</li>
+        <li>{{ 'Implementation roadmap' if not is_de else 'Umsetzungs-Roadmap' }}</li>
       </ul>
-      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Request Starter' if not is_de else 'Starter anfragen' }}</a>
+      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Book a Strategy Session' if not is_de else 'Strategy Session buchen' }}</a>
     </article>
 
-    <article class="card package-card">
-      <h3>Growth</h3>
-      <p>{{ 'Best for recurring publishing, multilingual content and more channel volume.' if not is_de else 'Ideal für wiederkehrendes Publishing, mehrsprachige Inhalte und mehr Kanäle.' }}</p>
+    <article class="card">
+      <h3>{{ 'AI Video & Digital Humans' if not is_de else 'KI-Video & Digital Humans' }}</h3>
+      <p>{{ 'For brands, experts and companies that need high-quality AI-driven media production.' if not is_de else 'Für Marken, Expert:innen und Unternehmen, die hochwertige KI-gestützte Medienproduktion brauchen.' }}</p>
       <ul class="feature-list">
-        <li>{{ '20 videos/month' if not is_de else '20 Videos/Monat' }}</li>
-        <li>{{ 'Multiple formats and channels' if not is_de else 'Mehrere Formate und Kanäle' }}</li>
-        <li>{{ 'Up to 2 languages' if not is_de else 'Bis zu 2 Sprachen' }}</li>
-        <li>{{ 'Publishing by ASAI team' if not is_de else 'Publishing durch ASAI-Team' }}</li>
+        <li>{{ 'AI video' if not is_de else 'KI-Video' }}</li>
+        <li>{{ 'Digital Humans' if not is_de else 'Digital Humans' }}</li>
+        <li>{{ 'Multilingual content' if not is_de else 'Mehrsprachiger Content' }}</li>
+        <li>{{ 'Creative direction' if not is_de else 'Kreative Leitung' }}</li>
       </ul>
-      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Request Growth' if not is_de else 'Growth anfragen' }}</a>
+      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Start a project' if not is_de else 'Projekt starten' }}</a>
     </article>
 
-    <article class="card package-card package-card--pro">
-      <h3>Pro</h3>
-      <p>{{ 'Best for controlled infrastructure, automation and AI-supported scaling.' if not is_de else 'Ideal für kontrollierte Infrastruktur, Automatisierung und KI-gestützte Skalierung.' }}</p>
+    <article class="card">
+      <h3>{{ 'Media Systems & Automation' if not is_de else 'Mediensysteme & Automatisierung' }}</h3>
+      <p>{{ 'For companies that need recurring communication and scalable workflows.' if not is_de else 'Für Unternehmen, die wiederkehrende Kommunikation und skalierbare Workflows brauchen.' }}</p>
       <ul class="feature-list">
-        <li>{{ 'Custom volume' if not is_de else 'Individuelle Kapazität' }}</li>
-        <li>{{ 'AI agents and automation' if not is_de else 'KI-Agenten und Automatisierung' }}</li>
-        <li>{{ 'Approval gates and roles' if not is_de else 'Freigaben, Rollen und Logs' }}</li>
-        <li>{{ 'Analytics and optimization' if not is_de else 'Analyse und Optimierung' }}</li>
+        <li>{{ 'Recurring production' if not is_de else 'Wiederkehrende Produktion' }}</li>
+        <li>{{ 'Publishing workflows' if not is_de else 'Publishing-Workflows' }}</li>
+        <li>{{ 'AI agents' if not is_de else 'KI-Agenten' }}</li>
+        <li>{{ 'Automation & integrations' if not is_de else 'Automatisierung & Integrationen' }}</li>
       </ul>
-      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Request Pro' if not is_de else 'Pro anfragen' }}</a>
+      <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Discuss a system' if not is_de else 'System besprechen' }}</a>
     </article>
   </div>
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">{{ 'Growth Layer' if not is_de else 'Growth Layer' }}</p>
-  <h2>{{ 'Traffic, landing pages, lead routing and CRM integration are not automatic inclusions.' if not is_de else 'Traffic, Landingpages, Lead-Routing und CRM-Integration sind keine automatischen Inklusionen.' }}</h2>
+  <h2>{{ 'HeyGen Ecosystem Expertise' if not is_de else 'HeyGen Ecosystem Expertise' }}</h2>
+  <p class="section-lead">{{ 'Platform expertise combined with strategy and production.' if not is_de else 'Plattform-Expertise kombiniert mit Strategie und Produktion.' }}</p>
   <p>
     {% if is_de %}
-    Sie werden nach Stabilisierung der Content-Struktur oder in einem separaten SOW/Add-on geplant. Das schützt Qualität, Budget und Verantwortlichkeiten.
+    Als HeyGen Ambassador & Silver Partner arbeitet Angel Swert praxisnah mit Digital Humans, avatar-basiertem Video, mehrsprachiger Produktion und neuen KI-Video-Workflows. ASAI verbindet Plattformtechnologie mit Strategie, kreativer Leitung, Produktion, Governance und Automatisierung.
     {% else %}
-    They are planned after the core content system has stabilized or under a separate SOW and add-on. This protects quality, budget and operational accountability.
+    As a HeyGen Ambassador & Silver Partner, Angel Swert works hands-on with Digital Humans, avatar-based video, multilingual production and emerging AI-video workflows. ASAI combines platform technology with strategy, creative direction, production, governance and automation.
     {% endif %}
   </p>
 </section>

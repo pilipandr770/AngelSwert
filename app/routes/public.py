@@ -403,6 +403,7 @@ def blog_list():
     posts = (
         BlogPost.query.filter_by(status="published")
         .order_by(BlogPost.published_at.desc().nullslast(), BlogPost.created_at.desc())
+        .limit(5)
         .all()
     )
     return render_template("public/blog_list.html", posts=posts)

@@ -5,15 +5,16 @@
 {% set is_de = lang == 'de' %}
 
 <section class="page-block">
-  <p class="eyebrow">{{ 'Contact' if not is_de else 'Kontakt' }}</p>
-  <h1>{{ 'Start a qualification session or send your project request.' if not is_de else 'Starten Sie ein Qualifikationsgespräch oder senden Sie Ihre Projektanfrage.' }}</h1>
+  <h1>{{ 'Not Sure Where to Start?' if not is_de else 'Noch unsicher, wo Sie starten sollen?' }}</h1>
+  <p class="section-lead">{{ "Tell us what you want to achieve — and we'll identify the most realistic starting point." if not is_de else 'Sagen Sie uns, was Sie erreichen möchten – wir zeigen Ihnen den realistischsten Startpunkt.' }}</p>
   <p>
     {% if is_de %}
-    Wir besprechen Ziel, Zielgruppe, Kanäle, Umfang und die passende Paket- oder Pilot-Route. Eine kurze Anfrage reicht oft schon, um die nächste passende Stufe zu bestimmen.
+    Teilen Sie uns ein paar Details zu Ihrem Unternehmen, Ihrem aktuellen Content-Setup und Ihren KI-Zielen mit. Wir prüfen Ihre Anfrage und zeigen Ihnen, ob der beste Startpunkt Strategie, KI-Videoproduktion, Digital Humans oder ein strukturierteres Mediensystem ist.
     {% else %}
-    We can discuss the goal, audience, channels, scope and the best package or pilot route. A short inquiry is often enough to determine the right next step.
+    Share a few details about your business, current content setup and AI goals. We'll review your request and indicate whether the best starting point is strategy, AI video production, Digital Humans or a more structured media system.
     {% endif %}
   </p>
+  <p class="meta">{{ 'PRELIMINARY ASAI DIRECTION · NO OBLIGATION' if not is_de else 'VORLÄUFIGE ASAI-RICHTUNG · UNVERBINDLICH' }}</p>
   <div class="cards-grid">
     <article class="card">
       <h3>{{ 'Email' if not is_de else 'E-Mail' }}</h3>
@@ -31,7 +32,8 @@
 </section>
 
 <section class="page-block">
-  <h2>{{ 'Project request' if not is_de else 'Projektanfrage' }}</h2>
+  <h2>{{ 'Get My Preliminary ASAI Direction' if not is_de else 'Meine vorläufige ASAI-Richtung erhalten' }}</h2>
+  <p class="meta">{{ 'Already have a defined project? Use the same form and describe what you want to build.' if not is_de else 'Haben Sie bereits ein konkretes Projekt? Nutzen Sie dasselbe Formular und beschreiben Sie, was Sie umsetzen möchten.' }}</p>
   <form class="contact-form" method="post" action="{{ url_for('public.contact_submit', lang=lang) }}">
     <label>{{ t('contact.form_name') }}</label>
     <input type="text" name="name" required>
@@ -82,7 +84,7 @@
       </span>
     </label>
 
-    <button class="btn" type="submit">{{ 'Send request' if not is_de else 'Anfrage senden' }}</button>
+    <button class="btn" type="submit">{{ 'Send My Request' if not is_de else 'Meine Anfrage senden' }}</button>
   </form>
 </section>
 {% endblock %}

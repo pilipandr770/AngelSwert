@@ -8,9 +8,13 @@
   <div>
     <p class="eyebrow">{{ t('about.eyebrow') }}</p>
     <h1>{{ t('about.h1') }}</h1>
+    <p class="section-lead">{{ t('about.subtitle') }}</p>
     <p>{{ t('about.p1') }}</p>
     <p>{{ t('about.p2') }}</p>
     <p>{{ t('about.p3') }}</p>
+    <p>{{ t('about.p4') }}</p>
+    <p class="meta">{{ t('about.proof') }}</p>
+    <a class="btn" href="{{ url_for('public.services', lang=lang) }}">{{ t('about.cta') }}</a>
   </div>
   <figure class="media-frame media-frame--portrait">
     <img src="{{ url_for('static', filename='img/client-about.jpg') }}" alt="{{ t('about.image_alt') }}" loading="lazy">
@@ -18,18 +22,18 @@
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">{{ t('about.why_eyebrow') }}</p>
   <h2>{{ t('about.why_title') }}</h2>
+  <p class="section-lead">{{ t('about.why_subtitle') }}</p>
   <div class="cards-grid">
-    <article class="card"><h3>{{ t('about.why_1_title') }}</h3><p>{{ t('about.why_1_body') }}</p></article>
-    <article class="card"><h3>{{ t('about.why_2_title') }}</h3><p>{{ t('about.why_2_body') }}</p></article>
-    <article class="card"><h3>{{ t('about.why_3_title') }}</h3><p>{{ t('about.why_3_body') }}</p></article>
+    <article class="card"><h3>01 {{ t('about.why_1_title') }}</h3><p>{{ t('about.why_1_body') }}</p></article>
+    <article class="card"><h3>02 {{ t('about.why_2_title') }}</h3><p>{{ t('about.why_2_body') }}</p></article>
+    <article class="card"><h3>03 {{ t('about.why_3_title') }}</h3><p>{{ t('about.why_3_body') }}</p></article>
   </div>
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">{{ t('about.what_eyebrow') }}</p>
   <h2>{{ t('about.what_title') }}</h2>
+  <p class="section-lead">{{ t('about.what_subtitle') }}</p>
   <div class="cards-grid">
     <article class="card"><h3>{{ t('about.what_1_title') }}</h3><p>{{ t('about.what_1_body') }}</p></article>
     <article class="card"><h3>{{ t('about.what_2_title') }}</h3><p>{{ t('about.what_2_body') }}</p></article>
@@ -40,12 +44,12 @@
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">{{ t('about.team_eyebrow') }}</p>
   <h2>{{ t('about.team_title') }}</h2>
+  <p class="section-lead">{{ t('about.team_subtitle') }}</p>
   <div class="cards-grid">
-    <article class="card"><h3>{{ t('about.team_1_title') }}</h3><p>{{ t('about.team_1_body') }}</p></article>
-    <article class="card"><h3>{{ t('about.team_2_title') }}</h3><p>{{ t('about.team_2_body') }}</p></article>
-    <article class="card"><h3>{{ t('about.team_3_title') }}</h3><p>{{ t('about.team_3_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.team_1_name') }}</h3><p>{{ t('about.team_1_role') }}</p></article>
+    <article class="card"><h3>{{ t('about.team_2_name') }}</h3><p>{{ t('about.team_2_role') }}</p></article>
+    <article class="card"><h3>{{ t('about.team_3_name') }}</h3><p>{{ t('about.team_3_role') }}</p></article>
   </div>
 </section>
 
@@ -54,13 +58,15 @@
     <img src="{{ url_for('static', filename='img/client-accent.jpg') }}" alt="{{ t('about.accent_image_alt') }}" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">{{ t('about.consult_eyebrow') }}</p>
     <h2>{{ t('about.consult_title') }}</h2>
+    <p class="section-lead">{{ t('about.consult_subtitle') }}</p>
     <p>{{ t('about.consult_body') }}</p>
     <ul class="feature-list">
       <li>{{ t('about.consult_point_1') }}</li>
       <li>{{ t('about.consult_point_2') }}</li>
       <li>{{ t('about.consult_point_3') }}</li>
+      <li>{{ t('about.consult_point_4') }}</li>
+      <li>{{ t('about.consult_point_5') }}</li>
     </ul>
     <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ t('about.consult_cta') }}</a>
   </div>

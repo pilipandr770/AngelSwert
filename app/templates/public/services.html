@@ -114,22 +114,25 @@
 </section>
 
 <section class="page-block">
-  <p class="eyebrow">{{ 'Growth layer' if not is_de else 'Growth Layer' }}</p>
-  <h2>{{ 'Traffic, landing pages, CRM and conversion optimisation are planned as a dedicated add-on.' if not is_de else 'Traffic, Landingpages, CRM und Conversion-Optimierung werden als separater Add-on-Bereich geplant.' }}</h2>
-  <div class="cards-grid">
-    <article class="card"><h3>{{ 'Reach optimisation' if not is_de else 'Reichweitenoptimierung' }}</h3><p>{{ 'Audience growth, paid traffic and content amplification.' if not is_de else 'Zielgruppenwachstum, bezahlter Traffic und Content-Verstärkung.' }}</p></article>
-    <article class="card"><h3>{{ 'Lead generation' if not is_de else 'Lead-Generierung' }}</h3><p>{{ 'Landing pages, CTAs and lead routing to the sales process.' if not is_de else 'Landingpages, CTA und Lead-Routing in den Sales-Prozess.' }}</p></article>
-    <article class="card"><h3>{{ 'CRM & tracking' if not is_de else 'CRM & Tracking' }}</h3><p>{{ 'UTM, conversion events and operational reporting for better decisions.' if not is_de else 'UTM, Conversion-Events und Reporting für bessere Entscheidungen.' }}</p></article>
-  </div>
+  <h2>{{ 'Growth Layer' if not is_de else 'Growth Layer' }}</h2>
+  <p class="section-lead">{{ 'Extend the media system when the foundation is ready.' if not is_de else 'Erweitern Sie das Mediensystem, sobald die Grundlage steht.' }}</p>
+  <p>
+    {% if is_de %}
+    Website- und Landingpage-Support, SEO/SEA, Tracking, CRM-Integration, bezahlte Kampagnen und Growth-Aktivitäten können als eigene Erweiterungsebene ergänzt werden, sobald es für das Projekt relevant ist.
+    {% else %}
+    Website and landing-page support, SEO/SEA, tracking, CRM integration, paid campaigns and growth activities can be added as a dedicated expansion layer when relevant to the project.
+    {% endif %}
+  </p>
 </section>
 
 <section class="page-block">
-  <h2>{{ 'How collaboration works' if not is_de else 'So läuft die Zusammenarbeit' }}</h2>
+  <p class="eyebrow">{{ 'How We Work' if not is_de else 'So arbeiten wir' }}</p>
   <ol class="work-timeline">
-    <li><strong>{{ '01' if not is_de else '01' }}:</strong> {{ 'We clarify goals, KPIs and business context.' if not is_de else 'Ziele, KPI und Business-Kontext klären.' }}</li>
-    <li><strong>{{ '02' if not is_de else '02' }}:</strong> {{ 'We define channels, format hierarchy and approval flow.' if not is_de else 'Kanäle, Format-Hierarchie und Freigabeprozess definieren.' }}</li>
-    <li><strong>{{ '03' if not is_de else '03' }}:</strong> {{ 'We produce the first content cycle and publishing system.' if not is_de else 'Ersten Content-Zyklus und Publishing-System produzieren.' }}</li>
-    <li><strong>{{ '04' if not is_de else '04' }}:</strong> {{ 'We review performance and decide whether to stay manual or scale automation.' if not is_de else 'Performance prüfen und entscheiden, ob manuell oder automatisiert skaliert wird.' }}</li>
+    <li><strong>01 {{ 'Discovery' if not is_de else 'Discovery' }}:</strong> {{ 'Goals, audience, current setup and constraints.' if not is_de else 'Ziele, Zielgruppe, aktuelles Setup und Rahmenbedingungen.' }}</li>
+    <li><strong>02 {{ 'System Design' if not is_de else 'System Design' }}:</strong> {{ 'Content model, Digital Humans, workflow and production logic.' if not is_de else 'Content-Modell, Digital Humans, Workflow und Produktionslogik.' }}</li>
+    <li><strong>03 {{ 'Production' if not is_de else 'Produktion' }}:</strong> {{ 'Scripts, assets, AI generation, review and delivery.' if not is_de else 'Skripte, Assets, KI-Generierung, Review und Lieferung.' }}</li>
+    <li><strong>04 {{ 'Automation' if not is_de else 'Automatisierung' }}:</strong> {{ 'Approvals, integrations, monitoring and repeatable workflows.' if not is_de else 'Freigaben, Integrationen, Monitoring und wiederholbare Workflows.' }}</li>
+    <li><strong>05 {{ 'Scale' if not is_de else 'Scale' }}:</strong> {{ 'More content, languages, channels and growth layers when the system is ready.' if not is_de else 'Mehr Content, Sprachen, Kanäle und Growth-Layer, sobald das System bereit ist.' }}</li>
   </ol>
 </section>
 
@@ -138,10 +141,17 @@
     <img src="{{ strategy_photo_url }}" alt="Strategy session portrait" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">{{ 'Strategy session' if not is_de else 'Strategie-Session' }}</p>
-    <h2>{{ 'Start with a short discovery session and get a clear recommendation.' if not is_de else 'Starten Sie mit einer kurzen Discovery-Session und erhalten klaren Rat.' }}</h2>
-    <p>{{ 'The goal is to decide whether the right step is a pilot, a package or a custom system before production begins.' if not is_de else 'Das Ziel ist, zu entscheiden, ob der richtige nächste Schritt ein Pilot, ein Paket oder ein individuelles System vor der Produktion ist.' }}</p>
-    <a class="btn" href="{{ discovery_href }}">{{ 'Book AI Discovery' if not is_de else 'AI Discovery buchen' }}</a>
+    <h2>{{ t('about.consult_title') }}</h2>
+    <p class="section-lead">{{ t('about.consult_subtitle') }}</p>
+    <p>{{ t('about.consult_body') }}</p>
+    <ul class="feature-list">
+      <li>{{ t('about.consult_point_1') }}</li>
+      <li>{{ t('about.consult_point_2') }}</li>
+      <li>{{ t('about.consult_point_3') }}</li>
+      <li>{{ t('about.consult_point_4') }}</li>
+      <li>{{ t('about.consult_point_5') }}</li>
+    </ul>
+    <a class="btn" href="{{ discovery_href }}">{{ t('about.consult_cta') }}</a>
   </div>
 </section>
 {% endblock %}

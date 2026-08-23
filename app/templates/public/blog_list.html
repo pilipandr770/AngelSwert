@@ -4,6 +4,8 @@
 {% block content %}
 <section class="page-block">
   <h1>{{ t('blog.h1') }}</h1>
+  <p class="section-lead">{{ t('blog.subtitle') }}</p>
+  <p>{{ t('blog.description') }}</p>
   {% if posts %}
   <div class="cards-grid">
     {% for post in posts %}

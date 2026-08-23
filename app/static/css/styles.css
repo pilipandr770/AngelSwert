@@ -26,7 +26,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  font-family: "Inter", sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: var(--ink);
   background:
     radial-gradient(circle at 8% 12%, rgba(212, 175, 55, 0.16), transparent 24%),
@@ -54,6 +54,10 @@ h1, h2, h3 {
   line-height: 1.05;
   margin-top: 0;
   letter-spacing: 0.01em;
+}
+
+h1, h2 {
+  color: #c7a663;
 }
 
 .site-header,
@@ -105,7 +109,7 @@ h1, h2, h3 {
   color: var(--accent-2);
   text-decoration: none;
   font-weight: 600;
-  font-family: "Oswald", sans-serif;
+  font-family: "Montserrat", sans-serif;
   letter-spacing: 0.03em;
 }
 
@@ -215,7 +219,7 @@ h1, h2, h3 {
 main,
 .admin-main {
   flex: 1 0 auto;
-  width: min(1080px, 92vw);
+  width: min(1200px, 92vw);
   margin: 1.5rem auto 4rem;
 }
 
@@ -224,7 +228,7 @@ main,
 }
 
 .public-flash {
-  width: min(1080px, 92vw);
+  width: min(1200px, 92vw);
   margin: 0 auto 1rem;
 }
 
@@ -255,7 +259,7 @@ main,
   font-size: 0.78rem;
   color: var(--accent-2);
   margin-bottom: 0.75rem;
-  font-family: "Oswald", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .cards-section,
@@ -696,7 +700,7 @@ select:focus {
   letter-spacing: 0.12em;
   font-size: 0.72rem;
   color: rgba(212, 175, 55, 0.78);
-  font-family: "Oswald", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .video-card-placeholder {
@@ -788,14 +792,14 @@ select:focus {
 .site-footer::before {
   content: "";
   display: block;
-  width: min(1080px, 92vw);
+  width: min(1200px, 92vw);
   margin: 0 auto;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(212,175,55,0.75), transparent);
 }
 
 .site-footer-inner {
-  width: min(1080px, 92vw);
+  width: min(1200px, 92vw);
   margin: 0 auto;
   padding: 1.5rem 0 1.1rem;
 }
@@ -851,7 +855,7 @@ select:focus {
   letter-spacing: 0.12em;
   font-size: 0.74rem;
   color: rgba(212, 175, 55, 0.76);
-  font-family: "Oswald", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .site-footer-links {
@@ -1325,8 +1329,7 @@ select:focus {
 .services-hero h1 {
   font-size: clamp(2.2rem, 4.1vw, 3.8rem);
   margin-bottom: 0.7rem;
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  overflow-wrap: break-word;
   letter-spacing: 0.01em;
   text-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
 }
