@@ -6,26 +6,47 @@
 
 <section class="page-block split split--media">
   <div>
-    <p class="eyebrow">{{ 'About ASAI Studio' if not is_de else 'Über ASAI Studio' }}</p>
-    <h1>{{ 'We build media systems, not isolated content.' if not is_de else 'Wir bauen Mediensysteme, keine isolierten Inhalte.' }}</h1>
-    <p>
-      {% if is_de %}
-      ASAI Studio verbindet Videoproduktion, Storytelling, digitale Avatare, Content-Strategie und Automatisierung in einem klaren System. Ziel ist nicht, mehr Inhalte zufällig zu produzieren, sondern ein wiederholbares Kommunikationsmodell zu schaffen, das Sichtbarkeit, Vertrauen und Formate für unterschiedliche Zielgruppen zusammenführt.
-      {% else %}
-      ASAI Studio combines video production, storytelling, digital avatars, content strategy and automation into one clear system. The goal is not to create random content, but to build a repeatable communication model that unifies visibility, trust and formats across different audiences.
-      {% endif %}
-    </p>
-    <p>
-      {% if is_de %}
-      Für Unternehmen heißt das: weniger Chaos, mehr Klarheit, bessere Medienpraxis und ein auf die Zielgruppe abgestimmter Weg von Inhalt über Distribution bis zur Conversion.
-      {% else %}
-      For companies, this means less chaos, more clarity, stronger media practice and a target-specific path from content to distribution and conversion.
-      {% endif %}
-    </p>
+    <p class="eyebrow">{{ t('about.eyebrow') }}</p>
+    <h1>{{ t('about.h1') }}</h1>
+    <p>{{ t('about.p1') }}</p>
+    <p>{{ t('about.p2') }}</p>
+    <p>{{ t('about.p3') }}</p>
   </div>
   <figure class="media-frame media-frame--portrait">
     <img src="{{ url_for('static', filename='img/client-about.jpg') }}" alt="{{ t('about.image_alt') }}" loading="lazy">
   </figure>
+</section>
+
+<section class="page-block">
+  <p class="eyebrow">{{ t('about.why_eyebrow') }}</p>
+  <h2>{{ t('about.why_title') }}</h2>
+  <div class="cards-grid">
+    <article class="card"><h3>{{ t('about.why_1_title') }}</h3><p>{{ t('about.why_1_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.why_2_title') }}</h3><p>{{ t('about.why_2_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.why_3_title') }}</h3><p>{{ t('about.why_3_body') }}</p></article>
+  </div>
+</section>
+
+<section class="page-block">
+  <p class="eyebrow">{{ t('about.what_eyebrow') }}</p>
+  <h2>{{ t('about.what_title') }}</h2>
+  <div class="cards-grid">
+    <article class="card"><h3>{{ t('about.what_1_title') }}</h3><p>{{ t('about.what_1_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.what_2_title') }}</h3><p>{{ t('about.what_2_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.what_3_title') }}</h3><p>{{ t('about.what_3_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.what_4_title') }}</h3><p>{{ t('about.what_4_body') }}</p></article>
+  </div>
+  <a class="btn" href="{{ url_for('public.services', lang=lang) }}">{{ t('about.what_cta') }}</a>
+</section>
+
+<section class="page-block">
+  <p class="eyebrow">{{ t('about.team_eyebrow') }}</p>
+  <h2>{{ t('about.team_title') }}</h2>
+  <div class="cards-grid">
+    <article class="card"><h3>{{ t('about.team_1_title') }}</h3><p>{{ t('about.team_1_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.team_2_title') }}</h3><p>{{ t('about.team_2_body') }}</p></article>
+    <article class="card"><h3>{{ t('about.team_3_title') }}</h3><p>{{ t('about.team_3_body') }}</p></article>
+  </div>
 </section>
 
 <section class="page-block split split--media">
@@ -33,21 +54,15 @@
     <img src="{{ url_for('static', filename='img/client-accent.jpg') }}" alt="{{ t('about.accent_image_alt') }}" loading="lazy">
   </figure>
   <div>
-    <p class="eyebrow">{{ 'How we work' if not is_de else 'So arbeiten wir' }}</p>
-    <h2>{{ 'A practical method from strategy to publishing' if not is_de else 'Eine praktische Methode von Strategie bis Publishing' }}</h2>
+    <p class="eyebrow">{{ t('about.consult_eyebrow') }}</p>
+    <h2>{{ t('about.consult_title') }}</h2>
+    <p>{{ t('about.consult_body') }}</p>
     <ul class="feature-list">
-      <li>{{ 'We define the business goal, audience and conversion path before production.' if not is_de else 'Wir definieren Ziel, Zielgruppe und Conversion-Pfad vor der Produktion.' }}</li>
-      <li>{{ 'We plan content systems, channels, review flow and approval logic in advance.' if not is_de else 'Wir planen Content-Systeme, Kanäle, Review-Fluss und Freigaben im Voraus.' }}</li>
-      <li>{{ 'We make the system scalable: from simple content foundation to automation and AI agents.' if not is_de else 'Wir machen das System skalierbar: von Content-Basis bis Automatisierung und KI-Agenten.' }}</li>
+      <li>{{ t('about.consult_point_1') }}</li>
+      <li>{{ t('about.consult_point_2') }}</li>
+      <li>{{ t('about.consult_point_3') }}</li>
     </ul>
-    <p>
-      {% if is_de %}
-      Wichtig ist dabei nicht nur die Qualität der Inhalte, sondern die Fähigkeit, sie wiederholbar, messbar und strategisch nutzbar zu machen.
-      {% else %}
-      What matters is not only content quality, but the ability to make it repeatable, measurable and strategically useful.
-      {% endif %}
-    </p>
-    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ 'Start AI Discovery' if not is_de else 'AI Discovery starten' }}</a>
+    <a class="btn" href="{{ url_for('public.contact', lang=lang) }}">{{ t('about.consult_cta') }}</a>
   </div>
 </section>
 {% endblock %}

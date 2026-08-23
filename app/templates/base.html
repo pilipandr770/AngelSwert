@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v={{ asset_v('css/styles.css') }}">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -191,8 +191,8 @@
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='js/cookie_consent.js', v='20260806a') }}"></script>
-  <script src="{{ url_for('static', filename='js/chatbot.js', v='20260807d') }}"></script>
-  <script src="{{ url_for('static', filename='js/nav.js', v='20260814a') }}"></script>
+  <script src="{{ url_for('static', filename='js/cookie_consent.js') }}?v={{ asset_v('js/cookie_consent.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}?v={{ asset_v('js/chatbot.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/nav.js') }}?v={{ asset_v('js/nav.js') }}"></script>
 </body>
 </html>

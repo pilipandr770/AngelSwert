@@ -347,6 +347,12 @@ button:hover {
   width: fit-content;
 }
 
+.page-block > .btn {
+  margin-top: 1rem;
+  display: inline-flex;
+  width: fit-content;
+}
+
 input,
 textarea,
 select {

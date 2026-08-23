@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Вхід в адмінпанель</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v={{ asset_v('css/styles.css') }}">
 </head>
 <body class="auth-body">
   <form class="auth-card" method="post" action="{{ url_for('auth.login_post') }}">

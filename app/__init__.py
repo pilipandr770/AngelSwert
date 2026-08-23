@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime, timedelta
 from flask import Flask
 from sqlalchemy import inspect, text
@@ -298,6 +299,16 @@ def create_app() -> Flask:
 
     db.init_app(app)
     login_manager.init_app(app)
+
+    def _asset_version(filename: str) -> str:
+        # Cache-busts static assets using file mtime so redeploys always invalidate stale browser/CDN cache.
+        path = os.path.join(app.static_folder or "", filename)
+        try:
+            return str(int(os.path.getmtime(path)))
+        except OSError:
+            return "0"
+
+    app.jinja_env.globals["asset_v"] = _asset_version
 
     app.register_blueprint(public_bp)
     app.register_blueprint(api_bp)
