@@ -2,7 +2,10 @@
 route (in both languages) plus the admin login page, failing the build on any
 non-2xx/3xx response or unhandled exception. Run in CI via GitHub Actions.
 """
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import create_app
 
