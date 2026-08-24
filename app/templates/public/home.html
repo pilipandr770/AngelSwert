@@ -4,7 +4,6 @@
 {% block content %}
 {% set is_de = lang == 'de' %}
 {% set hero_image = hero_content.main_media %}
-{% set hero_secondary_image = hero_content.secondary_media %}
 {% set about_image = url_for('static', filename='img/client-about.jpg') %}
 {% set consult_image = url_for('static', filename='img/client-consultation.jpg') %}
 
@@ -40,7 +39,6 @@
   </div>
   <figure class="media-frame--hero home-hero-media">
     <img src="{{ hero_image }}" alt="ASAI Studio hero visual" loading="eager">
-    <img class="home-hero-media-secondary" src="{{ hero_secondary_image }}" alt="ASAI Studio secondary visual" loading="eager">
   </figure>
 </section>
 

@@ -503,7 +503,6 @@ def home_hero_settings_save():
 
     for field_name in [
         "hero_image_main",
-        "hero_image_secondary",
         "hero_eyebrow_de",
         "hero_eyebrow_en",
         "hero_title_de",
@@ -530,10 +529,6 @@ def home_hero_settings_save():
     main_uploaded = _save_uploaded_static_file(request.files.get("hero_image_main_file"), "uploads/home", image_ext | video_ext)
     if main_uploaded:
         settings.hero_image_main = main_uploaded
-
-    secondary_uploaded = _save_uploaded_static_file(request.files.get("hero_image_secondary_file"), "uploads/home", image_ext)
-    if secondary_uploaded:
-        settings.hero_image_secondary = secondary_uploaded
 
     active_tab = (request.form.get("active_tab") or "").strip()
     safe_tab = active_tab if active_tab in HOME_HERO_TABS else "tab-media"

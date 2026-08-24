@@ -26,7 +26,6 @@ HOME_HERO_TEXT_DEFAULTS = {
 
 HOME_HERO_MEDIA_DEFAULTS = {
     "hero_main_media": "img/client-about.jpg",
-    "hero_secondary_media": "img/client-accent.jpg",
 }
 
 
@@ -66,7 +65,6 @@ def resolve_home_hero_content(settings, lang: str) -> dict:
     defaults = HOME_HERO_TEXT_DEFAULTS[lang_code]
 
     main_media = resolve_home_hero_media_url((getattr(settings, "hero_image_main", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_main_media"])
-    secondary_media = resolve_home_hero_media_url((getattr(settings, "hero_image_secondary", "") or "").strip() or HOME_HERO_MEDIA_DEFAULTS["hero_secondary_media"])
 
     return {
         "eyebrow": (getattr(settings, f"hero_eyebrow_{lang_code}", "") or "").strip() or defaults["eyebrow"],
@@ -78,7 +76,5 @@ def resolve_home_hero_content(settings, lang: str) -> dict:
         "cta_primary": (getattr(settings, f"hero_cta_primary_{lang_code}", "") or "").strip() or defaults["cta_primary"],
         "cta_secondary": (getattr(settings, f"hero_cta_secondary_{lang_code}", "") or "").strip() or defaults["cta_secondary"],
         "main_media": main_media,
-        "secondary_media": secondary_media,
         "main_is_video": is_video_media(main_media),
-        "secondary_is_video": is_video_media(secondary_media),
     }

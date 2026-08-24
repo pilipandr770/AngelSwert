@@ -2,7 +2,7 @@
 {% block title %}Hero головної{% endblock %}
 {% block content %}
 <h1>CMS: Hero головної сторінки</h1>
-<p>Тут редагується найбільший верхній блок на головній: фон, два зображення та тексти DE/EN.</p>
+<p>Тут редагується найбільший верхній блок на головній: зображення та тексти DE/EN.</p>
 
 <div class="admin-tabs" data-tabs-root>
   <div class="admin-tabs-nav" role="tablist" aria-label="Home Hero Tabs">
@@ -20,11 +20,6 @@
       <input name="hero_image_main" value="{{ settings.hero_image_main }}">
       <label>Або завантажити main media (image/video)</label>
       <input type="file" name="hero_image_main_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif,.mp4,.webm">
-
-      <label>Secondary hero image</label>
-      <input name="hero_image_secondary" value="{{ settings.hero_image_secondary }}">
-      <label>Або завантажити secondary image</label>
-      <input type="file" name="hero_image_secondary_file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif">
     </section>
 
     {% for lang_code, lang_label in [('de', 'DE'), ('en', 'EN')] %}
