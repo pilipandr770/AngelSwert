@@ -5,11 +5,10 @@
 {% set is_de = lang == 'de' %}
 {% set hero_image = hero_content.main_media %}
 {% set hero_secondary_image = hero_content.secondary_media %}
-{% set hero_background = hero_content.bg_media %}
 {% set about_image = url_for('static', filename='img/client-about.jpg') %}
 {% set consult_image = url_for('static', filename='img/client-consultation.jpg') %}
 
-<section class="hero home-hero" style="--home-hero-bg: url('{{ hero_background }}');">
+<section class="hero home-hero">
   <div class="home-hero-copy">
     <p class="eyebrow">{{ 'AI Video • Content • Automation' if not is_de else 'KI-Video • Content • Automatisierung' }}</p>
     <h1>{{ 'Turn content, publishing and AI into a measurable growth system.' if not is_de else 'Machen Sie aus Content, Publishing und KI ein messbares Wachstumssystem.' }}</h1>
