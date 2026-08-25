@@ -420,9 +420,9 @@ def services_content_settings_save():
     settings.hero_media = (request.form.get("hero_media") or "").strip() or settings.hero_media
     settings.digital_human_media = (request.form.get("digital_human_media") or "").strip() or settings.digital_human_media
     settings.story_poster = (request.form.get("story_poster") or "").strip() or settings.story_poster
-    settings.story_video_01 = (request.form.get("story_video_01") or "").strip()
-    settings.story_video_02 = (request.form.get("story_video_02") or "").strip()
-    settings.story_video_03 = (request.form.get("story_video_03") or "").strip()
+    settings.story_video_01 = (request.form.get("story_video_01") or "").strip() or settings.story_video_01
+    settings.story_video_02 = (request.form.get("story_video_02") or "").strip() or settings.story_video_02
+    settings.story_video_03 = (request.form.get("story_video_03") or "").strip() or settings.story_video_03
     settings.strategy_photo = (request.form.get("strategy_photo") or "").strip() or settings.strategy_photo
     settings.discovery_url = (request.form.get("discovery_url") or "").strip() or "/contact"
     settings.services_copy_json = update_services_copy_from_form(request.form, settings.services_copy_json)
